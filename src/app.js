@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname,"..","public")))
 
 app.use('/v1',api)
 app.use('/*',(req,res)=>{
-    res.json({"err":"Wrong Path!"})
+    res.status(404).json({"err":"Wrong Path!"})
 })
 
 module.exports = app
