@@ -21,7 +21,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    quantity: [{
+    subcategory: {
+        type: String,
+        required: true
+    },
+    quantity: {
         size: {
             type: String,
             required: true
@@ -29,8 +33,12 @@ const productSchema = new mongoose.Schema({
         color: {
             type: String,
             required: true
+        },
+        quantity:{
+            type: Number,
+            required: true
         }
-    }]
-})
+    }
+},{versionKey:false})
 
 module.exports = mongoose.model('Product', productSchema)

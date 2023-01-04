@@ -6,8 +6,9 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             await userSchema.findOne({ phn_no: phn_no })
                 .then(data => {
-                    if(!data)
+                    if(!data){
                         reject(false)
+                    }
                     resolve(data)
                 })
         })
