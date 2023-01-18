@@ -1,7 +1,9 @@
 const {
     loginUserWithPhone,
     loginUserWithEmailAndPassword,
-    addNewUser
+    addNewUser,
+    getUserForVeri,
+    getUser
 } = require("../../models/user.model")
 const {
     sentOtp,
@@ -10,44 +12,50 @@ const {
 
 module.exports = {
 
-    httpLoadUserLoginpage: (req, res) => {
-        return res.status(200).json({ 'page': 'User Homepage' })
-    },
 
     httpsentOtpToUser: async (req, res) => {
         if (req.body.phn_no) {
             await loginUserWithPhone(req.body.phn_no)
                 .then(async response => {
-                    await sentOtp(response)
-                        .then(response => {
-                            return res.status(200).json({ 'ok': 'otp sent' })
-                        })
-                        .catch(err => {
-                            return res.status(400).json({ '400': 'otp not sent' })
-                        })
+                    if (response.access) {
+                        await sentOtp(response)
+                            .then(response => {
+                                return res.status(200).json({'ok' : 'Otp Sent!' })
+                            })
+                            .catch(err => {
+                                return res.status(400).json({ 'err': 'Otp Not Sent!' })
+                            })
+                    } else {
+                        res.status(400).json({ 'err': 'User is Blocked!' })
+                    }
                 })
                 .catch(err => {
-                    return res.status(404).json({ 'err': 'No phn_no found' })
+                    return res.status(400).json({ 'err': 'No User with given Number!' })
                 })
         }
         else
-            return res.status(400).json({ '400': 'invalid phn no' })
+            return res.status(400).json({ 'err': 'Invalid Mobile Number!' })
 
     },
 
     httpOtpVerify: async (req, res) => {
 
-        if (req.body.otpCode) {
-            await verifyOtp(req.body.otpCode, 'signIn')
-                .then(response => {
-                    return res.status(200).json({ 'ok': 'Logged In' })
+        if (req.body.otpCode && req.body.phn_no) {
+            await verifyOtp(req.body.otpCode, req.body.phn_no)
+                .then(async response => {
+                    return await getUser(req.body.phn_no,null)
+                    .then((data)=>{
+                        req.session.user = true
+                        req.session.userId = data._id
+                        return res.json({ 'ok': 'Logged In!' })
+                    })
                 })
                 .catch(err => {
-                    return res.status(400).json({ '400': 'wrong otp' })
+                    return res.status(400).json({ 'err': 'Invalid Otp!' })
                 })
         }
         else {
-            return res.status(400).json({ '400': 'invalide otp' })
+            return res.status(400).json({ 'err': 'Invalid Credentials!' })
         }
     },
 
@@ -61,29 +69,41 @@ module.exports = {
                     return res.status(404).json({ 'err': 'No User found' })
                 })
         else
-            return res.status(400).json({ '400': 'No email' })
+            return res.status(400).json({ 'err': 'No email' })
     },
 
     httpAddNewUserOtp: async (req, res) => {
 
-        if (req.body.phn_no) {
-            await sentOtp(req.body.phn_no)
-                .then(() => {
-                    return res.status(201).json({ 'ok': 'otp sent' })
+        if (req.body.phn_no && req.body.email) {
+            await getUserForVeri(req.body.phn_no, req.body.email)
+                .then(async () => {
+                    await sentOtp(req.body.phn_no)
+                        .then(() => {
+                            return res.status(201).json({ 'ok': 'otp sent' })
+                        })
+                        .catch(() => {
+                            return res.status(400).json({ '400': "otp not sent" })
+                        })
+
                 })
-                .catch(() => {
-                    return res.status(400).json({ '400': "otp not sent" })
+                .catch(data => {
+                    if (data.email == req.body.email) {
+                        return res.status(400).json({ 'err': 'email exists' })
+                    } else if (data.phn_no == req.body.phn_no) {
+                        return res.status(400).json({ 'err': 'phn_no exists' })
+                    }
                 })
 
         } else
-            res.status(400).json({ '400': 'invalid Credentials' })
+            res.status(400).json({ 'err': 'invalid Credentials' })
     },
 
     httpAddNewUserVerifyOtp: async (req, res) => {
-        if (req.body.otpCode) {
-            await verifyOtp(req.body.otpCode, 'signUp')
+        console.log(req.body);
+        if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name) {
+            await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async () => {
-                    await addNewUser(req.body.phn_no)
+                    await addNewUser(req.body.phn_no, req.body.email, req.body.name)
                         .then(() => {
                             return res.status(201).json({ 'ok': 'user created' })
                         })
@@ -100,5 +120,22 @@ module.exports = {
             return res.status(400).json({ '400': 'invalide otp' })
         }
 
+    }
+    ,
+    httpUserHomepage:async(req,res)=>{
+        console.log('userid',req.session.userId);
+        return await getUser(null,req.session.userId)
+            .then((data)=>{
+                return res.render('homepage',{
+                    userStatus:req.session.user,
+                    data
+                })
+            
+            })
+    },
+
+    httpUserLogout:(req,res)=>{
+        req.session.user = null
+        return res.redirect('/')
     }
 }

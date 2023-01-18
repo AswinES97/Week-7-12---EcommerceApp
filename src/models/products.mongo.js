@@ -13,6 +13,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description:{
+        type: String,
+        required: true
+    },
     gender: {
         type: String,
         required: true
@@ -25,6 +29,14 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    active: {
+        type: Boolean,
+        required: true,
+    },
+    image:[{
+        type: String,
+        required: true
+    }],
     quantity: {
         size: {
             type: String,
