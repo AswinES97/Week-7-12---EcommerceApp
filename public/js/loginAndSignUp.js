@@ -46,6 +46,7 @@ function loginWithEmail(){
 
 function loginMail(event){
     event.preventDefault()
+    const error = document.getElementById('error')
     const email = document.getElementById('input-email').value
     const pass = document.getElementById('input-password').value
     const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
@@ -60,9 +61,13 @@ function loginMail(event){
                 pass
             },
             error:(xhr)=>{
-                let text =JSON.parse(JSON.stringify(xhr.responseJSON))
-                error.innerHTML = `<p style='color:red'>${text.err_user}<p>`
 
+                let text =JSON.parse(JSON.stringify(xhr.responseJSON))
+                error.innerHTML = `<p style='color:red'>${text.err_email}<p>`
+                error.removeAttribute('hidden')
+            },
+            success:(status)=>{
+                window.location.assign('http://localhost:3000/v1/users')
             }
         })
     }else{

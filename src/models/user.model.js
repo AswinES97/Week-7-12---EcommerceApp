@@ -20,8 +20,9 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             await userSchema.findOne({ email: userData.email })
                 .then(data => {
-                    if (!data) reject(false)
-                    if (data.password === userData.pass) resolve(data)
+                    if (!data) return reject(false)
+                    if (data.password == userData.pass) return resolve(data)
+                    reject(false)
                 })
         })
     },

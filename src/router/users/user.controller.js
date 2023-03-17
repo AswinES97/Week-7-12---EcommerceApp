@@ -15,6 +15,7 @@ const {
     err_blocked,
     err_otpNotSent,
     otp_sent,
+    err_email
 } = require('../../services/responses')
 module.exports = {
 
@@ -70,11 +71,11 @@ module.exports = {
             await loginUserWithEmailAndPassword(req.body)
                 .then(response => {
                     req.session.user = true
-                    req.session.userId = data._id
-                    return res.status(200).json({ response })
+                    req.session.userId = response._id
+                    return res.status(200).json({ 'ok':'loggedIn' })
                 })
                 .catch(err => {
-                    return res.status(404).json({ err_user })
+                    return res.status(404).json({ err_email })
                 })
         else
             return res.status(400).json({ 'err': 'No email' })
