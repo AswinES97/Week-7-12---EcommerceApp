@@ -52,7 +52,19 @@ function loginMail(event){
     const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 
     if(email && emailRegex.test(email) && passRegex.test(pass)){
-        
+        $.ajax({
+            type:'POST',
+            url:'http://localhost:3000/v1/users/login-email',
+            data:{
+                email,
+                pass
+            },
+            error:(xhr)=>{
+                let text =JSON.parse(JSON.stringify(xhr.responseJSON))
+                error.innerHTML = `<p style='color:red'>${text.err_user}<p>`
+
+            }
+        })
     }else{
         document.getElementById('error').removeAttribute('hidden')
     }
@@ -101,7 +113,7 @@ function sentOtp($event, state) {
     const phn_no1 = Number(phn_no)
 
     error.innerHTML = ''
-    if (state == 'login') {
+    if (state === 'login') {
         if (phn_no.length == 10) {
             if (phn_no1) {
                 if (phn_regExp.test(phn_no)) {
@@ -110,9 +122,9 @@ function sentOtp($event, state) {
                         type: 'POST',
                         url: 'http://localhost:3000/v1/users/login',
                         data: { phn_no: phn_no1 },
-                        error:(xhr,status,data)=>{
+                        error:(xhr)=>{
                             let text =JSON.parse(JSON.stringify(xhr.responseJSON))
-                            error.innerHTML = `<p>${text.err}<p>`
+                            error.innerHTML = `<p style='color:red'>${text.err_user || text.err_blocked ||err_otpNotSent || otp_sent}<p>`
                         },
                         complete: (data, status, err) => {
                             if (status == 'success') {
@@ -127,14 +139,14 @@ function sentOtp($event, state) {
                         }
                     })
                 } else {
-                    error.innerHTML = "<p>Enter correct phone Number<p>"
+                    error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
                 }
             }
             else {
-                error.innerHTML = "<p>Enter correct phone Number<p>"
+                error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
             }
         } else {
-            error.innerHTML = "<p>Enter correct phone Number<p>"
+            error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
         }
     } else if (state == 'signup') {
 

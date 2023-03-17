@@ -20,9 +20,8 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             await userSchema.findOne({ email: userData.email })
                 .then(data => {
-                    if (!data)
-                        reject(false)
-                    resolve(data)
+                    if (!data) reject(false)
+                    if (data.password === userData.pass) resolve(data)
                 })
         })
     },
@@ -62,8 +61,8 @@ module.exports = {
         })
     },
 
-    getUser:(phn_no,id)=>{
-        if(phn_no){
+    getUser: (phn_no, id) => {
+        if (phn_no) {
             return new Promise(async (resolve, reject) => {
                 await userSchema.findOne({ phn_no: phn_no })
                     .then(response => {
@@ -75,7 +74,7 @@ module.exports = {
                     })
             })
         }
-        if(id){
+        if (id) {
             return new Promise(async (resolve, reject) => {
                 return await userSchema.findOne({ _id: id })
                     .then(response => {
@@ -87,7 +86,7 @@ module.exports = {
                     })
             })
         }
-        
+
     }
 
 

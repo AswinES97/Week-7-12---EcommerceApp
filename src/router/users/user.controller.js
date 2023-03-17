@@ -10,6 +10,12 @@ const {
     verifyOtp
 } = require("../../services/otp.service")
 
+const {
+    err_user,
+    err_blocked,
+    err_otpNotSent,
+    otp_sent,
+} = require('../../services/responses')
 module.exports = {
 
 
@@ -20,17 +26,17 @@ module.exports = {
                     if (response.access) {
                         await sentOtp(response)
                             .then(response => {
-                                return res.status(200).json({'ok' : 'Otp Sent!' })
+                                return res.status(200).json({ otp_sent })
                             })
                             .catch(err => {
-                                return res.status(400).json({ 'err': 'Otp Not Sent!' })
+                                return res.status(400).json({ err_otpNotSent })
                             })
                     } else {
-                        res.status(400).json({ 'err': 'User is Blocked!' })
+                        res.status(400).json({ err_blocked })
                     }
                 })
                 .catch(err => {
-                    return res.status(400).json({ 'err': 'No User with given Number!' })
+                    return res.status(400).json({ err_user })
                 })
         }
         else
@@ -43,12 +49,12 @@ module.exports = {
         if (req.body.otpCode && req.body.phn_no) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async response => {
-                    return await getUser(req.body.phn_no,null)
-                    .then((data)=>{
-                        req.session.user = true
-                        req.session.userId = data._id
-                        return res.json({ 'ok': 'Logged In!' })
-                    })
+                    return await getUser(req.body.phn_no, null)
+                        .then((data) => {
+                            req.session.user = true
+                            req.session.userId = data._id
+                            return res.json({ 'ok': 'Logged In!' })
+                        })
                 })
                 .catch(err => {
                     return res.status(400).json({ 'err': 'Invalid Otp!' })
@@ -60,13 +66,15 @@ module.exports = {
     },
 
     httpEmailVerify: async (req, res) => {
-        if (req.body.email)
+        if (req.body.email && req.body.pass)
             await loginUserWithEmailAndPassword(req.body)
                 .then(response => {
+                    req.session.user = true
+                    req.session.userId = data._id
                     return res.status(200).json({ response })
                 })
                 .catch(err => {
-                    return res.status(404).json({ 'err': 'No User found' })
+                    return res.status(404).json({ err_user })
                 })
         else
             return res.status(400).json({ 'err': 'No email' })
@@ -122,19 +130,19 @@ module.exports = {
 
     }
     ,
-    httpUserHomepage:async(req,res)=>{
-        console.log('userid',req.session.userId);
-        return await getUser(null,req.session.userId)
-            .then((data)=>{
-                return res.render('homepage',{
-                    userStatus:req.session.user,
+    httpUserHomepage: async (req, res) => {
+        console.log('userid', req.session.userId);
+        return await getUser(null, req.session.userId)
+            .then((data) => {
+                return res.render('homepage', {
+                    userStatus: req.session.user,
                     data
                 })
-            
+
             })
     },
 
-    httpUserLogout:(req,res)=>{
+    httpUserLogout: (req, res) => {
         req.session.user = null
         return res.redirect('/')
     }

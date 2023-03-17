@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, "..", "public")))
 
 
 app.get('/',userNotLoggedIn,(req,res)=>{
-    console.log(req.sessionID);
+    // console.log('session ID: ',req.sessionID);
     return res.render('homepage',{userStatus:req.session.user})
 })
 

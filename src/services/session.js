@@ -6,6 +6,7 @@ module.exports = {
             return res.redirect('/')
         }
     },
+
     userNotLoggedIn:(req,res,next)=>{
         if(req.session.user){
             return res.redirect("/v1/users")
@@ -13,6 +14,7 @@ module.exports = {
             return next()
         }
     },
+
     adminNotLoggedIn:(req,res,next)=>{
         if(req.session.admin){
             return next()
@@ -20,6 +22,7 @@ module.exports = {
             return res.redirect('/v1/admin/admin-login')
         }
     },
+    
     adminLoggedIn:(req,res,next)=>{
         if(req.session.admin){
             return res.redirect('/v1/admin/')
