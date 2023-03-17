@@ -27,7 +27,7 @@ module.exports = {
         })
     },
 
-    addNewUser: (phn_no, email, name) => {
+    addNewUser: (phn_no, email, name,password) => {
         return new Promise(async (resolve, reject) => {
             try {
 
@@ -35,7 +35,8 @@ module.exports = {
                     phn_no: phn_no,
                     fname: name,
                     email: email,
-                    access: true
+                    access: true,
+                    password: password
                 })
                 // user.save()
                 resolve()
@@ -49,7 +50,7 @@ module.exports = {
         })
     },
 
-    getUserForVeri: (phn_no, email) => {
+    getUserForVeri: (phn_no, email ) => {
         return new Promise(async (resolve, reject) => {
             return await userSchema.findOne({ $or: [{ phn_no: phn_no }, { email: email }] })
                 .then(response => {

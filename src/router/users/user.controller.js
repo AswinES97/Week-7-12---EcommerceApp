@@ -81,7 +81,7 @@ module.exports = {
             return res.status(400).json({ 'err': 'No email' })
     },
 
-    httpAddNewUserOtp: async (req, res) => {
+    httpAddNewUserEmailOtp: async (req, res) => {
 
         if (req.body.phn_no && req.body.email) {
             await getUserForVeri(req.body.phn_no, req.body.email)
@@ -109,10 +109,10 @@ module.exports = {
 
     httpAddNewUserVerifyOtp: async (req, res) => {
         console.log(req.body);
-        if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name) {
+        if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name && req.body.password) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async () => {
-                    await addNewUser(req.body.phn_no, req.body.email, req.body.name)
+                    await addNewUser(req.body.phn_no, req.body.email, req.body.name,req.body.password)
                         .then(() => {
                             return res.status(201).json({ 'ok': 'user created' })
                         })

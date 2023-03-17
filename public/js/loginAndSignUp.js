@@ -185,7 +185,7 @@ function sentOtp($event, state) {
                 type: 'POST',
                 data: {
                     email: email_value,
-                    phn_no: phn_no1
+                    phn_no: phn_no1,
                 },
                 complete: (xhr, status, err) => {
 
@@ -207,7 +207,7 @@ function sentOtp($event, state) {
 
 function verifyOtp($event, state) {
     $event.preventDefault()
-
+    const password = document.getElementById('signupPass').value
     let error = document.getElementById('error')
     let phn_no = document.getElementById('input-phone').value
     let otpCode = document.getElementById('input-otp').value
@@ -243,7 +243,9 @@ function verifyOtp($event, state) {
                     phn_no: phn_no,
                     otpCode: otpCode,
                     name: name_value,
-                    email: email_value
+                    email: email_value,
+                    password,
+
                 },
                 success: (xhr, status, err) => {
                     console.log('success');

@@ -6,10 +6,10 @@ const {
     httpsentOtpToUser,
     httpOtpVerify,
     httpEmailVerify,
-    httpAddNewUserOtp,
     httpAddNewUserVerifyOtp,
     httpUserHomepage,
     httpUserLogout,
+    httpAddNewUserEmailOtp,
 } = require('./user.controller')
 const userRouter = express.Router()
 
@@ -27,7 +27,7 @@ userRouter.route('/login-email')
 
 userRouter.route('/add-user')
     .all(userNotLoggedIn)
-    .post(httpAddNewUserOtp)
+    .post(httpAddNewUserEmailOtp)
 
 userRouter.route('/add-user-otp')
     .all(userNotLoggedIn)
