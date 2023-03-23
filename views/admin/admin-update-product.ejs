@@ -66,7 +66,7 @@
         </div>
     </header>
     <section class="content-main">
-        <form method="post" action="/v1/admin/products/<%=data._id%>">
+        <form method="post" enctype="multipart/form-data" action="/v1/admin/products/<%=data._id%>">
 
             <div class="row">
                 <div class="col-9">
@@ -74,7 +74,7 @@
                         <h2 class="content-title">Edit Product</h2>
                         <div>
                             <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Publich</button>
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Save</button>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
                 </div>  -->
                     </div>
                     <div class="col-lg-3">
-                        <div class="card mb-4">
+                        <!-- <div class="card mb-4">
                             <div class="card-header">
                                 <h4>Media</h4>
                             </div>
@@ -236,8 +236,29 @@
                                     <input class="form-control" type="file">
                                 </div>
                             </div>
+                        </div> -->
                         </div>
-                        < </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Media</h4>
+                            </div>
+                            <%for(let i = 0 ; i<data.image.length;i++){%>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img src="assets/imgs/theme/upload.svg" alt="">
+                                    <input class="form-control" type="file" name="image" >
+                                </div>
+                            </div>
+                            <%}%>
+                            <span id="image-error1" style="color: red;padding-left: 12px;" hidden>Three Images
+                                Required!</span>
+                            <span id="image-error2" style="color: red;padding-left: 12px;" hidden>Images must be of format
+                                ".jpg", ".jpeg" or ".png"</span>
+    
+                        </div>
+    
                     </div>
         </form>
 

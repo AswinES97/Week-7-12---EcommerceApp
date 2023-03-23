@@ -21,7 +21,7 @@ function login() {
   </form>`
 }
 
-function loginWithEmail(){
+function loginWithEmail() {
     let modalBody = document.getElementById('modal-body')
     modalBody.innerHTML = `<form class="p-5" action="#" method="post">
     <h1 id="model-heading">Log In</h1><br><br>
@@ -44,7 +44,7 @@ function loginWithEmail(){
   </form>`
 }
 
-function loginMail(event){
+function loginMail(event) {
     event.preventDefault()
     const error = document.getElementById('error')
     const email = document.getElementById('input-email').value
@@ -52,25 +52,25 @@ function loginMail(event){
     const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
     const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 
-    if(email && emailRegex.test(email) && passRegex.test(pass)){
+    if (email && emailRegex.test(email) && passRegex.test(pass)) {
         $.ajax({
-            type:'POST',
-            url:'http://localhost:3000/v1/users/login-email',
-            data:{
+            type: 'POST',
+            url: 'http://localhost:3000/v1/users/login-email',
+            data: {
                 email,
                 pass
             },
-            error:(xhr)=>{
+            error: (xhr) => {
 
-                let text =JSON.parse(JSON.stringify(xhr.responseJSON))
-                error.innerHTML = `<p style='color:red'>${text.err_email}<p>`
+                let text = JSON.parse(JSON.stringify(xhr.responseJSON))
+                error.innerHTML = `<p style='color:red'>${text.err_email || text.err_blocked}<p>`
                 error.removeAttribute('hidden')
             },
-            success:(status)=>{
+            success: (status) => {
                 window.location.assign('http://localhost:3000/v1/users')
             }
         })
-    }else{
+    } else {
         document.getElementById('error').removeAttribute('hidden')
     }
 }
@@ -122,14 +122,14 @@ function sentOtp($event, state) {
         if (phn_no.length == 10) {
             if (phn_no1) {
                 if (phn_regExp.test(phn_no)) {
-                    
+
                     $.ajax({
                         type: 'POST',
                         url: 'http://localhost:3000/v1/users/login',
                         data: { phn_no: phn_no1 },
-                        error:(xhr)=>{
-                            let text =JSON.parse(JSON.stringify(xhr.responseJSON))
-                            error.innerHTML = `<p style='color:red'>${text.err_user || text.err_blocked ||err_otpNotSent || otp_sent}<p>`
+                        error: (xhr) => {
+                            let text = JSON.parse(JSON.stringify(xhr.responseJSON))
+                            error.innerHTML = `<p style='color:red'>${text.err_user || text.err_blocked || err_otpNotSent || otp_sent}<p>`
                         },
                         complete: (data, status, err) => {
                             if (status == 'success') {
@@ -139,7 +139,7 @@ function sentOtp($event, state) {
                                 otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
                             <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
                             } else {
-                                
+
                             }
                         }
                     })
@@ -160,7 +160,7 @@ function sentOtp($event, state) {
         const name_regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/
         const email = document.getElementById('email')
         const email_value = document.getElementById('email').value
-        const email_regex =  /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+        const email_regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
         let test1, test2, test3;
 
         if (name_value.length <= 20 && name_regex.test(name_value.trim())) {
@@ -176,7 +176,7 @@ function sentOtp($event, state) {
         }
 
         if (test1 && test2 && test3 && pass() && confirmPass()) {
-            submit_button.setAttribute('disabled','')
+            submit_button.setAttribute('disabled', '')
             phn_no_field.setAttribute('disabled', '')
             email.setAttribute('disabled', '')
             name.setAttribute('disabled', '')
@@ -193,6 +193,7 @@ function sentOtp($event, state) {
                         submit_button.setAttribute('onclick', 'verifyOtp(event,"signup")')
                         otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
                         <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
+                        submit_button.removeAttribute('disabled')
                     } else {
                         error.innerHTML = "<p>Otp not sent!<p>"
                     }
@@ -207,12 +208,9 @@ function sentOtp($event, state) {
 
 function verifyOtp($event, state) {
     $event.preventDefault()
-    const password = document.getElementById('signupPass').value
     let error = document.getElementById('error')
     let phn_no = document.getElementById('input-phone').value
     let otpCode = document.getElementById('input-otp').value
-
-
 
     if (otpCode.length == 6) {
         if (state == 'login') {
@@ -227,8 +225,7 @@ function verifyOtp($event, state) {
                 complete: (data, status, err) => {
                     if (status == 'error') {
                         error.innerHTML = "<p>Invalid Otp!<p>"
-                    }else{
-                        console.log("redirect");
+                    } else {
                         window.location.assign('http://localhost:3000/v1/users')
                     }
                 }
@@ -236,6 +233,8 @@ function verifyOtp($event, state) {
         } else if (state == 'signup') {
             let name_value = document.getElementById('name').value
             let email_value = document.getElementById('email').value
+            const password = document.getElementById('signupPass').value
+
             $.ajax({
                 url: 'http://localhost:3000/v1/users/add-user-otp',
                 type: 'POST',
@@ -248,7 +247,7 @@ function verifyOtp($event, state) {
 
                 },
                 success: (xhr, status, err) => {
-                    console.log('success');
+                    window.location.assign('http://localhost:3000/v1/users')
                 }
             })
         }
@@ -262,29 +261,29 @@ function verifyOtp($event, state) {
 
 }
 
-function pass(){
+function pass() {
     const pass = document.getElementById('signupPass').value
     const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 
-    if(passRegex.test(pass)){
-        document.getElementById('pass-error').setAttribute('hidden','true')
+    if (passRegex.test(pass)) {
+        document.getElementById('pass-error').setAttribute('hidden', 'true')
         return true
-    }else{
+    } else {
         document.getElementById('pass-error').removeAttribute('hidden')
         return false
     }
 }
 
-function confirmPass(){
+function confirmPass() {
     const confirmPassword = document.getElementById('confirm-pass').value
     const pass = document.getElementById('signupPass').value
 
-    if(confirmPassword === pass){
-        document.getElementById('confirm-error').setAttribute('hidden','true')
+    if (confirmPassword === pass) {
+        document.getElementById('confirm-error').setAttribute('hidden', 'true')
         return true
-    }else{
+    } else {
         document.getElementById('confirm-error').removeAttribute('hidden')
         return false
     }
-    
+
 }

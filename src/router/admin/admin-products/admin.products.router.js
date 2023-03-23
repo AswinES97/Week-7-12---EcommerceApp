@@ -21,7 +21,7 @@ adminProductsRouter.route('/add-product')
 
 adminProductsRouter.route('/:id')
     .get(httpGetProductEditPage)
-    .post(httpEditProduct)
+    .post(uploadImageMulti,httpEditProduct)
     .delete(httpDeleteProduct)
 
 module.exports = adminProductsRouter

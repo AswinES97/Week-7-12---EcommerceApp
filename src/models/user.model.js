@@ -38,11 +38,9 @@ module.exports = {
                     access: true,
                     password: password
                 })
-                // user.save()
-                resolve()
+                resolve(user)
 
             } catch (error) {
-
                 reject()
 
             }

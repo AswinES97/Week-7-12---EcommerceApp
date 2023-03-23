@@ -39,8 +39,8 @@ adminRouter.route('/logout')
 
 
 adminRouter.use('/users',adminNotLoggedIn, adminUsersRouter)
-adminRouter.use('/products',adminNotLoggedIn, adminProductsRouter)
-adminRouter.use('/category',adminNotLoggedIn, adminCategoryRouter)
+adminRouter.use('/products'/*,adminNotLoggedIn*/, adminProductsRouter)
+adminRouter.use('/category'/*,adminNotLoggedIn*/, adminCategoryRouter)
 
 module.exports = {
     adminRouter

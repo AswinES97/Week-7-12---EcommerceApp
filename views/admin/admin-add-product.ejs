@@ -66,7 +66,8 @@
         </div>
     </header>
     <section class="content-main">
-        <form method="post" enctype="multipart/form-data" action="/v1/admin/products/add-product" id="my-form" onsubmit="return validateProduct(event)">
+        <form method="post" enctype="multipart/form-data" action="/v1/admin/products/add-product" id="my-form"
+            onsubmit="return validateProduct(event)">
 
             <div class="row">
                 <div class="col-9">
@@ -74,9 +75,8 @@
                         <h2 class="content-title">Add New Product</h2>
                         <div>
                             <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                            <button type="submit"
-                                class="btn btn-md rounded font-sm hover-up">Publish</button>
-                                <span id="error" style="color: red;"></span>
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+                            <span id="error" style="color: red;"></span>
                         </div>
                     </div>
                 </div>
@@ -151,25 +151,38 @@
                                         <div class="row gx-2">
                                             <input type="text" name="color" id="color" class="form-control">
                                         </div>
-                                        <span id="color-error" style="color: red;" hidden>Value Needed</span>
+                                        <span id="category-error" style="color: red;" hidden>Value Needed</span>
 
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="mb-4">
-                                    <label class="form-label">Category</label>
-                                    <div class="row gx-2">
-                                        <input type="text" name="category" class="form-control" id="category">
-                                    </div>
+                                    <label for="category" class="form-label">Category :</label>
+                                    
+                                    <select name="category" id="category">
+
+                                    </select>
+                                    <span id="category-err" hidden></span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="subCategory" class="form-label">Sub-Category :</label>
+                                    
+                                    <select name="subCategory" id="sub-category">
+
+                                    </select>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Subcategory</label>
-                                    <div class="row gx-2">
-                                        <input type="text" name="subcategory" id="subcategory" class="form-control">
-                                    </div>
+                                    <label for="categoryType" class="form-label"> Category-type :</label>
+                                                                    
+                                    <select name="categoryType" id="category-type">
+                                        <option value="">------</option>
+                                    </select>
+                                    <span id="category-type-error" style="color: red;" hidden>Value Needed</span>
+
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <label class="form-label">Active</label>
                                     <select class="form-select" name="active" id="active">
                                         <option value="true"> Yes </option>

@@ -1,5 +1,92 @@
 !function (e) { "use strict"; if (e(".menu-item.has-submenu .menu-link").on("click", function (s) { s.preventDefault(), e(this).next(".submenu").is(":hidden") && e(this).parent(".has-submenu").siblings().find(".submenu").slideUp(200), e(this).next(".submenu").slideToggle(200) }), e("[data-trigger]").on("click", function (s) { s.preventDefault(), s.stopPropagation(); var n = e(this).attr("data-trigger"); e(n).toggleClass("show"), e("body").toggleClass("offcanvas-active"), e(".screen-overlay").toggleClass("show") }), e(".screen-overlay, .btn-close").click(function (s) { e(".screen-overlay").removeClass("show"), e(".mobile-offcanvas, .show").removeClass("show"), e("body").removeClass("offcanvas-active") }), e(".btn-aside-minimize").on("click", function () { window.innerWidth < 768 ? (e("body").removeClass("aside-mini"), e(".screen-overlay").removeClass("show"), e(".navbar-aside").removeClass("show"), e("body").removeClass("offcanvas-active")) : e("body").toggleClass("aside-mini") }), e(".select-nice").length && e(".select-nice").select2(), e("#offcanvas_aside").length) { const e = document.querySelector("#offcanvas_aside"); new PerfectScrollbar(e) } e(".darkmode").on("click", function () { e("body").toggleClass("dark") }) }(jQuery);
 
+// Initial category loading
+$(document).ready(function () {
+    if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product') {
+        $.ajax({
+            url: 'http://localhost:3000/v1/admin/category/all',
+            type: 'GET',
+            success: (data) => {
+                let optionCategory = ''
+                let optionSubCategory = ''
+                let optionCategoryType = ''
+
+                const { category, subCategory, categoryType } = data
+
+                    category.forEach(ele => {
+                        optionCategory += `<option value="${ele}">${ele}</option>`
+                    });
+
+                    subCategory.forEach(ele=>{
+                        optionSubCategory += `<option value="${ele}">${ele}</option>`
+                    })
+
+                    categoryType.forEach(ele=>{
+                        optionCategoryType += `<option value="${ele}">${ele}</option>`
+                    })
+                    
+                $('#category').html(
+                    `<select name="category" id="category">
+                        ${optionCategory}
+                    </select>`
+                )
+
+                $('#sub-category').html(
+                    `<select name="subCategory" id="sub-category">
+                        ${optionSubCategory}
+                    </select>`
+                )
+
+                $('#category-type').html(
+                    `<select name="categoryType" id="category-type">
+                        ${optionCategoryType}
+                    </select>`
+                )
+            },
+            error: (err) => {
+                $('#category-err').html(`<p style="color:red">${err.responseJSON}</p>`)
+                $('#category-err').removeAttr('hidden')
+                setTimeout(() => {
+                    $('#category-err').attr('hidden','true')
+                }, 2000)
+            }
+        })
+    }
+})
+
+$('#sub-category').change(() => {
+    const category = $('#category').val()
+    const sub_category = $('#sub-category').val()
+
+    $.ajax({
+        url: 'http://localhost:3000/v1/admin/category/all',
+        type: 'GET',
+        data: {
+            category,
+            sub_category
+        },
+        success: (data) => {
+            let option = ''
+
+            for (let i = 0; i < data.length; i++) {
+                option += `<option value="${data[i]}">${data[i]}</option>`
+            }
+            $('#category-type').html(
+                `<select name="categoryType" id="category-type">
+                        ${option}
+                    </select>`
+            )
+        },
+        error: (err) => {
+            $('#category-type-error').html(`<p style="color:red">${err.responseJSON}</p>`)
+            $('#category-type-error').removeAttr('hidden')
+            setTimeout(() => {
+                $('#category-type-error').attr('hidden','true')
+            }, 2000)
+        }
+    })
+})
+
 function deleteProduct($event, id) {
     $event.preventDefault()
     $.ajax({
@@ -56,7 +143,7 @@ function validateProduct($event) {
 
     let product_name = $('#product_name').val().trim()
     let brand = $('#brand').val().trim()
-    let gender =$('#gender').val().trim()
+    let gender = $('#gender').val().trim()
     let quantity = $('#quantity').val().trim()
     let size = $('#size').val().trim()
     let color = $('#color').val().trim()
@@ -68,7 +155,7 @@ function validateProduct($event) {
     let image1 = $('#image1').val()
     let image2 = $('#image2').val()
     let image3 = $('#image3').val()
-    
+
 
     // Image test
     if (image1 != 0 && image2 != 0 && image3 != 0) {
@@ -100,7 +187,7 @@ function validateProduct($event) {
         productNameTest = true
     }
     // description test
-    if (description < 16) {
+    if (description.length < 16) {
         descriptionTest = false
         $('#description-error').removeAttr('hidden')
     } else {
@@ -161,7 +248,7 @@ function validateProduct($event) {
         colorTest == true
     ) {
         return true
-    }else{
+    } else {
         return false
     }
 }

@@ -15,7 +15,8 @@ module.exports = {
     },
 
     httpGetProductEditPage: async (req, res) => {
-        let id = req.params.id
+        const id = req.params.id
+
         if (id.length == 24) {
             await getSingleProduct(id)
                 .then(data => {
@@ -48,10 +49,10 @@ module.exports = {
     },
 
     httpAddNewProduct: async (req, res) => {
-        let image = req.files.map(element=>element.filename)
-        await addNewProduct(req.body,image)
+        let imageLink = req.files.map(element=>element.path)
+        await addNewProduct(req.body,imageLink)
             .then(() => {
-                return res.json({'ok':'product added'})
+                return res.redirect('/v1/admin/products/')
             })
             .catch((err) => {
                 return res.status(400).json(err)
@@ -59,9 +60,11 @@ module.exports = {
     },
 
     httpEditProduct: async (req, res) => {
-        let id = req.params.id
+        const id = req.params.id
+        const imgLink = req.files.map(data => data.path)
+
         if (id.length == 24 && req.body) {
-            await editProduct(id, req.body)
+            await editProduct(id, req.body,imgLink)
                 .then(() => {
                     return res.redirect('/v1/admin/products')
                 })
@@ -75,6 +78,7 @@ module.exports = {
 
     httpDeleteProduct: async (req, res) => {
         const id = req.params.id
+        
         if (id.length == 24) {
             await deleteProduct(id)
                 .then((status) => {

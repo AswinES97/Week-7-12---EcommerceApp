@@ -6,6 +6,8 @@ const nocache = require('nocache')
 const morgan = require('morgan')
 const session = require('express-session')
 const ejsLayout = require('express-ejs-layouts')
+const cloudinary = require('cloudinary').v2;
+
 
 
 const api = require('./router/api')
@@ -28,6 +30,14 @@ app.use(session({
         maxAge:60*60*1000
     }
 }))
+
+
+cloudinary.config({
+    cloud_name: "dkrcoyj7y",
+    api_key: "358784952785351",
+    api_secret: "cXchDjgKLENJ3hgA0_2xD6lCKNU"
+});
+
 
 
 app.set('view engine','ejs')

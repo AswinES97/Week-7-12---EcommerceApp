@@ -21,6 +21,7 @@ module.exports = {
 
 
     httpsentOtpToUser: async (req, res) => {
+
         if (req.body.phn_no) {
             await loginUserWithPhone(req.body.phn_no)
                 .then(async response => {
@@ -67,12 +68,18 @@ module.exports = {
     },
 
     httpEmailVerify: async (req, res) => {
+
         if (req.body.email && req.body.pass)
             await loginUserWithEmailAndPassword(req.body)
                 .then(response => {
-                    req.session.user = true
-                    req.session.userId = response._id
-                    return res.status(200).json({ 'ok':'loggedIn' })
+                    if (response.access) {
+                        req.session.user = true
+                        req.session.userId = response._id
+                        return res.status(200).json({ 'ok': 'loggedIn' })
+                    } else {
+                        res.status(400).json({ err_blocked })
+                    }
+
                 })
                 .catch(err => {
                     return res.status(404).json({ err_email })
@@ -108,12 +115,14 @@ module.exports = {
     },
 
     httpAddNewUserVerifyOtp: async (req, res) => {
-        console.log(req.body);
+
         if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name && req.body.password) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async () => {
-                    await addNewUser(req.body.phn_no, req.body.email, req.body.name,req.body.password)
-                        .then(() => {
+                    await addNewUser(req.body.phn_no, req.body.email, req.body.name, req.body.password)
+                        .then((response) => {
+                            req.session.user = true
+                            req.session.userId = response._id
                             return res.status(201).json({ 'ok': 'user created' })
                         })
                         .catch(() => {
@@ -132,7 +141,6 @@ module.exports = {
     }
     ,
     httpUserHomepage: async (req, res) => {
-        console.log('userid', req.session.userId);
         return await getUser(null, req.session.userId)
             .then((data) => {
                 return res.render('homepage', {
