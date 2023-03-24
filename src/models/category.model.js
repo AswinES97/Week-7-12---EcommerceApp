@@ -59,16 +59,46 @@ module.exports = {
         }
     },
 
-    getCategory: async (data) => {
+    getCategoryType: async (data) => {
         try {
-            const { category, sub_category } = data
-            return await categorySchema.find({},{
-                [`${category}.${sub_category}`]:1,_id:0})
+            const { categoryValue, subCategoryValue } = data
+            return await categorySchema.find({}, {
+                [`${categoryValue}.${subCategoryValue}`]: 1, _id: 0
+            })
                 .then(res => {
+                    
                     let [data] = res
-                    data = data[category][sub_category]
+                    data = data[categoryValue][subCategoryValue]
+                    
                     return Promise.resolve(data)
                 })
+
+        } catch (error) {
+            return Promise.reject('Mongo Error!')
+        }
+    },
+
+    getCategory: async (data) => {
+        try {
+            const { category } = data
+            return await categorySchema.find({},{
+                [category]: 1, _id: 0
+            })
+            .then(data=>{
+
+                [data] = JSON.parse(JSON.stringify(data))
+                data = data[category]
+                const subCategory = Object.keys(data)
+                const temp = subCategory[0]
+                const categoryType = data[temp]
+
+                data = {
+                    subCategory,
+                    categoryType
+                }
+
+                return Promise.resolve(data)
+            })
 
         } catch (error) {
             return Promise.reject('Mongo Error!')

@@ -149,7 +149,7 @@
                                     <label for="category" class="form-label">Category :</label>
                                     
                                     <select name="category" id="category">
-                                        <option value="<%=data.category%>"></option>
+                                        <option value="<%=data.category%>"><%=data.category%></option>
                                     </select>
                                     <span id="category-err" hidden></span>
                                 </div>
@@ -157,14 +157,14 @@
                                     <label for="subCategory" class="form-label">Sub-Category :</label>
                                     
                                     <select name="subCategory" id="sub-category">
-                                        <option value="<%=data.subcategory%>"></option>
+                                        <option value="<%=data.subcategory%>"><%=data.subcategory%></option>
                                     </select>
                                 </div>
                                 <div class="mb-4">
                                     <label for="categoryType" class="form-label"> Category-type :</label>
                                                                     
                                     <select name="categoryType" id="category-type">
-                                        <option value="<%=data.categoryType%>">------</option>
+                                        <option value="<%=data.categoryType%>"><%=data.categoryType%></option>
                                     </select>
                                     <span id="category-type-error" style="color: red;" hidden>Value Needed</span>
 
