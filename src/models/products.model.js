@@ -77,6 +77,7 @@ module.exports = {
                         gender: productData.gender,
                         category: productData.category,
                         subcategory: productData.subcategory,
+                        categoryType: productData.categoryType,
                         image: imgLink,
                         active: active,
                         quantity: {

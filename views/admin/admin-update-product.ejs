@@ -146,18 +146,28 @@
                             </div>
                             <div class="row">
                                 <div class="mb-4">
-                                    <label class="form-label">Category</label>
-                                    <div class="row gx-2">
-                                        <input type="text" name="category" value="<%=data.category%>"
-                                            class="form-control">
-                                    </div>
+                                    <label for="category" class="form-label">Category :</label>
+                                    
+                                    <select name="category" id="category">
+                                        <option value="<%=data.category%>"></option>
+                                    </select>
+                                    <span id="category-err" hidden></span>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Subcategory</label>
-                                    <div class="row gx-2">
-                                        <input type="text" name="subcategory" value="<%=data.subcategory%>"
-                                            class="form-control">
-                                    </div>
+                                    <label for="subCategory" class="form-label">Sub-Category :</label>
+                                    
+                                    <select name="subCategory" id="sub-category">
+                                        <option value="<%=data.subcategory%>"></option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="categoryType" class="form-label"> Category-type :</label>
+                                                                    
+                                    <select name="categoryType" id="category-type">
+                                        <option value="<%=data.categoryType%>">------</option>
+                                    </select>
+                                    <span id="category-type-error" style="color: red;" hidden>Value Needed</span>
+
                                 </div>
                                 <%if(data.active){%>
                                     <div class="col-lg-4">

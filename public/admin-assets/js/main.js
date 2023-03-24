@@ -1,30 +1,70 @@
 !function (e) { "use strict"; if (e(".menu-item.has-submenu .menu-link").on("click", function (s) { s.preventDefault(), e(this).next(".submenu").is(":hidden") && e(this).parent(".has-submenu").siblings().find(".submenu").slideUp(200), e(this).next(".submenu").slideToggle(200) }), e("[data-trigger]").on("click", function (s) { s.preventDefault(), s.stopPropagation(); var n = e(this).attr("data-trigger"); e(n).toggleClass("show"), e("body").toggleClass("offcanvas-active"), e(".screen-overlay").toggleClass("show") }), e(".screen-overlay, .btn-close").click(function (s) { e(".screen-overlay").removeClass("show"), e(".mobile-offcanvas, .show").removeClass("show"), e("body").removeClass("offcanvas-active") }), e(".btn-aside-minimize").on("click", function () { window.innerWidth < 768 ? (e("body").removeClass("aside-mini"), e(".screen-overlay").removeClass("show"), e(".navbar-aside").removeClass("show"), e("body").removeClass("offcanvas-active")) : e("body").toggleClass("aside-mini") }), e(".select-nice").length && e(".select-nice").select2(), e("#offcanvas_aside").length) { const e = document.querySelector("#offcanvas_aside"); new PerfectScrollbar(e) } e(".darkmode").on("click", function () { e("body").toggleClass("dark") }) }(jQuery);
 
-// Initial category loading
+// category loading
+
 $(document).ready(function () {
-    if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product') {
+    let productId = document.location.pathname.split('/')
+    productId = productId[productId.length - 1]
+
+    if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product' || document.location.href == `http://localhost:3000/v1/admin/products/${productId}`) {
         $.ajax({
             url: 'http://localhost:3000/v1/admin/category/all',
             type: 'GET',
-            success: (data) => {
+            success: async (data) => {
                 let optionCategory = ''
                 let optionSubCategory = ''
                 let optionCategoryType = ''
 
+                const categoryValue = $('#category').val()
+                const subCategoryValue = $('#sub-category').val()
+
                 const { category, subCategory, categoryType } = data
 
-                    category.forEach(ele => {
+                category.forEach(ele => {
+                    if(categoryValue.length != 0 && ele == categoryValue){
+                        optionCategory += `<option selected value="${ele}">${ele}</option>`
+                    }else{
                         optionCategory += `<option value="${ele}">${ele}</option>`
-                    });
+                    }
+                });
 
-                    subCategory.forEach(ele=>{
+                subCategory.forEach(ele => {
+                    if(subCategoryValue != 0 && ele == subCategoryValue){
+                        optionSubCategory += `<option selected value="${ele}">${ele}</option>`
+                    }else{
                         optionSubCategory += `<option value="${ele}">${ele}</option>`
-                    })
+                    }
+                })
 
-                    categoryType.forEach(ele=>{
+                const categoryTypeValue = $('#category-type').val()
+
+                if (categoryTypeValue.length != 0) {
+                    await $.ajax({
+                        url: 'http://localhost:3000/v1/admin/category/all',
+                        type: 'GET',
+                        data: {
+                            category: categoryValue,
+                            sub_category: subCategoryValue
+                        },
+                        success: (data) => {
+                            data.forEach(ele => {
+                                if (ele == categoryTypeValue) {
+                                    optionCategoryType += `<option selected value="${ele}">${ele}</option>`
+                                } else {
+                                    optionCategoryType += `<option value="${ele}">${ele}</option>`
+                                }
+                            })
+                        },
+                        error: (err) => {
+
+                        }
+
+                    })
+                } else {
+                    categoryType.forEach(ele => {
                         optionCategoryType += `<option value="${ele}">${ele}</option>`
                     })
-                    
+                }
                 $('#category').html(
                     `<select name="category" id="category">
                         ${optionCategory}
@@ -47,7 +87,7 @@ $(document).ready(function () {
                 $('#category-err').html(`<p style="color:red">${err.responseJSON}</p>`)
                 $('#category-err').removeAttr('hidden')
                 setTimeout(() => {
-                    $('#category-err').attr('hidden','true')
+                    $('#category-err').attr('hidden', 'true')
                 }, 2000)
             }
         })
@@ -81,7 +121,7 @@ $('#sub-category').change(() => {
             $('#category-type-error').html(`<p style="color:red">${err.responseJSON}</p>`)
             $('#category-type-error').removeAttr('hidden')
             setTimeout(() => {
-                $('#category-type-error').attr('hidden','true')
+                $('#category-type-error').attr('hidden', 'true')
             }, 2000)
         }
     })
