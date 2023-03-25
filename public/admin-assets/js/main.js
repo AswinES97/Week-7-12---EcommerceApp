@@ -212,10 +212,13 @@ async function createCategory($event) {
             data: data,
             type: 'POST',
             success:(res)=>{
-                console.log(res);
+                swal('Done!',res.ok,'success')
+                    .then(()=>{
+                        window.location.reload()
+                    })
             },
             error:()=>{
-
+                swal(res.err)
             }
 
         })
