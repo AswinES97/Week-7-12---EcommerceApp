@@ -15,11 +15,13 @@ async function categoryInitialDisplay() {
 
 function option(data, editDefault = undefined) {
     const { category, subCategory, categoryType } = data
-    let categoryValue, subCategoryValue, categoryTypeValue;
+    let categoryValue, subCategoryValue, categoryTypeValue, selectedTypeValue;
+
     if (editDefault) {
         categoryValue = editDefault.categoryValue
         subCategoryValue = editDefault.subCategoryValue
         categoryTypeValue = editDefault.categoryTypeValue
+        selectedTypeValue = editDefault.selectedTypeValue
     }
 
     let optionCategory = ''
@@ -58,15 +60,20 @@ function option(data, editDefault = undefined) {
     }
 
     if (categoryTypeValue) {
-
         categoryTypeValue.forEach(ele => {
-            if (ele == categoryTypeValue) {
+            if (ele == selectedTypeValue) {
                 optionCategoryType += `<option selected value="${ele}">${ele}</option>`
             } else {
                 optionCategoryType += `<option value="${ele}">${ele}</option>`
             }
 
         })
+
+        $('#category-type').html(
+            `<select name="categoryType" id="category-type">
+                                    ${optionCategoryType}
+                                </select>`
+        )
 
     } else {
 
@@ -88,13 +95,14 @@ $(document).ready(async function () {
 
     if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product') {
         const data = await categoryInitialDisplay()
-        console.log(data);
         option(data)
     }
 
     if (document.location.href == `http://localhost:3000/v1/admin/products/${productId}`) {
         const categoryValue = $('#category').val()
         const subCategoryValue = $('#sub-category').val()
+        const categoryTypeValue = $('#category-type').val()
+
         $.ajax({
             url: 'http://localhost:3000/v1/admin/category/all',
             type: 'GET',
@@ -103,21 +111,17 @@ $(document).ready(async function () {
                 subCategoryValue
             },
             success: async (data) => {
-
                 const initial = await categoryInitialDisplay()
-
                 data = {
                     categoryValue,
                     subCategoryValue,
-                    categoryTypeValue: data
+                    categoryTypeValue: data,
+                    selectedTypeValue: categoryTypeValue
                 }
-
                 option(initial, data)
             },
             error: () => {
-
             }
-
         })
 
     }
@@ -211,20 +215,19 @@ async function createCategory($event) {
             url: 'http://localhost:3000/v1/admin/category/all',
             data: data,
             type: 'POST',
-            success:(res)=>{
-                swal('Done!',res.ok,'success')
-                    .then(()=>{
+            success: (res) => {
+                swal('Done!', res.ok, 'success')
+                    .then(() => {
                         window.location.reload()
                     })
             },
-            error:()=>{
+            error: () => {
                 swal(res.err)
             }
 
         })
     }
 }
-
 
 function deleteProduct($event, id) {
     $event.preventDefault()

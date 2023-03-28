@@ -287,3 +287,7 @@ function confirmPass() {
     }
 
 }
+
+function cartHome(){
+    login()
+}

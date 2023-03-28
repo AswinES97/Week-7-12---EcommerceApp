@@ -17,6 +17,7 @@ const {
     otp_sent,
     err_email
 } = require('../../services/responses')
+
 module.exports = {
 
 
@@ -145,7 +146,8 @@ module.exports = {
             .then((data) => {
                 return res.render('homepage', {
                     userStatus: req.session.user,
-                    data
+                    userName: data.fname,
+                    userId: data._id
                 })
 
             })

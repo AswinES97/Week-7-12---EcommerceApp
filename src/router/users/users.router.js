@@ -1,6 +1,8 @@
 const express = require('express')
+const userRouter = express.Router()
 const {
-    userLoggedIn, userNotLoggedIn,
+    userLoggedIn, 
+    userNotLoggedIn,
 } = require('../../services/session')
 const {
     httpsentOtpToUser,
@@ -11,7 +13,7 @@ const {
     httpUserLogout,
     httpAddNewUserEmailOtp,
 } = require('./user.controller')
-const userRouter = express.Router()
+const userCart = require('./cart/cart.router')
 
 userRouter.route('/login')
     .all(userNotLoggedIn)
@@ -41,6 +43,7 @@ userRouter.route('/logout')
     .all(userLoggedIn)
     .get(httpUserLogout)
 
+userRouter.use('/cart'/*,userLoggedIn*/,userCart)
 
 module.exports = {
     userRouter
