@@ -12,20 +12,25 @@ module.exports = {
 
         if (userName && userId) {
             getCartProducts(userId)
-                .then(response => {
-                    // return res.render('users/cart', {
-                    //     userStatus: req.session.user,
-                    //     userName,
-                    //     userId,
-                    //     dataPresent:true,
-                    // })
-                })
-                .catch(err => {
+                .then(data => {
+                    const products = data.product
+                    console.log(products);
                     return res.render('users/cart', {
                         userStatus: req.session.user,
                         userName,
                         userId,
-                        dataPresent:false
+                        dataPresent: true,
+                        grandTotal: data.grandTotal,
+                        products
+                    })
+                })
+                .catch(err => {
+                    console.log("err-cart-load:",err);
+                    return res.render('users/cart', {
+                        userStatus: req.session.user,
+                        userName,
+                        userId,
+                        dataPresent: false
                     })
                 })
         }
@@ -39,7 +44,7 @@ module.exports = {
                     return res.json({ "ok": 'Proudct Added!' })
                 })
                 .catch(err => {
-                    console.log('add to cart err:',err);
+                    console.log('add to cart err:', err);
                     return res.status(400).json({ 'err': 'Not Added!' })
                 })
         }

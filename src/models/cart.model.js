@@ -3,11 +3,16 @@ const cartSchema = require('./cart.mongo')
 module.exports = {
     getCartProducts: async (userId) => {
         try {
-            await cartSchema.findOne({ userId })
-                .populate("product.pId")
+            return await cartSchema.findOne({ userId })
+                .populate("product.pId", "name price image")
                 .then(res => {
-                    if (res.length > 0) {
-                        console.log(res.product);
+                    if (res.product.length > 0) {
+                        const product = res.product
+                        const data = {
+                            product,
+                            grandTotal: res.grandTotal
+                        }
+                        return Promise.resolve(data)
                     }
                     else return Promise.reject(false)
                 })
