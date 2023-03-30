@@ -1,7 +1,21 @@
-const { reservationsUrl } = require('twilio/lib/jwt/taskrouter/util')
 const cartSchema = require('./cart.mongo')
 
 module.exports = {
+    getCartProducts: async (userId) => {
+        try {
+            await cartSchema.findOne({ userId })
+                .populate("product.pId")
+                .then(res => {
+                    if (res.length > 0) {
+                        console.log(res.product);
+                    }
+                    else return Promise.reject(false)
+                })
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
     addToCart: async (data) => {
         try {
             const { userId, pId, quantity, subTotal, grandTotal } = data
@@ -16,12 +30,11 @@ module.exports = {
                     else {
                         return await cartSchema.updateOne({ userId: userId }, {
                             $set: {
-                                userId,
                                 grandTotal: Number(grandTotal)
                             },
                             $push: {
                                 product: [{
-                                    pId: Number(pId),
+                                    pId: pId,
                                     quantity: Number(quantity),
                                     subTotal: Number(subTotal),
                                 }]
@@ -38,7 +51,7 @@ module.exports = {
                         const cartNew = await new cartSchema({
                             userId,
                             product: [{
-                                pId: Number(pId),
+                                pId: pId,
                                 quantity: Number(quantity),
                                 subTotal: Number(subTotal),
                             }],
@@ -54,5 +67,43 @@ module.exports = {
         } catch (err) {
             return Promise.reject(false)
         }
+    },
+
+    removeFromCart: async (data) => {
+        const { pId, userId } = data
+
+        try {
+            return await cartSchema.updateOne(
+                { userId },
+                {
+                    $pull: { product: { pId: pId } }
+                })
+                .then(res => {
+                    if (res.modifiedCount < 1) return Promise.reject(false)
+                    else return Promise.resolve(true)
+                })
+
+
+        } catch (err) {
+            return Promise.reject(false)
+        }
+
+    },
+
+    deleteAllProducts: async (data) => {
+        const { userId } = data
+
+        try {
+            await cartSchema.deleteOne({ userId })
+                .then(res => {
+                    if (res.deletedCount === 1) return Promise.resolve(true)
+                    else return Promise.reject(false)
+                })
+
+        } catch (err) {
+            return Promise.reject(false)
+        }
+
     }
+
 }
