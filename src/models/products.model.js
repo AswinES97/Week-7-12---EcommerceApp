@@ -31,7 +31,7 @@ module.exports = {
                     name: productData.name,
                     slug,
                     price: Number(productData.price),
-                    brand: productData.brand,
+                    brand: productData.brand.toUpperCase(),
                     description: productData.description,
                     gender: productData.gender,
                     category: productData.category,

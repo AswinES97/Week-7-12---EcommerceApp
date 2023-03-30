@@ -14,7 +14,6 @@ module.exports = {
             getCartProducts(userId)
                 .then(data => {
                     const products = data.product
-                    console.log(products);
                     return res.render('users/cart', {
                         userStatus: req.session.user,
                         userName,
@@ -25,7 +24,6 @@ module.exports = {
                     })
                 })
                 .catch(err => {
-                    console.log("err-cart-load:",err);
                     return res.render('users/cart', {
                         userStatus: req.session.user,
                         userName,

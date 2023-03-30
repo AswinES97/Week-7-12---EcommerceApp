@@ -56,6 +56,7 @@ module.exports = {
                         .then((data) => {
                             req.session.user = true
                             req.session.userId = data._id
+                            req.session.userName = data.fname
                             return res.json({ 'ok': 'Logged In!' })
                         })
                 })
@@ -76,6 +77,8 @@ module.exports = {
                     if (response.access) {
                         req.session.user = true
                         req.session.userId = response._id
+                        req.session.userName = response.fname
+
                         return res.status(200).json({ 'ok': 'loggedIn' })
                     } else {
                         res.status(400).json({ err_blocked })
@@ -124,6 +127,8 @@ module.exports = {
                         .then((response) => {
                             req.session.user = true
                             req.session.userId = response._id
+                            req.session.userName = response.fname
+
                             return res.status(201).json({ 'ok': 'user created' })
                         })
                         .catch(() => {
