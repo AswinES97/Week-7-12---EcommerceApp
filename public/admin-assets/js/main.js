@@ -229,10 +229,10 @@ async function createCategory($event) {
     }
 }
 
-function deleteProduct($event, id) {
+function deleteProduct($event, slug) {
     $event.preventDefault()
     $.ajax({
-        url: `http://localhost:3000/v1/admin/products/${id}`,
+        url: `http://localhost:3000/v1/admin/products/${slug}`,
         type: "DELETE",
         success: function (data) {
             window.location.reload()
@@ -259,7 +259,6 @@ function access($event, access, id) {
 
 function validateProduct($event) {
 
-
     $('#name-error').attr('hidden', true)
     $('#image-error1').attr('hidden', true)
     $('#image-error2').attr('hidden', true)
@@ -271,7 +270,7 @@ function validateProduct($event) {
     $('#color-error').attr('hidden', true)
 
     let productRegex = /^[A-Z][a-zA-Z0-9\s]{1,100}$/
-    let imgRegex = /(\.jpg|\.jpeg|\.png)$/
+    let imgRegex = /(\.jpg|\.jpeg|\.png|\.svg|\.webp)$/
 
     let productNameTest = null;
     let imageTest = null
@@ -285,13 +284,9 @@ function validateProduct($event) {
 
     let product_name = $('#product_name').val().trim()
     let brand = $('#brand').val().trim()
-    let gender = $('#gender').val().trim()
     let quantity = $('#quantity').val().trim()
     let size = $('#size').val().trim()
     let color = $('#color').val().trim()
-    let category = $('#category').val().trim()
-    let active = $('#active').val().trim()
-    let subcategory = $('#subcategory').val().trim()
     let description = $('#description').val().trim()
     let price = $('#price').val().trim()
     let image1 = $('#image1').val()

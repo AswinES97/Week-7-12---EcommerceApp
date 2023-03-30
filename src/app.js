@@ -33,9 +33,9 @@ app.use(session({
 
 
 cloudinary.config({
-    cloud_name: "dkrcoyj7y",
-    api_key: "358784952785351",
-    api_secret: "cXchDjgKLENJ3hgA0_2xD6lCKNU"
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 
 

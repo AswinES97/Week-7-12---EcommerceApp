@@ -10,20 +10,20 @@ module.exports = {
     httpGetAddProductPage: (req, res) => {
         res.render('admin/admin-add-product', {
             layout: 'admin/admin-layout',
-            adminTrue:req.session.admin 
+            adminTrue: req.session.admin
         })
     },
 
     httpGetProductEditPage: async (req, res) => {
-        const id = req.params.id
+        const slug = req.params.id
 
-        if (id.length == 24) {
-            await getSingleProduct(id)
+        if (slug) {
+            await getSingleProduct(slug)
                 .then(data => {
                     if (data)
                         return res.render('admin/admin-update-product', {
                             layout: 'admin/admin-layout',
-                            adminTrue:req.session.admin ,
+                            adminTrue: req.session.admin,
                             data
                         })
                     else
@@ -39,7 +39,7 @@ module.exports = {
             .then(data => {
                 res.render('admin/admin-products-list', {
                     layout: 'admin/admin-layout',
-                    adminTrue:req.session.admin ,
+                    adminTrue: req.session.admin,
                     data
                 })
             })
@@ -49,8 +49,8 @@ module.exports = {
     },
 
     httpAddNewProduct: async (req, res) => {
-        let imageLink = req.files.map(element=>element.path)
-        await addNewProduct(req.body,imageLink)
+        let imageLink = req.files.map(element => element.path)
+        await addNewProduct(req.body, imageLink)
             .then(() => {
                 return res.redirect('/v1/admin/products/')
             })
@@ -60,11 +60,11 @@ module.exports = {
     },
 
     httpEditProduct: async (req, res) => {
-        const id = req.params.id
+        const slug = req.params.id
         const imgLink = req.files.map(data => data.path)
 
-        if (id.length == 24 && req.body) {
-            await editProduct(id, req.body,imgLink)
+        if (slug && req.body) {
+            await editProduct(slug, req.body, imgLink)
                 .then(() => {
                     return res.redirect('/v1/admin/products')
                 })
@@ -77,10 +77,10 @@ module.exports = {
     },
 
     httpDeleteProduct: async (req, res) => {
-        const id = req.params.id
-        
-        if (id.length == 24) {
-            await deleteProduct(id)
+        const slug = req.params.id
+
+        if (slug) {
+            await deleteProduct(slug)
                 .then((status) => {
                     if (status) {
                         return res.status(200).json({ "ok": "deleted" })

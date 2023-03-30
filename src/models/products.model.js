@@ -1,9 +1,10 @@
 const product = require('./products.mongo')
 const cloudinary = require('cloudinary').v2;
+const slugify = require('slugify')
 
-const getSingleProduct = (id) => {
+const getSingleProduct = (slug) => {
     return new Promise(async (resolve, reject) => {
-        await product.findOne({ _id: id })
+        await product.findOne({ slug })
             .then(data => {
                 resolve(data)
             })
@@ -22,19 +23,20 @@ module.exports = {
     getSingleProduct,
 
     addNewProduct: (productData, imageLink) => {
-        console.log(productData);
         return new Promise(async (resolve, reject) => {
             let active = (productData.active === 'true')
+            const slug = slugify(productData.name, { lower: true, replacement: '_' })
             try {
                 const Product = await new product({
                     name: productData.name,
+                    slug,
                     price: Number(productData.price),
                     brand: productData.brand,
                     description: productData.description,
                     gender: productData.gender,
                     category: productData.category,
                     subcategory: productData.subCategory,
-                    categoryType:productData.categoryType,
+                    categoryType: productData.categoryType,
                     active: active,
                     image: imageLink,
                     quantity: {
@@ -57,18 +59,18 @@ module.exports = {
         })
     },
 
-    editProduct: (id, productData, imgLink) => {
+    editProduct: (slug, productData, imgLink) => {
         return new Promise(async (resolve, reject) => {
             let active = (productData.active === 'true')
 
-            if(imgLink.length != 0 ){
-                await deletImageFromCloud(id)
+            if (imgLink.length != 0) {
+                await deletImageFromCloud(slug)
             } else {
                 imgLink = undefined
             }
 
             try {
-                await product.findOneAndUpdate({ _id: id }, {
+                await product.findOneAndUpdate({ slug }, {
                     $set: {
                         name: productData.name,
                         price: Number(productData.price),
@@ -99,12 +101,12 @@ module.exports = {
         })
     },
 
-    deleteProduct: (id) => {
+    deleteProduct: (slug) => {
         return new Promise(async (resolve, reject) => {
 
-            await deletImageFromCloud(id)
+            await deletImageFromCloud(slug)
 
-            await product.deleteOne({ _id: id })
+            await product.deleteOne({ slug })
                 .then(data => {
                     if (data.deletedCount == 1)
                         resolve(true)
@@ -115,8 +117,8 @@ module.exports = {
     }
 }
 
-const deletImageFromCloud = async (id) => {
-    await getSingleProduct(id)
+const deletImageFromCloud = async (slug) => {
+    await getSingleProduct(slug)
         .then(async data => {
             const imgLink = data.image
             for (let i = 0; i < imgLink.length; i++) {
