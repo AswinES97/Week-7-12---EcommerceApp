@@ -12,6 +12,7 @@ const cloudinary = require('cloudinary').v2;
 
 const api = require('./router/api')
 const { userNotLoggedIn } = require('./services/session')
+const { getAllProducts } = require('./models/products.model')
 const app = express()
 
 
@@ -50,8 +51,15 @@ app.use(express.static(path.join(__dirname, "..", "public")))
 
 
 app.get('/',userNotLoggedIn,(req,res)=>{
-    // console.log('session ID: ',req.sessionID);
-    return res.render('homepage',{userStatus:req.session.user})
+    getAllProducts()
+        .then(response => {
+            console.log(response);
+            return res.render('homepage',{
+            userStatus:req.session.user,
+            product: response
+        })
+    })
+        .catch(err =>res.render('homepage',{userStatus:req.session.user}))
 })
 
 app.use('/v1', api)
