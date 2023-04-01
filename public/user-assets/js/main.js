@@ -23,7 +23,7 @@
 //             header.addClass('stick');
 //         }
 //     });
-    
+
 //     /*------ ScrollUp -------- */
 //     $.scrollUp({
 //         scrollText: '<i class="fi-rs-arrow-up"></i>',
@@ -31,7 +31,7 @@
 //         scrollSpeed: 900,
 //         animation: 'fade'
 //     });
-    
+
 //     /*------ Wow Active ----*/
 //     new WOW().init();  
 
@@ -212,7 +212,7 @@
 //             }
 //         ]
 //     });
-    
+
 //     /*------ Testimonial active 1 ----*/
 //     $('.testimonial-active-1').slick({
 //         slidesToShow: 3,
@@ -250,7 +250,7 @@
 //             }
 //         ]
 //     });
-    
+
 //     /*------ Testimonial active 3 ----*/
 //     $('.testimonial-active-3').slick({
 //         slidesToShow: 3,
@@ -286,7 +286,7 @@
 //             }
 //         ]
 //     });
-    
+
 //     /*------ Categories slider 1 ----*/
 //     $('.categories-slider-1').slick({
 //         slidesToShow: 6,
@@ -322,7 +322,7 @@
 //             }
 //         ]
 //     });  
-    
+
 //     /*----------------------------
 //         Category toggle function
 //     ------------------------------*/
@@ -337,8 +337,8 @@
 //            $(this).siblings('.categori-dropdown-active-large').addClass('open');
 //         }
 //     })
-        
-    
+
+
 //     /*---------------------
 //         Price range
 //     --------------------- */
@@ -357,7 +357,7 @@
 //         amountprice.val("$" + sliderrange.slider("values", 0) +
 //             " - $" + sliderrange.slider("values", 1));
 //     }); 
-        
+
 //     /*-------------------------------
 //         Sort by active
 //     -----------------------------------*/
@@ -383,7 +383,7 @@
 //             }
 //         });
 //     }
-    
+
 //     /*-----------------------
 //         Shop filter active 
 //     ------------------------- */
@@ -395,7 +395,7 @@
 //     shopFiltericon.on('click', function() {
 //         $('.shop-filter-toogle').toggleClass('active');
 //     })
-    
+
 //     /*-------------------------------------
 //         Product details big image slider
 //     ---------------------------------------*/
@@ -407,7 +407,7 @@
 //         fade: false,
 //         asNavFor: '.product-dec-slider-small , .product-dec-slider-small-2',
 //     });
-    
+
 //     /*---------------------------------------
 //         Product details small image slider
 //     -----------------------------------------*/
@@ -439,7 +439,7 @@
 //             }
 //         ]
 //     });
-    
+
 //     /*-----------------------
 //         Magnific Popup
 //     ------------------------*/
@@ -449,35 +449,35 @@
 //             enabled: true
 //         }
 //     });   
-  
+
 //     /*---------------------
 //         Select active
 //     --------------------- */
 //     $('.select-active').select2();    
-    
+
 //     /*--- Checkout toggle function ----*/
 //     $('.checkout-click1').on('click', function(e) {
 //         e.preventDefault();
 //         $('.checkout-login-info').slideToggle(900);
 //     });
-    
+
 //     /*--- Checkout toggle function ----*/
 //     $('.checkout-click3').on('click', function(e) {
 //         e.preventDefault();
 //         $('.checkout-login-info3').slideToggle(1000);
 //     });
-    
+
 //     /*-------------------------
 //         Create an account toggle
 //     --------------------------*/
 //     $('.checkout-toggle2').on('click', function() {
 //         $('.open-toggle2').slideToggle(1000);
 //     });
-    
+
 //     $('.checkout-toggle').on('click', function() {
 //         $('.open-toggle').slideToggle(1000);
 //     });    
-    
+
 
 //     /*-------------------------------------
 //         Checkout paymentMethod function
@@ -492,13 +492,13 @@
 // 			parent.addClass( selectedClass ).siblings().removeClass( selectedClass );
 // 		} );
 // 	}
-    
+
 //     /*---- CounterUp ----*/
 //     $('.count').counterUp({
 //         delay: 10,
 //         time: 2000
 //     });
-    
+
 //     // Isotope active
 //     $('.grid').imagesLoaded(function() {
 //         // init Isotope
@@ -512,65 +512,65 @@
 //             }
 //         });
 //     });
-    
+
 //     /*====== SidebarSearch ======*/
 //     function sidebarSearch() {
 //         var searchTrigger = $('.search-active'),
 //             endTriggersearch = $('.search-close'),
 //             container = $('.main-search-active');
-        
+
 //         searchTrigger.on('click', function(e) {
 //             e.preventDefault();
 //             container.addClass('search-visible');
 //         });
-        
+
 //         endTriggersearch.on('click', function() {
 //             container.removeClass('search-visible');
 //         });
-        
+
 //     };
 //     sidebarSearch();
-    
+
 //      /*====== Sidebar menu Active ======*/
 //     function mobileHeaderActive() {
 //         var navbarTrigger = $('.burger-icon'),
 //             endTrigger = $('.mobile-menu-close'),
 //             container = $('.mobile-header-active'),
 //             wrapper4 = $('body');
-        
+
 //         wrapper4.prepend('<div class="body-overlay-1"></div>');
-        
+
 //         navbarTrigger.on('click', function(e) {
 //             e.preventDefault();
 //             container.addClass('sidebar-visible');
 //             wrapper4.addClass('mobile-menu-active');
 //         });
-        
+
 //         endTrigger.on('click', function() {
 //             container.removeClass('sidebar-visible');
 //             wrapper4.removeClass('mobile-menu-active');
 //         });
-        
+
 //         $('.body-overlay-1').on('click', function() {
 //             container.removeClass('sidebar-visible');
 //             wrapper4.removeClass('mobile-menu-active');
 //         });
 //     };
 //     mobileHeaderActive();
-    
-    
+
+
 //    /*---------------------
 //         Mobile menu active
 //     ------------------------ */
 //     var $offCanvasNav = $('.mobile-menu'),
 //         $offCanvasNavSubMenu = $offCanvasNav.find('.dropdown');
-    
+
 //     /*Add Toggle Button With Off Canvas Sub Menu*/
 //     $offCanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="fi-rs-angle-small-down"></i></span>');
-    
+
 //     /*Close Off Canvas Sub Menu*/
 //     $offCanvasNavSubMenu.slideUp();
-    
+
 //     /*Category Sub Menu Toggle*/
 //     $offCanvasNav.on('click', 'li a, li .menu-expand', function(e) {
 //         var $this = $(this);
@@ -587,19 +587,19 @@
 //             }
 //         }
 //     });
-    
+
 //     /*--- language currency active ----*/
 //     $('.mobile-language-active').on('click', function(e) {
 //         e.preventDefault();
 //         $('.lang-dropdown-active').slideToggle(900);
 //     });    
-    
+
 //     /*--- Categori-button-active-2 ----*/
 //     $('.categori-button-active-2').on('click', function(e) {
 //         e.preventDefault();
 //         $('.categori-dropdown-active-small').slideToggle(900);
 //     });
-    
+
 //     /*--- Mobile demo active ----*/
 //     var demo = $('.tm-demo-options-wrapper');
 //     $('.view-demo-btn-active').on('click', function (e) {
@@ -633,30 +633,59 @@
 //         mousePause: false,
 //         showItems: 1
 //     });
-        
+
 // })(jQuery);
 
-$('#addToCart').click(()=>{
+$('#addToCart').click(() => {
     const quantity = $('#qty').text().trim()
     const size = $('#size').text().trim()
     let slug = window.location.pathname.split("/")
-    slug = slug[slug.length-1]
-    
+    slug = slug[slug.length - 1]
+
     $('#addToCart').prop('disabled', true)
     $.ajax({
-        url:'/v1/users/cart',
+        url: '/v1/users/cart',
         type: 'POST',
         data: {
             slug,
             size,
             quantity
         },
-        success:(res)=>{
-            swal('Success','added to cart','success')
+        success: (res) => {
+            swal('Success', 'added to cart', 'success')
             $('#addToCart').prop('disabled', false)
         },
-        error: (err)=>{
-            console.log("err",err);
+        error: (err) => {
+            console.log("err", err);
         }
     })
+})
+
+$('.delete-btn').on('click', function () {
+    swal('Remove Item','Are you sure you want to remove this item?','warning',{
+        buttons:{
+            cancel:"Cancel",
+            catch: {
+                text: "Remove",
+                value: true,
+              }
+        }
+    }).then((result) => {
+        if (result) {
+            const slug = $(this).closest('tr').find('td[data-item-id]').data('itemId');
+            $.ajax({
+                url: '/v1/users/cart/',
+                type: 'PUT',
+                data: {
+                    slug
+                },
+                success: (res) => {
+                    window.location.reload()
+                },
+                error: (err) => {
+                    swal('Error Deleting Item!')
+                }
+            })
+        }
+    });
 })

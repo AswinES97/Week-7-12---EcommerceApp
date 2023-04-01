@@ -106,8 +106,9 @@ module.exports = {
                     $pull: { product: { pId: pId } }
                 })
                 .then(res => {
-                    if (res.modifiedCount < 1) return Promise.reject(false)
-                    else return Promise.resolve(true)
+                    console.log(res);
+                    if (res.modifiedCount > 0) return Promise.resolve(false)
+                    else throw Error()
                 })
 
 

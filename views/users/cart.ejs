@@ -34,7 +34,7 @@
                                 <td class="text-right" data-title="Cart">
                                     <span><%=ele.subTotal%></span>
                                 </td>
-                                <td class="action" data-title="Remove"><a href="#" class="text-muted"><i class="fi-rs-trash"></i></a></td>
+                                <td class="action" data-title="Remove" data-item-id="<%=ele.pId.slug%>"><button class="delete-btn" style="border-color: transparent;"><i class="fi-rs-trash"></i></button></td>
                             </tr> 
                             <%})}else{%>
                                 

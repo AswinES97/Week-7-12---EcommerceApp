@@ -71,13 +71,17 @@ module.exports = {
         }
     },
 
-    httpRemoveFromCart: (req, res) => {
-        const { pId, userId } = req.body
-
+    httpRemoveFromCart:async (req, res) => {
+        const { slug } = req.body
+        const userId = req.session.userId
+        let pId = await getSingleProduct(slug).then(response=>JSON.parse(JSON.stringify(response._id)))
+        const data = {
+            pId,userId
+        }
         if (!pId || !userId) {
-            return res.status(400).json({ "err": "Not Removed!" })
+            return res.status(400).json({ "err": "Not-Removed!" })
         } else {
-            removeFromCart(req.body)
+            removeFromCart(data)
                 .then(response => {
                     return res.json({ 'ok': 'Removed!' })
                 })
