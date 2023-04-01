@@ -4,7 +4,7 @@ const {
     deleteAllProducts,
     getCartProducts
 } = require("../../../models/cart.model")
-
+const { getSingleProduct } = require('../../../models/products.model')
 module.exports = {
     httpUserCart: (req, res) => {
         const userName = req.query.name
@@ -35,9 +35,23 @@ module.exports = {
     },
 
     httpAddToCart: async (req, res) => {
-        const { userId, pId, quantity, subTotal, grandTotal } = req.body
-        if (userId && pId && quantity && subTotal && grandTotal) {
-            await addToCart(req.body)
+        let product;
+        await getSingleProduct(req.body.slug)
+            .then(response => {
+                product = JSON.parse(JSON.stringify(response))
+            })
+        const { size, quantity } = req.body
+        const subTotal = quantity * product.price
+        const data = {
+            userId: req.session.userId,
+            size,
+            quantity,
+            subTotal,
+            pId: product._id,
+
+        }
+        if (data.userId && quantity && subTotal && size) {
+            await addToCart(data)
                 .then(response => {
                     return res.json({ "ok": 'Proudct Added!' })
                 })

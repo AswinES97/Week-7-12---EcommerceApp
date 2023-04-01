@@ -4,7 +4,7 @@ module.exports = {
     getCartProducts: async (userId) => {
         try {
             return await cartSchema.findOne({ userId })
-                .populate("product.pId", "name price image")
+                .populate("product.pId", "name price image slug")
                 .then(res => {
                     if (res.product.length > 0) {
                         const product = res.product
@@ -23,31 +23,51 @@ module.exports = {
 
     addToCart: async (data) => {
         try {
-            const { userId, pId, quantity, subTotal, grandTotal } = data
+            const { userId, size, quantity, subTotal, pId } = data
             return await cartSchema.findOne({ userId: userId })
                 .then(res => {
                     if (!res) return false
-                    else return true
+                    else return res
                 })
                 .then(async res => {
                     // already exist
                     if (!res) return false
                     else {
-                        return await cartSchema.updateOne({ userId: userId }, {
-                            $set: {
-                                grandTotal: Number(grandTotal)
-                            },
-                            $push: {
-                                product: [{
-                                    pId: pId,
-                                    quantity: Number(quantity),
-                                    subTotal: Number(subTotal),
-                                }]
-                            }
-                        })
-                            .then(res => {
-                                return true
+                        const present = res.product.find(item => item.pId == pId)
+                        if (present) {
+                            return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
+                                $inc: {
+                                    grandTotal: Number(subTotal),
+                                },
+                                $inc: {
+                                    'product.$.quantity': Number(quantity),
+                                    'product.$.subTotal': Number(subTotal),
+                                    
+                                }
+
                             })
+                            .then(res=>{
+                                if(res.modifiedCount === 1) true
+                                else throw Error()
+                            })
+                        } else {
+                            return await cartSchema.updateOne({ userId: userId }, {
+                                $inc: { grandTotal: Number(subTotal) }
+                                ,
+                                $push: {
+                                    product: [{
+                                        pId: pId,
+                                        size,
+                                        quantity: Number(quantity),
+                                        subTotal: Number(subTotal),
+                                    }]
+                                }
+                            })
+                                .then(res => {
+                                    console.log('inc', res);
+                                    return true
+                                })
+                        }
                     }
                 })
                 .then(async res => {
@@ -57,13 +77,15 @@ module.exports = {
                             userId,
                             product: [{
                                 pId: pId,
+                                size,
                                 quantity: Number(quantity),
                                 subTotal: Number(subTotal),
                             }],
-                            grandTotal: Number(grandTotal)
+                            grandTotal: Number(subTotal)
                         })
                         return cartNew.save()
                             .then(res => {
+                                console.log("new one", res);
                                 return Promise.resolve(true)
                             })
                     }

@@ -18,17 +18,17 @@ const app = express()
 
 app.use(nocache())
 app.use(cors({
-    origin:'*'
+    origin: '*'
 }))
 
 
 app.use(session({
-    genid:(req)=>uuid.v4(),
-    secret:process.env.SESSION_SECRET,
-    resave:false,
-    saveUninitialized:false,
-    cookie:{
-        maxAge:60*60*1000
+    genid: (req) => uuid.v4(),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000
     }
 }))
 
@@ -41,8 +41,8 @@ cloudinary.config({
 
 
 
-app.set('view engine','ejs')
-app.set('views', path.join(__dirname,'..','views'))
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, '..', 'views'))
 app.use(ejsLayout)
 app.use(morgan('dev'))
 app.use(express.json())
@@ -50,16 +50,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "..", "public")))
 
 
-app.get('/',userNotLoggedIn,(req,res)=>{
+app.get('/', userNotLoggedIn, (req, res) => {
     getAllProducts()
         .then(response => {
             console.log(response);
-            return res.render('homepage',{
-            userStatus:req.session.user,
-            product: response
+            return res.render('homepage', {
+                userStatus: req.session.user,
+                product: response
+            })
         })
-    })
-        .catch(err =>res.render('homepage',{userStatus:req.session.user}))
+        .catch(err => res.render('homepage', { userStatus: req.session.user }))
 })
 
 app.use('/v1', api)

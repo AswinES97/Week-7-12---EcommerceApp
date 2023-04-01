@@ -69,7 +69,7 @@
                                 <div class="attr-detail attr-size">
                                     <strong class="mr-10">Size</strong>
                                     <ul class="list-filter size-filter font-small">
-                                        <li><a href="#">
+                                        <li id="size"><a href="#">
                                                 <%=product.quantity.size%>
                                             </a></li>
 
@@ -79,15 +79,18 @@
                                 <div class="detail-extralink">
                                     <div class="detail-qty border radius">
                                         <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                        <span class="qty-val">1</span>
+                                        <span id="qty" class="qty-val">1</span>
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                     <div class="product-extra-link2">
-                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                        <%if(userStatus){%>
+                                        <button type="submit" id="addToCart" class="button button-add-to-cart">Add to cart</button>
+                                        <%}else{%>
+                                        <button  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="submit" onclick="cartHome()" class="button button-add-to-cart">Add to cart</button>
+                                        <%}%>
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                             href="#"><i class="fi-rs-heart"></i></a>
-                                        <a aria-label="Compare" class="action-btn hover-up" href="#"><i
-                                                class="fi-rs-shuffle"></i></a>
+                            
                                     </div>
                                 </div>
                                 <ul class="product-meta font-xs color-grey mt-50">

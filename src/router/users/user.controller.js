@@ -1,3 +1,4 @@
+const { getAllProducts } = require("../../models/products.model")
 const {
     loginUserWithPhone,
     loginUserWithEmailAndPassword,
@@ -147,12 +148,15 @@ module.exports = {
     }
     ,
     httpUserHomepage: async (req, res) => {
+        let product = await getAllProducts()
         return await getUser(null, req.session.userId)
             .then((data) => {
+
                 return res.render('homepage', {
                     userStatus: req.session.user,
                     userName: data.fname,
-                    userId: data._id
+                    userId: data._id,
+                    product
                 })
 
             })

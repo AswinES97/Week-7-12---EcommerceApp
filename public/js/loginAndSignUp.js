@@ -67,7 +67,7 @@ function loginMail(event) {
                 error.removeAttribute('hidden')
             },
             success: (status) => {
-                window.location.assign('http://localhost:3000/v1/users')
+                window.location.reload()
             }
         })
     } else {
@@ -226,7 +226,7 @@ function verifyOtp($event, state) {
                     if (status == 'error') {
                         error.innerHTML = "<p>Invalid Otp!<p>"
                     } else {
-                        window.location.assign('http://localhost:3000/v1/users')
+                        window.location.reload()
                     }
                 }
             })
@@ -247,7 +247,7 @@ function verifyOtp($event, state) {
 
                 },
                 success: (xhr, status, err) => {
-                    window.location.assign('http://localhost:3000/v1/users')
+                    window.location.reload()
                 }
             })
         }
