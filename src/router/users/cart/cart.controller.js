@@ -28,7 +28,8 @@ module.exports = {
                         userStatus: req.session.user,
                         userName,
                         userId,
-                        dataPresent: false
+                        dataPresent: false,
+                        grandTotal: 0,
                     })
                 })
         }
@@ -72,13 +73,16 @@ module.exports = {
     },
 
     httpRemoveFromCart:async (req, res) => {
-        const { slug } = req.body
+        const { slug, quantity } = req.body
         const userId = req.session.userId
-        let pId = await getSingleProduct(slug).then(response=>JSON.parse(JSON.stringify(response._id)))
+        let response = await getSingleProduct(slug).then(response=>JSON.parse(JSON.stringify(response)))
+        const price = Number(quantity)*response.price
         const data = {
-            pId,userId
+            pId:response._id,
+            userId,
+            price
         }
-        if (!pId || !userId) {
+        if (!response._id || !userId || !price) {
             return res.status(400).json({ "err": "Not-Removed!" })
         } else {
             removeFromCart(data)

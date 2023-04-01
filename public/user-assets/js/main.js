@@ -673,11 +673,12 @@ $('.delete-btn').on('click', function () {
     }).then((result) => {
         if (result) {
             const slug = $(this).closest('tr').find('td[data-item-id]').data('itemId');
+            const quantity = $("#qty").text()
             $.ajax({
                 url: '/v1/users/cart/',
                 type: 'PUT',
                 data: {
-                    slug
+                    slug,quantity
                 },
                 success: (res) => {
                     window.location.reload()

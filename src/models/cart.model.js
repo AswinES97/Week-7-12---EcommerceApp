@@ -97,12 +97,12 @@ module.exports = {
     },
 
     removeFromCart: async (data) => {
-        const { pId, userId } = data
+        const { pId, userId, price } = data
 
         try {
             return await cartSchema.updateOne(
                 { userId },
-                {
+                {   $inc:{grandTotal:-price},
                     $pull: { product: { pId: pId } }
                 })
                 .then(res => {

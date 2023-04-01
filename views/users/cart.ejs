@@ -27,7 +27,7 @@
                                 <td class="text-center" data-title="Stock">
                                     <div class="detail-qty border radius  m-auto">
                                         <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                        <span class="qty-val"><%=ele.quantity%></span>
+                                        <span id="qty" class="qty-val"><%=ele.quantity%></span>
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                 </td>
@@ -353,7 +353,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="cart_total_label">Cart Subtotal</td>
-                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">$240.00</span></td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">₹<%=grandTotal%></span></td>
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Shipping</td>
@@ -361,7 +361,7 @@
                                         </tr>
                                         <tr>
                                             <td class="cart_total_label">Total</td>
-                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$240.00</span></strong></td>
+                                            <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">₹<%=grandTotal%></span></strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
