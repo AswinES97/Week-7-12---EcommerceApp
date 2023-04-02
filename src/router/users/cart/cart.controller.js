@@ -96,16 +96,16 @@ module.exports = {
     },
 
     httpDeleteAllProducts: (req, res) => {
-        const { userId } = req.body
+        const userId  = req.session.userId
 
         if (!userId) {
-            return res.status(400).json({ "err": "Not Deleted!" })
+            return res.status(400).json({ 'err': 'Cart not cleared!' })
         } else {
-            deleteAllProducts(req.body)
+            deleteAllProducts(userId)
                 .then(response => {
                     return res.json({ 'ok': 'deleted' })
                 })
-                .catch(err => res.status(400).json({ 'err': 'Not Deleted!' }))
+                .catch(err => res.status(400).json({ 'err': 'Cart not cleared!' }))
         }
     },
 

@@ -662,13 +662,13 @@ $('#addToCart').click(() => {
 })
 
 $('.delete-btn').on('click', function () {
-    swal('Remove Item','Are you sure you want to remove this item?','warning',{
-        buttons:{
-            cancel:"Cancel",
+    swal('Remove Item', 'Are you sure you want to remove this item?', 'warning', {
+        buttons: {
+            cancel: "Cancel",
             catch: {
                 text: "Remove",
                 value: true,
-              }
+            }
         }
     }).then((result) => {
         if (result) {
@@ -676,7 +676,7 @@ $('.delete-btn').on('click', function () {
             const quantity = $('td').find(`[data-id="${slug}"]`).text()
             let price = $('td').find(`[data-title="${slug}"]`).text();
             price = price.split('₹')
-            price = Number(price[1])*Number(quantity)
+            price = Number(price[1]) * Number(quantity)
             $.ajax({
                 url: '/v1/users/cart/',
                 type: 'PUT',
@@ -693,4 +693,29 @@ $('.delete-btn').on('click', function () {
             })
         }
     });
+})
+
+$('#clear-cart').click(() => {
+    swal('Are you sure?', {
+        buttons: {
+            cancel: "Cancel",
+            catch: {
+                text: "Remove",
+                value: true,
+            }
+        }
+    }).then(result => {
+        if (result) {
+            $.ajax({
+                url: '/v1/users/cart',
+                type: 'DELETE',
+                success: (res) => {
+                    window.location.reload()
+                },
+                error: (err) => {
+                    swal(err.responseText.err)
+                }
+            })
+        }
+    })
 })

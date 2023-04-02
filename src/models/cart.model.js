@@ -116,9 +116,7 @@ module.exports = {
 
     },
 
-    deleteAllProducts: async (data) => {
-        const { userId } = data
-
+    deleteAllProducts: async (userId) => {
         try {
             await cartSchema.deleteOne({ userId })
                 .then(res => {
