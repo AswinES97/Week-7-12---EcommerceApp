@@ -4,7 +4,8 @@ const {
     httpAddToCart,
     httpRemoveFromCart,
     httpDeleteAllProducts,
-    httpUpdateProductInCart
+    httpUpdateProductInCart,
+    httpUpdateCartProduct
  } = require('./cart.controller')
 
 const userCart = require('express').Router()

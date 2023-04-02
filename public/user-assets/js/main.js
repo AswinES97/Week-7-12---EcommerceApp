@@ -673,12 +673,16 @@ $('.delete-btn').on('click', function () {
     }).then((result) => {
         if (result) {
             const slug = $(this).closest('tr').find('td[data-item-id]').data('itemId');
-            const quantity = $("#qty").text()
+            const quantity = $('td').find(`[data-id="${slug}"]`).text()
+            let price = $('td').find(`[data-title="${slug}"]`).text();
+            price = price.split('₹')
+            price = Number(price[1])*Number(quantity)
             $.ajax({
                 url: '/v1/users/cart/',
                 type: 'PUT',
                 data: {
-                    slug,quantity
+                    slug,
+                    price: price
                 },
                 success: (res) => {
                     window.location.reload()

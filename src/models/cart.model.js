@@ -35,19 +35,17 @@ module.exports = {
                     else {
                         const present = res.product.find(item => item.pId == pId)
                         if (present) {
+                            console.log('presetn:',present);
                             return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
                                 $inc: {
                                     grandTotal: Number(subTotal),
-                                },
-                                $inc: {
                                     'product.$.quantity': Number(quantity),
                                     'product.$.subTotal': Number(subTotal),
-                                    
                                 }
 
                             })
                             .then(res=>{
-                                if(res.modifiedCount === 1) true
+                                if(res.modifiedCount === 1) return true
                                 else throw Error()
                             })
                         } else {
