@@ -635,6 +635,15 @@
 //     });
 
 // })(jQuery);
+function getPriceAndQuantity(slug) {
+    const quantity = $('td').find(`[data-id="${slug}"]`).text()
+    let price = $('td').find(`[data-title="${slug}"]`).text();
+    price = price.split('₹')
+    return {
+        quantity: Number(quantity),
+        price: Number(price[1])
+    }
+}
 
 $('#addToCart').click(() => {
     const quantity = $('#qty').text().trim()
@@ -673,10 +682,8 @@ $('.delete-btn').on('click', function () {
     }).then((result) => {
         if (result) {
             const slug = $(this).closest('tr').find('td[data-item-id]').data('itemId');
-            const quantity = $('td').find(`[data-id="${slug}"]`).text()
-            let price = $('td').find(`[data-title="${slug}"]`).text();
-            price = price.split('₹')
-            price = Number(price[1]) * Number(quantity)
+            let { price, quantity } = getPriceAndQuantity(slug)
+            price = price * quantity
             $.ajax({
                 url: '/v1/users/cart/',
                 type: 'PUT',
@@ -719,3 +726,27 @@ $('#clear-cart').click(() => {
         }
     })
 })
+
+function qtychange(slug, quantity) {
+    let { price } = getPriceAndQuantity(slug)
+    if (Number(quantity) < 0) price = -1*Number(price)
+    $.ajax({
+        url: '/v1/users/cart',
+        type: 'PATCH',
+        data: {
+            price,
+            slug,
+            quantity
+        },
+        success: (res) => {
+            
+        },
+        error: (err) => {
+
+        }
+    })
+}
+
+function qtydown(slug) {
+
+}

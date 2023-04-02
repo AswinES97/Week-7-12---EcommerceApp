@@ -2,7 +2,8 @@ const {
     addToCart,
     removeFromCart,
     deleteAllProducts,
-    getCartProducts
+    getCartProducts,
+    updataeProductInCart
 } = require("../../../models/cart.model")
 const { getSingleProduct } = require('../../../models/products.model')
 module.exports = {
@@ -110,7 +111,12 @@ module.exports = {
     },
 
     httpUpdateProductInCart: (req, res) => {
-        console.log(req.query);
+        const userId = req.session.userId
+        return updataeProductInCart(req.body,userId)
+            .then(()=>{
+                return res.json({'ok':'Updated'})
+            })
+            .catch(()=>res.status(400).json({'err':'Not Updated'}))
     }
 
 }

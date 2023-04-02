@@ -1,4 +1,5 @@
 const cartSchema = require('./cart.mongo')
+const { getSingleProduct } = require('./products.model')
 
 module.exports = {
     getCartProducts: async (userId) => {
@@ -35,7 +36,6 @@ module.exports = {
                     else {
                         const present = res.product.find(item => item.pId == pId)
                         if (present) {
-                            console.log('presetn:',present);
                             return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
                                 $inc: {
                                     grandTotal: Number(subTotal),
@@ -44,10 +44,10 @@ module.exports = {
                                 }
 
                             })
-                            .then(res=>{
-                                if(res.modifiedCount === 1) return true
-                                else throw Error()
-                            })
+                                .then(res => {
+                                    if (res.modifiedCount === 1) return true
+                                    else throw Error()
+                                })
                         } else {
                             return await cartSchema.updateOne({ userId: userId }, {
                                 $inc: { grandTotal: Number(subTotal) }
@@ -62,7 +62,6 @@ module.exports = {
                                 }
                             })
                                 .then(res => {
-                                    console.log('inc', res);
                                     return true
                                 })
                         }
@@ -83,7 +82,6 @@ module.exports = {
                         })
                         return cartNew.save()
                             .then(res => {
-                                console.log("new one", res);
                                 return Promise.resolve(true)
                             })
                     }
@@ -94,13 +92,39 @@ module.exports = {
         }
     },
 
+    updataeProductInCart: async (data, userId) => {
+        let { slug, quantity, price } = data
+        quantity = Number(quantity)
+        price = Number(price)
+        try {
+            await getSingleProduct(slug, userId)
+                .then(response => pId = JSON.parse(JSON.stringify(response._id)))
+                .catch(err => { throw Error() })
+
+            return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
+                $inc: {
+                    grandTotal: price,
+                    'product.$.quantity': quantity,
+                    'product.$.subTotal': price
+                }
+            })
+                .then(res => {
+                    if(res.modifiedCount === 1) return Promise.resolve()
+                    else throw Error()
+                })
+        } catch (err) {
+            return Promise.reject()
+        }
+    },
+
     removeFromCart: async (data) => {
         const { pId, userId, price } = data
 
         try {
             return await cartSchema.updateOne(
                 { userId },
-                {   $inc:{grandTotal:-price},
+                {
+                    $inc: { grandTotal: -price },
                     $pull: { product: { pId: pId } }
                 })
                 .then(res => {
