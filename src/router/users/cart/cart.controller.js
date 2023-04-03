@@ -113,8 +113,8 @@ module.exports = {
     httpUpdateProductInCart: (req, res) => {
         const userId = req.session.userId
         return updataeProductInCart(req.body,userId)
-            .then(()=>{
-                return res.json({'ok':'Updated'})
+            .then((response)=>{
+                return res.json(response)
             })
             .catch(()=>res.status(400).json({'err':'Not Updated'}))
     }

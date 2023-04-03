@@ -727,10 +727,8 @@ $('#clear-cart').click(() => {
     })
 })
 
-function qtychange(slug, quantity) {
-    let { price } = getPriceAndQuantity(slug)
-    if (Number(quantity) < 0) price = -1*Number(price)
-    $.ajax({
+function changeQuantityAjax(price, slug, quantity) {
+    return $.ajax({
         url: '/v1/users/cart',
         type: 'PATCH',
         data: {
@@ -739,14 +737,22 @@ function qtychange(slug, quantity) {
             quantity
         },
         success: (res) => {
-            
+            $(`#subTotal-${slug}`).html(`${res.subTotal}`)
+            $('.grandTotal').html(`${res.grandTotal}`)
         },
         error: (err) => {
-
+            swal(err.responseText)
         }
     })
 }
 
-function qtydown(slug) {
-
+function qtychange(slug, qty) {
+    let { price, quantity } = getPriceAndQuantity(slug)
+    if (Number(qty) < 0) price = -1 * Number(price)
+    if (Number(quantity) >= 0 && qty === 1) {
+        return changeQuantityAjax(price, slug, qty)
+    } else if (Number(quantity) > 1 && qty === -1) {
+        return changeQuantityAjax(price, slug, qty)
+    }
 }
+

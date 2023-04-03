@@ -101,17 +101,24 @@ module.exports = {
                 .then(response => pId = JSON.parse(JSON.stringify(response._id)))
                 .catch(err => { throw Error() })
 
-            return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
+            return await cartSchema.findOneAndUpdate({ userId, 'product.pId': pId }, {
                 $inc: {
                     grandTotal: price,
                     'product.$.quantity': quantity,
                     'product.$.subTotal': price
                 }
-            })
+            }, { new: true })
                 .then(res => {
-                    if(res.modifiedCount === 1) return Promise.resolve()
-                    else throw Error()
+                    res = JSON.parse(JSON.stringify(res))
+                    const product = res.product.find(ele => ele.pId === pId)
+                    const data = {
+                        quantity: product.quantity,
+                        subTotal: product.subTotal,
+                        grandTotal: res.grandTotal
+                    }
+                    return Promise.resolve(data)
                 })
+                .catch(err => { throw Error() })
         } catch (err) {
             return Promise.reject()
         }
