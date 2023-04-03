@@ -54,16 +54,19 @@
                                             </td>
                                         </tr>
                                         <%}else{%>
+                                            <div>
+                                                <div class="d-flex">
+                                                    <img style="height: 30em;width: 40em;" src="https://res.cloudinary.com/dkrcoyj7y/image/upload/v1680514933/cart/d438a32e-765a-4d8b-b4a6-520b560971e8_p6lalf.webp" alt="Cart is empty">
+                                                </div>
+                                                <div class="pt-5">
+                                                    <h3>Cart is Empty!</h3>
+                                                </div>
+                                            </div>
 
                                             <%}%>
                             </tbody>
                         </table>
                     </div>
-                    <div class="cart-action text-end">
-                        <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
-                        <a class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                    </div>
-                    <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                     <div class="row mb-50">
                         <div class="col-lg-6 col-md-12">
                             <div class="heading_s1 mb-3">
@@ -390,7 +393,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <a href="#" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                                <a href="/v1/users/order?userName=<%=userName%>" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                             </div>
                         </div>
                     </div>

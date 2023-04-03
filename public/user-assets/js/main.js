@@ -737,8 +737,8 @@ function changeQuantityAjax(price, slug, quantity) {
             quantity
         },
         success: (res) => {
-            $(`#subTotal-${slug}`).html(`${res.subTotal}`)
-            $('.grandTotal').html(`${res.grandTotal}`)
+            $(`#subTotal-${slug}`).html(`₹${res.subTotal}`)
+            $('.grandTotal').html(`₹${res.grandTotal}`)
            
         },
         error: (err) => {

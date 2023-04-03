@@ -13,7 +13,8 @@ const {
     httpUserLogout,
     httpAddNewUserEmailOtp,
 } = require('./user.controller')
-const userCart = require('./cart/cart.router')
+const userCartRouter = require('./cart/cart.router')
+const orderRouter = require('./order/order.router')
 
 userRouter.route('/login')
     .all(userNotLoggedIn)
@@ -43,7 +44,8 @@ userRouter.route('/logout')
     .all(userLoggedIn)
     .get(httpUserLogout)
 
-userRouter.use('/cart'/*,userLoggedIn*/,userCart)
+userRouter.use('/cart'/*,userLoggedIn*/,userCartRouter)
+userRouter.use('/order'/*,userLoggedIn*/,orderRouter)
 
 module.exports = {
     userRouter

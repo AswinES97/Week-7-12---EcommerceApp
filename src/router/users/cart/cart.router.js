@@ -7,13 +7,13 @@ const {
     httpUpdateProductInCart,
  } = require('./cart.controller')
 
-const userCart = require('express').Router()
+const userCartRouter = require('express').Router()
 
-userCart.route('/')
+userCartRouter.route('/')
     .get(httpUserCart)
     .post(httpAddToCart)
     .put(httpRemoveFromCart)
     .patch(httpUpdateProductInCart)
     .delete(httpDeleteAllProducts)
 
-module.exports = userCart
+module.exports = userCartRouter
