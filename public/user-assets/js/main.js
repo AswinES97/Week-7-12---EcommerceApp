@@ -739,20 +739,17 @@ function changeQuantityAjax(price, slug, quantity) {
         success: (res) => {
             $(`#subTotal-${slug}`).html(`${res.subTotal}`)
             $('.grandTotal').html(`${res.grandTotal}`)
-            $('#qty-up').on('click',qtychange(slug, qty))
-            $('#qty-down').on('click',qtychange(slug, qty))
+           
         },
         error: (err) => {
-            swal(err.responseText)
-            $('#qty-up').on('click',qtychange(slug, qty))
-            $('#qty-down').on('click',qtychange(slug, qty))
+            swal(err.responseJSON.err)
+            
         }
     })
 }
 
 function qtychange(slug, qty) {
-    $('#qty-up').off('click')
-    $('#qty-down').off('click')
+    
     let { price, quantity } = getPriceAndQuantity(slug)
     if (Number(qty) < 0) price = -1 * Number(price)
     if (Number(quantity) >= 0 && qty === 1) {
