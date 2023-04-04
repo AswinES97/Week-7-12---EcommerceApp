@@ -116,7 +116,6 @@ module.exports = {
                         subTotal: product.subTotal,
                         grandTotal: res.grandTotal
                     }
-                    console.log(data);
                     return Promise.resolve(data)
                 })
                 .catch(err => { throw Error() })

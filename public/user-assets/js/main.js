@@ -759,3 +759,24 @@ function qtychange(slug, qty) {
     }
 }
 
+$('#address-tab').on('click',()=>{
+    $.get('/v1/users/address',(data,status)=>{
+        let content = ''
+        data.ok.forEach(ele => {
+            content +=`
+            <div class="col-lg-6">
+            <div class="card mb-3 mb-lg-0">
+                <div class="card-body">
+                    <h4>${ele.name}</h4>
+                    <address>${ele.address1}<br>${ele.city} ,<br>${ele.state}<br>${ele.country}, ${ele.postal_code}</address>
+                    <address>${ele.phone}</address>
+                    <a href="#" class="btn-small">Edit</a>
+                </div>
+            </div>
+            </div>
+
+            `
+        })
+        $('#address-tab-body').html(content)
+    })
+})
