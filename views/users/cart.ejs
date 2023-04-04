@@ -30,11 +30,11 @@
                                                     </span></td>
                                         <td class="text-center" data-title="Stock">
                                             <div class="detail-qty border radius  m-auto">
-                                                <a href="#"  class="qty-down"><i id="qty-down" onclick="qtychange('<%=ele.pId.slug%>',-1)" class="fi-rs-angle-small-down"></i></a>
-                                                <span data-id="<%=ele.pId.slug%>" class="qty-val">
+                                                <a href="#"  class="qty-down"><i onclick="qtychange('<%=ele.pId.slug%>',-1)" class="fi-rs-angle-small-down"></i></a>
+                                                <span data-id="<%=ele.pId.slug%>" >
                                                     <%=ele.quantity%>
                                                 </span>
-                                                <a href="#"  class="qty-up"><i id="qty-up" onclick="qtychange('<%=ele.pId.slug%>',1)" class="fi-rs-angle-small-up"></i></a>
+                                                <a href="#"  class="qty-up"><i  onclick="qtychange('<%=ele.pId.slug%>',1)" class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">

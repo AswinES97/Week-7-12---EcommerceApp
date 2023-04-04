@@ -739,7 +739,7 @@ function changeQuantityAjax(price, slug, quantity) {
         success: (res) => {
             $(`#subTotal-${slug}`).html(`₹${res.subTotal}`)
             $('.grandTotal').html(`₹${res.grandTotal}`)
-           
+            $('td').find(`[data-id="${slug}"]`).html(`${res.quantity}`)
         },
         error: (err) => {
             swal(err.responseJSON.err)

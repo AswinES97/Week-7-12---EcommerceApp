@@ -92,7 +92,7 @@ module.exports = {
         }
     },
 
-    updataeProductInCart: async (data, userId) => {
+    updateProductInCart: async (data, userId) => {
         let { slug, quantity, price } = data
         quantity = Number(quantity)
         price = Number(price)
@@ -116,6 +116,7 @@ module.exports = {
                         subTotal: product.subTotal,
                         grandTotal: res.grandTotal
                     }
+                    console.log(data);
                     return Promise.resolve(data)
                 })
                 .catch(err => { throw Error() })

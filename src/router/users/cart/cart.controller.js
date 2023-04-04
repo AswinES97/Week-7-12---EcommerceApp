@@ -3,7 +3,7 @@ const {
     removeFromCart,
     deleteAllProducts,
     getCartProducts,
-    updataeProductInCart
+    updateProductInCart
 } = require("../../../models/cart.model")
 const { getSingleProduct } = require('../../../models/products.model')
 module.exports = {
@@ -112,7 +112,7 @@ module.exports = {
 
     httpUpdateProductInCart: (req, res) => {
         const userId = req.session.userId
-        return updataeProductInCart(req.body,userId)
+        return updateProductInCart(req.body,userId)
             .then((response)=>{
                 return res.json(response)
             })
