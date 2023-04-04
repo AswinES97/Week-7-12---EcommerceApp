@@ -1,3 +1,4 @@
+const { formatCurrency } = require('../services/currencyFormatter');
 const cartSchema = require('./cart.mongo')
 const { getSingleProduct } = require('./products.model')
 
@@ -9,9 +10,10 @@ module.exports = {
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
                     if (res.product.length > 0) {
+                        console.log(res);
                         const product = res.product
-                        const cur = formatCurrency(cartItems.grandTotal)
-                        cartItems.product.forEach(ele => {
+                        const cur = formatCurrency(res.grandTotal)
+                        product.forEach(ele => {
                             ele.subTotal = formatCurrency(ele.subTotal)
                         });
                         const data = {
@@ -113,13 +115,13 @@ module.exports = {
                     'product.$.subTotal': price
                 }
             }, { new: true })
+                .then(res=>JSON.parse(JSON.stringify(res)))
                 .then(res => {
-                    res = JSON.parse(JSON.stringify(res))
                     const product = res.product.find(ele => ele.pId === pId)
                     const data = {
                         quantity: product.quantity,
-                        subTotal: product.subTotal,
-                        grandTotal: res.grandTotal
+                        subTotal: formatCurrency(product.subTotal),
+                        grandTotal: formatCurrency(res.grandTotal)
                     }
                     return Promise.resolve(data)
                 })
@@ -140,7 +142,6 @@ module.exports = {
                     $pull: { product: { pId: pId } }
                 })
                 .then(res => {
-                    console.log(res);
                     if (res.modifiedCount > 0) return Promise.resolve(false)
                     else throw Error()
                 })
