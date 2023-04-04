@@ -6,12 +6,17 @@ module.exports = {
         try {
             return await cartSchema.findOne({ userId })
                 .populate("product.pId", "name price image slug")
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
                     if (res.product.length > 0) {
                         const product = res.product
+                        const cur = formatCurrency(cartItems.grandTotal)
+                        cartItems.product.forEach(ele => {
+                            ele.subTotal = formatCurrency(ele.subTotal)
+                        });
                         const data = {
                             product,
-                            grandTotal: res.grandTotal
+                            grandTotal: cur
                         }
                         return Promise.resolve(data)
                     }

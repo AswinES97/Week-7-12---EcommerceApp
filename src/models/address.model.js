@@ -1,3 +1,4 @@
+const { removeId } = require('../services/remId');
 const addressSchema = require('./address.mongo')
 const { v4: uuidv4 } = require('uuid');
 
@@ -6,10 +7,6 @@ function removeIdAndReturnAddress(data, uuid) {
         if (rest.addressId == uuid) return rest
         else return null
     }).filter(ele => ele != null)
-    return data
-}
-function removeId(data){
-    data = data.address.map(({ _id, ...rest }) =>rest)
     return data
 }
 
@@ -64,7 +61,7 @@ module.exports = {
             return await addressSchema.findOne({ userId }, { address: 1, _id: 0 })
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data =>{
-                    data = removeId(data)
+                    data = removeId(data.address)
                     return Promise.resolve(data)
                 })
 

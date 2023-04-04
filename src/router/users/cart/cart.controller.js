@@ -10,7 +10,7 @@ module.exports = {
     httpUserCart: (req, res) => {
         const userName = req.query.name
         const userId = req.query.id
-
+        
         if (userName && userId) {
             getCartProducts(userId)
                 .then(data => {
