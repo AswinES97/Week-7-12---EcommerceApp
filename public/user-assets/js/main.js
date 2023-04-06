@@ -737,19 +737,19 @@ function changeQuantityAjax(price, slug, quantity) {
             quantity
         },
         success: (res) => {
-            $(`#subTotal-${slug}`).html(`₹${res.subTotal}`)
-            $('.grandTotal').html(`₹${res.grandTotal}`)
+            $(`#subTotal-${slug}`).html(`${res.subTotal}`)
+            $('.grandTotal').html(`${res.grandTotal}`)
             $('td').find(`[data-id="${slug}"]`).html(`${res.quantity}`)
         },
         error: (err) => {
             swal(err.responseJSON.err)
-            
+
         }
     })
 }
 
 function qtychange(slug, qty) {
-    
+
     let { price, quantity } = getPriceAndQuantity(slug)
     if (Number(qty) < 0) price = -1 * Number(price)
     if (Number(quantity) >= 0 && qty === 1) {
@@ -759,18 +759,18 @@ function qtychange(slug, qty) {
     }
 }
 
-$('#address-tab').on('click',()=>{
-    $.get('/v1/users/address',(data,status)=>{
+$('#address-tab').on('click', () => {
+    $.get('/v1/users/address', (data, status) => {
         let content = ''
         data.ok.forEach(ele => {
-            content +=`
+            content += `
             <div class="col-lg-6">
             <div class="card mb-3 mb-lg-0">
                 <div class="card-body">
                     <h4>${ele.name}</h4>
                     <address>${ele.address1}<br>${ele.city} ,<br>${ele.state}<br>${ele.country}, ${ele.postal_code}</address>
                     <address>${ele.phone}</address>
-                    <a href="#" class="btn-small">Edit</a>
+                    <button onclick="editaddress('${ele.addressId}')" class="btn">Edit</button>
                 </div>
             </div>
             </div>
@@ -780,3 +780,81 @@ $('#address-tab').on('click',()=>{
         $('#address-tab-body').html(content)
     })
 })
+
+async function editaddress(addressId) {
+    await fetch(`/v1/users/address/${addressId}`)
+        .then(res => res.text())
+        .then(res => JSON.parse(res))
+        .then(data => {
+            [data] = data.ok
+            $('#form-name-field').val(data.name)
+            $('#form-address1-field').val(data.address1)
+            $('#form-address2-field').val(data.address2)
+            $('#form-city-field').val(data.city)
+            $('#form-state-field').val(data.state)
+            $('#form-country-field').val(data.country)
+            $('#form-pincode-field').val(data.postal_code)
+            $('#form-phone-field').val(data.phone)
+            $('#staticBackdrop').modal('show')
+            $('#form-save-field').attr('onclick', `formSubmit(event,'${addressId}')`)
+
+        })
+        .catch(err => {
+            swal(err.responseJSON.err)
+        })
+}
+
+$('.close-modal').on('click', () => {
+    $('#form-name-field').val('')
+    $('#form-address1-field').val('')
+    $('#form-address2-field').val('')
+    $('#form-city-field').val('')
+    $('#form-state-field').val('')
+    $('#form-country-field').val('')
+    $('#form-pincode-field').val('')
+    $('#form-phone-field').val('')
+})
+
+async function addAndUpdateAddress(addressId) {
+    const formData = $('#address-form').serializeArray();
+    let data = {
+        addressId
+    }
+    formData.forEach(ele => {
+        data[ele.name] = ele.value
+    })
+    console.log(data);
+    await fetch('/v1/users/address', {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
+}
+
+function formSubmit(event, addressId = null) {
+    event.preventDefault();
+    if (addressId) {
+        addAndUpdateAddress(addressId)
+    } else {
+        addAndUpdateAddress(addressId)
+    }
+}
+
+function addFromLanding(slug){
+    $.ajax({
+        url:'/v1/users/cart',
+        type:'POST',
+        data:{
+            slug
+        },
+        success:(res)=>{
+            swal('Success', 'added to cart', 'success')
+        },
+        error:(err)=>{
+            swal('Error Adding to cart')
+        }
+    })
+}

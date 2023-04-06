@@ -2,13 +2,13 @@ const express = require('express')
 const {
     adminNotLoggedIn, 
     adminLoggedIn
-} = require('../../services/session')
-const adminCategoryRouter = require('./admin-category/admin.category.router')
-const adminProductsRouter = require('./admin-products/admin.products.router')
-const adminUsersRouter = require('./admin-users/admin.users.router')
+} = require('../services/session')
+const adminCategoryRouter = require('./admin.category.router')
+const adminUsersRouter = require('./admin.users.router')
 const {
     httpGetAdminDetails,
-} = require('./admin.controller')
+} = require('../controller/admin.controller')
+const adminProductsRouter = require('./admin.products.router')
 
 const adminRouter = express.Router()
 

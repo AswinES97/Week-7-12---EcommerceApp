@@ -115,7 +115,7 @@ module.exports = {
                     'product.$.subTotal': price
                 }
             }, { new: true })
-                .then(res=>JSON.parse(JSON.stringify(res)))
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
                     const product = res.product.find(ele => ele.pId === pId)
                     const data = {

@@ -1,15 +1,15 @@
-const { getAllProducts } = require("../../models/products.model")
+const { getAllProducts } = require("../models/products.model")
 const {
     loginUserWithPhone,
     loginUserWithEmailAndPassword,
     addNewUser,
     getUserForVeri,
     getUser
-} = require("../../models/user.model")
+} = require("../models/user.model")
 const {
     sentOtp,
     verifyOtp
-} = require("../../services/otp.service")
+} = require("../services/otp.service")
 
 const {
     err_user,
@@ -17,7 +17,7 @@ const {
     err_otpNotSent,
     otp_sent,
     err_email
-} = require('../../services/responses')
+} = require('../services/responses')
 
 module.exports = {
 

@@ -1,7 +1,7 @@
 const {
     getAdminDetails,
     getAllUsers
-} = require("../../models/admin.model")
+} = require("../models/admin.model")
 
 module.exports = {
     httpGetAdminDetails: async (req, res) => {

@@ -1,6 +1,6 @@
 const { 
     getSingleProductPage
-} = require('./product.controller')
+} = require('../controller/product.controller')
 
 const productRouter = require('express').Router()
 

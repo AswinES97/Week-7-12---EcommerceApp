@@ -169,7 +169,7 @@
                                                 <div class="product-category">
                                                     <a href="/v1/product/<%=ele.slug%>"><%=ele.brand%></a>
                                                 </div>
-                                                <h2><a href="/v1/product/<%=ele.slug%>l"><%=ele.name%></a></h2>
+                                                <h2><a href="/v1/product/<%=ele.slug%>"><%=ele.name%></a></h2>
                                                 <div class="rating-result" title="90%">
                                                     <span>
                                                         <span>90%</span>
@@ -179,9 +179,15 @@
                                                     <span>₹<%=ele.price%></span>
                                                     <!-- <span class="old-price">$245.8</span> -->
                                                 </div>
+                                                <%if(userStatus){%>
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <a onclick="addFromLanding('<%=ele.slug%>')" aria-label="Add To Cart" class="action-btn hover-up" ><i class="fi-rs-shopping-bag-add"></i></a>
                                                 </div>
+                                                <%}else{%>
+                                                <div class="product-action-1 show">
+                                                    <a  data-bs-toggle="modal" data-bs-target="#staticBackdrop"  onclick="cartHome()" aria-label="Add To Cart" class="action-btn hover-up" href="#"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                </div>
+                                                <%}%>
                                             </div>
                                         </div>
                                     </div>

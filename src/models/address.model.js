@@ -68,5 +68,19 @@ module.exports = {
         } catch (err) {
             return Promise.reject('Not able to get Address!')
         }
+    },
+
+    getSingleAddress: async (userId,addressId)=>{
+        try {
+            return await addressSchema.findOne({userId,'address.addressId':addressId},{'address.$':1})
+                .then(res=>JSON.parse(JSON.stringify(res)))
+                .then(data=>{
+                    const address = removeId(data.address)
+                    return Promise.resolve(address)
+                })
+
+        } catch (err) {
+            return Promise.reject('No address found')
+        }
     }
 }

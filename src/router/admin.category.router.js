@@ -2,7 +2,7 @@ const {
     httpGetCategoryPage,
     httpGetCategory,
     httpAddCategory, 
-} = require('./admin.category,controller')
+} = require('../controller/admin.category,controller')
 
 const adminCategoryRouter = require('express').Router()
 

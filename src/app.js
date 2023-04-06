@@ -53,7 +53,6 @@ app.use(express.static(path.join(__dirname, "..", "public")))
 app.get('/', userNotLoggedIn, (req, res) => {
     getAllProducts()
         .then(response => {
-            console.log(response);
             return res.render('homepage', {
                 userStatus: req.session.user,
                 product: response

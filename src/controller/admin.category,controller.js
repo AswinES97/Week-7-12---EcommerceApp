@@ -3,7 +3,7 @@ const {
     getCategoryInitially,
     getCategoryType,
     getCategory
-} = require('../../../models/category.model')
+} = require('../models/category.model')
 
 module.exports = {
     httpGetCategoryPage: (req, res) => {

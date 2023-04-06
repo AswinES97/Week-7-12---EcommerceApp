@@ -1,6 +1,6 @@
-const { getAllAddress } = require("../../../models/address.model");
-const { getCartProducts } = require("../../../models/cart.model");
-const { formatCurrency } = require("../../../services/currencyFormatter");
+const { getAllAddress } = require("../models/address.model");
+const { getCartProducts } = require("../models/cart.model");
+const { formatCurrency } = require("../services/currencyFormatter");
 
 module.exports = {
     httpOrderPage: async (req, res) => {

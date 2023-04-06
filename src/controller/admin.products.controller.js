@@ -4,7 +4,7 @@ const {
     editProduct,
     deleteProduct,
     getSingleProduct
-} = require("../../../models/products.model")
+} = require("../models/products.model")
 
 module.exports = {
     httpGetAddProductPage: (req, res) => {

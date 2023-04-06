@@ -1,4 +1,4 @@
-const { httpGetDashboardPage } = require('./dashboard.controller')
+const { httpGetDashboardPage } = require('../controller/dashboard.controller')
 
 const dashboardRouter = require('express').Router()
 

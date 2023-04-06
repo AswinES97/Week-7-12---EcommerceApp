@@ -4,13 +4,14 @@ const {
     deleteAllProducts,
     getCartProducts,
     updateProductInCart
-} = require("../../../models/cart.model")
-const { getSingleProduct } = require('../../../models/products.model')
+} = require("../models/cart.model")
+const { getSingleProduct } = require('../models/products.model')
+
 module.exports = {
     httpUserCart: (req, res) => {
         const userName = req.query.name
         const userId = req.query.id
-        
+
         if (userName && userId) {
             getCartProducts(userId)
                 .then(data => {
@@ -38,10 +39,12 @@ module.exports = {
 
     httpAddToCart: async (req, res) => {
         let product;
+
         await getSingleProduct(req.body.slug)
             .then(response => {
                 product = JSON.parse(JSON.stringify(response))
             })
+
         const { size, quantity } = req.body
         const subTotal = Number(quantity) * product.price
         const data = {
@@ -49,27 +52,34 @@ module.exports = {
             size,
             quantity,
             subTotal,
-            pId: product._id,
-
+            pId: product._id
         }
+
         if (data.userId && quantity && subTotal && size) {
-            await addToCart(data)
+            return await addToCart(data)
                 .then(response => {
                     return res.json({ "ok": 'Proudct Added!' })
                 })
                 .catch(err => {
-                    console.log('add to cart err:', err);
                     return res.status(400).json({ 'err': 'Not Added!' })
                 })
         }
-        else if (userId && pId) {
+        else if (req.session.userId && product) {
             const data = {
-                userId,
-                pId,
-                qu
+                userId: req.session.userId,
+                size: product.quantity.size,
+                quantity: 1,
+                subTotal: product.price,
+                pId: product._id
             }
+            return await addToCart(data)
+                .then(response => {
+                    return res.json({ "ok": 'Proudct Added!' })
+                })
+                .catch(err => res.status(400).json({ 'err': 'Not Added!' }))
+
         } else {
-            return res.status
+            return res.status(400).json({ 'err': 'Not added' })
         }
     },
 
@@ -97,7 +107,7 @@ module.exports = {
     },
 
     httpDeleteAllProducts: (req, res) => {
-        const userId  = req.session.userId
+        const userId = req.session.userId
 
         if (!userId) {
             return res.status(400).json({ 'err': 'Cart not cleared!' })
@@ -112,11 +122,11 @@ module.exports = {
 
     httpUpdateProductInCart: (req, res) => {
         const userId = req.session.userId
-        return updateProductInCart(req.body,userId)
-            .then((response)=>{
+        return updateProductInCart(req.body, userId)
+            .then((response) => {
                 return res.json(response)
             })
-            .catch(()=>res.status(400).json({'err':'Not Updated'}))
+            .catch(() => res.status(400).json({ 'err': 'Not Updated' }))
     }
 
 }

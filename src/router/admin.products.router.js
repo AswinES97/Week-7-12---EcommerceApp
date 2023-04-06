@@ -1,6 +1,6 @@
 const { 
     uploadImageMulti
-} = require('../../../services/multer')
+} = require('../services/multer')
 const {
     httpGetAllProducts,
     httpAddNewProduct,
@@ -8,7 +8,7 @@ const {
     httpDeleteProduct,
     httpGetAddProductPage,
     httpGetProductEditPage
-} = require('./admin.products.controller')
+} = require('../controller/admin.products.controller')
 
 const adminProductsRouter = require('express').Router()
 
