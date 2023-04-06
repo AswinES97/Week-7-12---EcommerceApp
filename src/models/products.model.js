@@ -25,7 +25,7 @@ module.exports = {
     addNewProduct: (productData, imageLink) => {
         return new Promise(async (resolve, reject) => {
             let active = (productData.active === 'true')
-            const slug = slugify(productData.name, { lower: true, replacement: '_' })
+            const slug = slugify(`${productData.name} ${productData.brand}`, { lower: true, replacement: '_' })
             try {
                 const Product = await new product({
                     name: productData.name,

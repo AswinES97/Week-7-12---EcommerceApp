@@ -842,7 +842,7 @@ function changeAddressCard(data, id, from) {
     if(from === 'dash'){
         $(`#${id}`).html(createAddressCard(data))
     }else if( from === 'checkout'){
-
+        
     }
     swal('Updated')
     setTimeout(() => {
