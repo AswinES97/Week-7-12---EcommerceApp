@@ -2,7 +2,8 @@ const {
     httpGetAllAddress, 
     httpAddNewAddress,
     httpUpdateAddress,
-    httpGetSingleAddress 
+    httpGetSingleAddress,
+    httpDeleteAddress 
 } = require('../controller/address.controller')
 
 const addressRouter = require('express').Router()
@@ -14,5 +15,6 @@ addressRouter.route('/')
 
 addressRouter.route('/:id')
     .get(httpGetSingleAddress)
+    .delete(httpDeleteAddress)
 
 module.exports = addressRouter

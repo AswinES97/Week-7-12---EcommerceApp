@@ -1,3 +1,84 @@
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" id="staticBackdrop" id="address-modal">
+    <div class="modal-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add new address</h1>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mx-auto card-login">
+                        <div class="card-body">
+                            <form id="address-form">
+                                <div class="mb-3">
+                                    <label class="form-label">Name*</label>
+                                    <input class="form-control" placeholder="full name" type="text" name="name"
+                                        id="form-name-field" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address*</label>
+                                    <div class="row gx-2">
+                                        <div class="col-8">
+                                            <input class="form-control" placeholder="full address" type="text"
+                                                name="address1" required id="form-address1-field">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address2</label>
+                                    <div class="row gx-2">
+                                        <div class="col-8">
+                                            <input class="form-control" placeholder="full address" type="text"
+                                                name="address2" id="form-address2-field">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">City*</label>
+                                    <input class="form-control" placeholder="city" type="text" name="city" required
+                                        id="form-city-field">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">State*</label>
+                                    <input class="form-control" placeholder="state" type="text" name="state" required
+                                        id="form-state-field">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country*</label>
+                                    <input class="form-control" placeholder="country" type="text" name="country"
+                                        required id="form-country-field">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Pin Code*</label>
+                                    <input class="form-control" placeholder="pin-code" type="text" name="postal_code"
+                                        required id="form-pincode-field">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phone*</label>
+                                    <input class="form-control" placeholder="phone" type="tel" name="phone" required
+                                        id="form-phone-field">
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="form-save-field"
+                       >Save</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -25,6 +106,8 @@
                                 <address><%=ele.address1%> <%=ele.city%> ,<%=ele.state%> <%=ele.country%>, <%=ele.postal_code%></address>
                                 <address><%=ele.phone%></address>
                             </div>
+                            
+                            <button onclick="editaddress('<%=ele.addressId%>','checkout')" class="btn">Edit</button>
                     </div>
                     <%})%>
                 </div>

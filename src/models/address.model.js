@@ -60,7 +60,7 @@ module.exports = {
 
             return await addressSchema.findOne({ userId }, { address: 1, _id: 0 })
                 .then(res => JSON.parse(JSON.stringify(res)))
-                .then(data =>{
+                .then(data => {
                     data = removeId(data.address)
                     return Promise.resolve(data)
                 })
@@ -70,17 +70,57 @@ module.exports = {
         }
     },
 
-    getSingleAddress: async (userId,addressId)=>{
+    getSingleAddress: async (userId, addressId) => {
         try {
-            return await addressSchema.findOne({userId,'address.addressId':addressId},{'address.$':1})
-                .then(res=>JSON.parse(JSON.stringify(res)))
-                .then(data=>{
+            return await addressSchema.findOne({ userId, 'address.addressId': addressId }, { 'address.$': 1 })
+                .then(res => JSON.parse(JSON.stringify(res)))
+                .then(data => {
                     const address = removeId(data.address)
                     return Promise.resolve(address)
                 })
 
         } catch (err) {
             return Promise.reject('No address found')
+        }
+    },
+
+    updateAddress: async (userId, data) => {
+        try {
+            return await addressSchema.findOneAndUpdate({ userId, 'address.addressId': data.addressId }, {
+                $set: {
+                    'address.$.name': data.name,
+                    'address.$.address1': data.address1,
+                    'address.$.address2': data.address2,
+                    'address.$.city': data.city,
+                    'address.$.state': data.state,
+                    'address.$.country': data.country,
+                    'address.$.postal_code': data.postal_code,
+                    'address.$.phone': data.phone
+                }
+            }, { new: true })
+                .then(res => JSON.parse(JSON.stringify(res)))
+                .then(res => Promise.resolve(data.addressId))
+                .catch(err => console.log(err))
+        } catch (err) {
+            return Promise.reject("Mongo error!")
+        }
+    },
+
+    deleteaddress: async (userId, addressId)=>{
+        try {
+            
+            return await addressSchema.updateOne({userId},{
+                $pull:{
+                    address : { addressId: addressId }
+                }
+            })
+            .then(res => {
+                if (res.modifiedCount > 0) return Promise.resolve(addressId)
+                else return Promise.reject('Not Deleted')
+            })
+
+        } catch (err) {
+            console.log(err);
         }
     }
 }

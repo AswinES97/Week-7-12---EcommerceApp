@@ -635,6 +635,9 @@
 //     });
 
 // })(jQuery);
+// 
+
+
 function getPriceAndQuantity(slug) {
     const quantity = $('td').find(`[data-id="${slug}"]`).text()
     let price = $('td').find(`[data-title="${slug}"]`).text();
@@ -644,6 +647,8 @@ function getPriceAndQuantity(slug) {
         price: Number(price[1])
     }
 }
+
+// cart
 
 $('#addToCart').click(() => {
     const quantity = $('#qty').text().trim()
@@ -759,18 +764,21 @@ function qtychange(slug, qty) {
     }
 }
 
+// address
+
 $('#address-tab').on('click', () => {
     $.get('/v1/users/address', (data, status) => {
         let content = ''
         data.ok.forEach(ele => {
             content += `
-            <div class="col-lg-6">
+            <div class="col-lg-6" id='${ele.addressId}'>
             <div class="card mb-3 mb-lg-0">
                 <div class="card-body">
                     <h4>${ele.name}</h4>
                     <address>${ele.address1}<br>${ele.city} ,<br>${ele.state}<br>${ele.country}, ${ele.postal_code}</address>
                     <address>${ele.phone}</address>
-                    <button onclick="editaddress('${ele.addressId}')" class="btn">Edit</button>
+                    <button onclick="editaddress('${ele.addressId}','dash')" class="btn">Edit</button> 
+                    <button onclick="deleteaddress('${ele.addressId}')" class="btn" style="background-color:red">Delete</button>
                 </div>
             </div>
             </div>
@@ -781,7 +789,7 @@ $('#address-tab').on('click', () => {
     })
 })
 
-async function editaddress(addressId) {
+async function editaddress(addressId,from) {
     await fetch(`/v1/users/address/${addressId}`)
         .then(res => res.text())
         .then(res => JSON.parse(res))
@@ -796,7 +804,7 @@ async function editaddress(addressId) {
             $('#form-pincode-field').val(data.postal_code)
             $('#form-phone-field').val(data.phone)
             $('#staticBackdrop').modal('show')
-            $('#form-save-field').attr('onclick', `formSubmit(event,'${addressId}')`)
+            $('#form-save-field').attr('onclick', `formSubmit(event,'${addressId}','${from}')`)
 
         })
         .catch(err => {
@@ -804,7 +812,7 @@ async function editaddress(addressId) {
         })
 }
 
-$('.close-modal').on('click', () => {
+function clearmodel() {
     $('#form-name-field').val('')
     $('#form-address1-field').val('')
     $('#form-address2-field').val('')
@@ -813,47 +821,123 @@ $('.close-modal').on('click', () => {
     $('#form-country-field').val('')
     $('#form-pincode-field').val('')
     $('#form-phone-field').val('')
-})
+    $('#form-save-field').attr('onclick', `formSubmit(event)`)
+    $('#staticBackdrop').modal('show')
+}
 
-async function addAndUpdateAddress(addressId) {
-    const formData = $('#address-form').serializeArray();
-    let data = {
-        addressId
+function createAddressCard(data) {
+    return `<div class="card mb-3 mb-lg-0 id=${data.addressId}">
+    <div class="card-body">
+        <h4>${data.name}</h4>
+        <address>${data.address1}<br>${data.city} ,<br>${data.state}<br>${data.country}, ${data.postal_code}</address>
+        <address>${data.phone}</address>
+        <button onclick="editaddress('${data.addressId}','dash')" class="btn">Edit</button>
+        <button onclick="deleteaddress('${data.addressId}')" class="btn" style="background-color:red">Delete</button>
+    </div>
+</div>
+    `
+}
+
+function changeAddressCard(data, id, from) {
+    if(from === 'dash'){
+        $(`#${id}`).html(createAddressCard(data))
+    }else if( from === 'checkout'){
+
     }
+    swal('Updated')
+    setTimeout(() => {
+        $('#staticBackdrop').modal('hide')
+    }, 500);
+
+}
+
+function addAddressCard(data) {
+
+    $(`<div class="col-lg-6" id="${data.addressId}">
+    ${createAddressCard(data)}
+    </div>
+    `).appendTo('#address-tab-body')
+    swal('Added new address!')
+    setTimeout(() => {
+        $('#staticBackdrop').modal('hide')
+    }, 500);
+
+}
+
+async function addAndUpdateAddressAjax(method, data, from ) {
+    await fetch(`/v1/users/address/`, {
+        method,
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
+
+            [response] = response.ok
+            if (data.addressId) changeAddressCard(response, data.addressId, from)
+            else addAddressCard(response)
+        })
+        .catch(error => swal(error.responseJSON.err));
+}
+
+function addAndUpdateAddress(addressId, cb, from) {
+    const formData = $('#address-form').serializeArray();
+    let data = { addressId }
     formData.forEach(ele => {
         data[ele.name] = ele.value
     })
-    console.log(data);
-    await fetch('/v1/users/address', {
-        method: "POST",
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
 
+    if (addressId) cb("PUT", data, from)
+    else cb("POST", data, from)
 }
 
-function formSubmit(event, addressId = null) {
+function formSubmit(event, addressId = null, from = null) {
     event.preventDefault();
-    if (addressId) {
-        addAndUpdateAddress(addressId)
-    } else {
-        addAndUpdateAddress(addressId)
-    }
+    addAndUpdateAddress(addressId, addAndUpdateAddressAjax, from)
 }
 
-function addFromLanding(slug){
+function deleteaddress(addressId) {
+
+    swal('Remove Address', 'Are you sure you ?', 'warning', {
+        buttons: {
+            cancel: "Cancel",
+            catch: {
+                text: "Remove",
+                value: true,
+            }
+        }
+    }).then((result) => {
+        if (result) {
+            fetch(`/v1/users/address/${addressId}`, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    $(`#${data.ok}`).remove()
+                })
+                .catch(err => swal(err.responseJSON.err))
+        }
+    })
+
+
+
+
+}
+
+// add product cart
+function addFromLanding(slug) {
     $.ajax({
-        url:'/v1/users/cart',
-        type:'POST',
-        data:{
+        url: '/v1/users/cart',
+        type: 'POST',
+        data: {
             slug
         },
-        success:(res)=>{
+        success: (res) => {
             swal('Success', 'added to cart', 'success')
         },
-        error:(err)=>{
+        error: (err) => {
             swal('Error Adding to cart')
         }
     })
