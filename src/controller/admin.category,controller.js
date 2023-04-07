@@ -1,56 +1,63 @@
-const { 
+const {
     addCategoryToDb,
     getCategoryInitially,
     getCategoryType,
-    getCategory
+    getCategory,
+    getAllCategory
 } = require('../models/category.model')
 
 module.exports = {
     httpGetCategoryPage: (req, res) => {
-        return res.render('admin/admin-category', {
-            layout: 'admin/admin-layout',
-            adminTrue: req.session.admin
+        getAllCategory()
+            .then(data=>{
+                [data] = data
+                return res.render('admin/admin-category', {
+                    layout: 'admin/admin-layout',
+                    adminTrue: req.session.admin,
+                    data
+            })
         })
     },
 
-    httpAddCategory: async(req, res) => {
+    httpAddCategory: async (req, res) => {
         const { mainCategory, subCategory, addCategory } = req.body
-        
+
         await addCategoryToDb(mainCategory, subCategory, addCategory)
-            .then(()=>{
-                return res.json({'ok':'Category Added'})
+            .then(() => {
+                return res.json({ 'ok': 'Category Added' })
             })
-            .catch(()=>{
-                return res.status(400).json({'err':'Not Added'})
+            .catch(() => {
+                return res.status(400).json({ 'err': 'Not Added' })
             })
     },
 
-    httpGetCategory: (req,res)=>{
+    httpGetCategory: (req, res) => {
 
-        if(Object.keys(req.query).length === 0){
+        if (Object.keys(req.query).length === 0) {
             getCategoryInitially()
-            .then((data)=>{
-                return res.json(data)
-            })
-            .catch(err=>{
-                return res.status(500).json('Database Error!')
-            })
-        }else if(Object.keys(req.query).length === 2){
-            getCategoryType(req.query)
-                .then(data=>{
+                .then((data) => {
                     return res.json(data)
                 })
-                .catch(err=>{
+                .catch(err => {
                     return res.status(500).json('Database Error!')
                 })
-        }else{
+        } else if (Object.keys(req.query).length === 2) {
+            getCategoryType(req.query)
+                .then(data => {
+                    return res.json(data)
+                })
+                .catch(err => {
+                    return res.status(500).json('Database Error!')
+                })
+        } else {
             getCategory(req.query)
-                .then((data)=>{
+                .then((data) => {
                     return res.status(200).json(data)
                 })
-                .catch(err=>{
+                .catch(err => {
                     return res.status(400).json(err)
                 })
         }
-    }
+    },
+
 }

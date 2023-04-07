@@ -3,25 +3,22 @@ const { getCartProducts } = require("../models/cart.model");
 const { formatCurrency } = require("../services/currencyFormatter");
 
 module.exports = {
-    httpOrderPage: async (req, res) => {
+    httpCheckoutPage: async (req, res) => {
         const cartItems = await getCartProducts(req.session.userId)
         return getAllAddress(req.session.userId)
             .then(response => {
-                return res.render('order', {
+                return res.render('checkout', {
                     userStatus: req.session.user,
                     userId: req.session.userId,
                     userName: req.query.userName,
                     address: response,
+                    addressLength: response.length,
                     products: cartItems.product,
                     grandTotal: cartItems.grandTotal
                 })
             })
             .catch(err => {
-                return res.render('order', {
-                    userStatus: req.session.user,
-                    userId: req.session.userId,
-                    userName: req.query.userName
-                })
+                console.log(err);
             })
     },
 

@@ -1,3 +1,4 @@
+const { removeId } = require('../services/remId')
 const categorySchema = require('./category.mongo')
 
 
@@ -102,6 +103,18 @@ module.exports = {
 
         } catch (error) {
             return Promise.reject('Mongo Error!')
+        }
+    },
+
+    getAllCategory: async ()=>{
+        try {
+            
+            return await categorySchema.find()
+                .then(res=>JSON.parse(JSON.stringify(res)))
+                .then(data=>removeId(data))
+
+        } catch (err) {
+            console.log(err);
         }
     }
 }

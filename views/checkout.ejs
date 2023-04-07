@@ -93,11 +93,12 @@
         <div class="container">
             <div class="row">
             </div>
-            <div class="row">
+            <div class="row" id="address-tab-body">
                 <div class="col-md-6">
+                    <%if(addressLength != 0){%>
                     <h4>Select An address</h4>
                     <% address.forEach(ele=>{%>
-                    <div class="card mb-3 mb-lg-0">
+                    <div class="card mb-3 mb-lg-0" id="<%=ele.addressId%>">
                             <div class="card-body">
                                 <div>
                                     <input style="height: 1em;width: 1em;" type="radio" name="address" value="<%=ele.addressId%>" checked>
@@ -110,6 +111,9 @@
                             <button onclick="editaddress('<%=ele.addressId%>','checkout')" class="btn">Edit</button>
                     </div>
                     <%})%>
+                    <%}else{%>
+                        <button class="btn" onclick="clearmodel('checkout')">Add New Address</button>
+                    <%}%>
                 </div>
                 <div class="col-md-6">
                     <div class="order_review">

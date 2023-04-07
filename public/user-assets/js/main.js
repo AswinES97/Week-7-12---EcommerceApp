@@ -789,7 +789,98 @@ $('#address-tab').on('click', () => {
     })
 })
 
-async function editaddress(addressId,from) {
+function createAddressCardForDash(data) {
+    return `<div class="card mb-3 mb-lg-0 id=${data.addressId}">
+    <div class="card-body">
+        <h4>${data.name}</h4>
+        <address>${data.address1}<br>${data.city} ,<br>${data.state}<br>${data.country}, ${data.postal_code}</address>
+        <address>${data.phone}</address>
+        <button onclick="editaddress('${data.addressId}','dash')" class="btn">Edit</button>
+        <button onclick="deleteaddress('${data.addressId}')" class="btn" style="background-color:red">Delete</button>
+    </div>
+</div>
+    `
+}
+
+function changeAddressCard(data, id, from) {
+    if (from === 'dash') {
+        $(`#${id}`).html(createAddressCardForDash(data))
+        swal('Updated')
+        setTimeout(() => {
+            $('#staticBackdrop').modal('hide')
+        }, 500);
+    } else if (from === 'checkout') {
+        window.location.reload()
+    }
+
+
+}
+
+function addAddressCard(data, from) {
+    if (from === 'dash') {
+        $(`<div class="col-lg-6" id="${data.addressId}">
+    ${createAddressCardForDash(data)}
+    </div>
+    `).appendTo('#address-tab-body')
+        swal('Added new address!')
+        setTimeout(() => {
+            $('#staticBackdrop').modal('hide')
+        }, 500);
+    } else if (from === 'checkout') {
+        window.location.reload()
+    }
+
+
+}
+
+async function addAndUpdateAddressAjax(method, data, from) {
+    await fetch(`/v1/users/address/`, {
+        method,
+        body: JSON.stringify(data),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
+            [response] = response.ok
+
+            if (data.addressId) changeAddressCard(response, data.addressId, from)
+            else addAddressCard(response, from)
+        })
+        .catch(error => swal(error));
+}
+
+function addAndUpdateAddress(addressId, cb, from) {
+    const formData = $('#address-form').serializeArray();
+    let data = { addressId }
+    formData.forEach(ele => {
+        data[ele.name] = ele.value
+    })
+
+    if (addressId) cb("PUT", data, from)
+    else cb("POST", data, from)
+}
+
+function formSubmit(event, addressId = null, from = null) {
+    event.preventDefault();
+    addAndUpdateAddress(addressId, addAndUpdateAddressAjax, from)
+}
+
+function clearmodel(from) {
+    $('#form-name-field').val('')
+    $('#form-address1-field').val('')
+    $('#form-address2-field').val('')
+    $('#form-city-field').val('')
+    $('#form-state-field').val('')
+    $('#form-country-field').val('')
+    $('#form-pincode-field').val('')
+    $('#form-phone-field').val('')
+    $('#form-save-field').attr('onclick', `formSubmit(event,null,'${from}')`)
+    $('#staticBackdrop').modal('show')
+}
+
+async function editaddress(addressId, from) {
     await fetch(`/v1/users/address/${addressId}`)
         .then(res => res.text())
         .then(res => JSON.parse(res))
@@ -812,91 +903,6 @@ async function editaddress(addressId,from) {
         })
 }
 
-function clearmodel() {
-    $('#form-name-field').val('')
-    $('#form-address1-field').val('')
-    $('#form-address2-field').val('')
-    $('#form-city-field').val('')
-    $('#form-state-field').val('')
-    $('#form-country-field').val('')
-    $('#form-pincode-field').val('')
-    $('#form-phone-field').val('')
-    $('#form-save-field').attr('onclick', `formSubmit(event)`)
-    $('#staticBackdrop').modal('show')
-}
-
-function createAddressCard(data) {
-    return `<div class="card mb-3 mb-lg-0 id=${data.addressId}">
-    <div class="card-body">
-        <h4>${data.name}</h4>
-        <address>${data.address1}<br>${data.city} ,<br>${data.state}<br>${data.country}, ${data.postal_code}</address>
-        <address>${data.phone}</address>
-        <button onclick="editaddress('${data.addressId}','dash')" class="btn">Edit</button>
-        <button onclick="deleteaddress('${data.addressId}')" class="btn" style="background-color:red">Delete</button>
-    </div>
-</div>
-    `
-}
-
-function changeAddressCard(data, id, from) {
-    if(from === 'dash'){
-        $(`#${id}`).html(createAddressCard(data))
-    }else if( from === 'checkout'){
-        
-    }
-    swal('Updated')
-    setTimeout(() => {
-        $('#staticBackdrop').modal('hide')
-    }, 500);
-
-}
-
-function addAddressCard(data) {
-
-    $(`<div class="col-lg-6" id="${data.addressId}">
-    ${createAddressCard(data)}
-    </div>
-    `).appendTo('#address-tab-body')
-    swal('Added new address!')
-    setTimeout(() => {
-        $('#staticBackdrop').modal('hide')
-    }, 500);
-
-}
-
-async function addAndUpdateAddressAjax(method, data, from ) {
-    await fetch(`/v1/users/address/`, {
-        method,
-        body: JSON.stringify(data),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        }
-    })
-        .then(response => response.json())
-        .then(response => {
-
-            [response] = response.ok
-            if (data.addressId) changeAddressCard(response, data.addressId, from)
-            else addAddressCard(response)
-        })
-        .catch(error => swal(error.responseJSON.err));
-}
-
-function addAndUpdateAddress(addressId, cb, from) {
-    const formData = $('#address-form').serializeArray();
-    let data = { addressId }
-    formData.forEach(ele => {
-        data[ele.name] = ele.value
-    })
-
-    if (addressId) cb("PUT", data, from)
-    else cb("POST", data, from)
-}
-
-function formSubmit(event, addressId = null, from = null) {
-    event.preventDefault();
-    addAndUpdateAddress(addressId, addAndUpdateAddressAjax, from)
-}
 
 function deleteaddress(addressId) {
 
