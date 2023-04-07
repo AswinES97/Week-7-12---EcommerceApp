@@ -4,7 +4,7 @@ const {
 
 const productRouter = require('express').Router()
 
-productRouter.route('/:slug')
+productRouter.route('/')
     .get(getSingleProductPage)
 
 module.exports = productRouter

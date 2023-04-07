@@ -15,14 +15,13 @@ module.exports = {
         if (userName && userId) {
             getCartProducts(userId)
                 .then(data => {
-                    const products = data.product
                     return res.render('users/cart', {
                         userStatus: req.session.user,
                         userName,
                         userId,
                         dataPresent: true,
                         grandTotal: data.grandTotal,
-                        products
+                        products: data.product
                     })
                 })
                 .catch(err => {
@@ -39,12 +38,11 @@ module.exports = {
 
     httpAddToCart: async (req, res) => {
         let product;
-
-        await getSingleProduct(req.body.slug)
+        console.log(req.body);
+        await getSingleProduct(req.body.pId)
             .then(response => {
                 product = JSON.parse(JSON.stringify(response))
             })
-
         const { size, quantity } = req.body
         const subTotal = Number(quantity) * product.price
         const data = {
@@ -52,7 +50,7 @@ module.exports = {
             size,
             quantity,
             subTotal,
-            pId: product._id
+            pId: req.body.pId
         }
 
         if (data.userId && quantity && subTotal && size) {
@@ -70,7 +68,7 @@ module.exports = {
                 size: product.quantity.size,
                 quantity: 1,
                 subTotal: product.price,
-                pId: product._id
+                pId: req.body.pId
             }
             return await addToCart(data)
                 .then(response => {
@@ -84,9 +82,8 @@ module.exports = {
     },
 
     httpRemoveFromCart: async (req, res) => {
-        const { slug, quantity, price } = req.body
+        const { pId, quantity, price } = req.body
         const userId = req.session.userId
-        let pId = await getSingleProduct(slug).then(response => JSON.parse(JSON.stringify(response._id)))
         const data = {
             pId,
             userId,

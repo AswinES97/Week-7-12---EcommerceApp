@@ -653,15 +653,15 @@ function getPriceAndQuantity(slug) {
 $('#addToCart').click(() => {
     const quantity = $('#qty').text().trim()
     const size = $('#size').text().trim()
-    let slug = window.location.pathname.split("/")
-    slug = slug[slug.length - 1]
+    let pId = window.location.search.split("=")
+    pId = pId[pId.length - 1]
 
     $('#addToCart').prop('disabled', true)
     $.ajax({
         url: '/v1/users/cart',
         type: 'POST',
         data: {
-            slug,
+            pId,
             size,
             quantity
         },
@@ -675,7 +675,7 @@ $('#addToCart').click(() => {
     })
 })
 
-$('.delete-btn').on('click', function () {
+function deleteItem(slug,pId) {
     swal('Remove Item', 'Are you sure you want to remove this item?', 'warning', {
         buttons: {
             cancel: "Cancel",
@@ -686,14 +686,13 @@ $('.delete-btn').on('click', function () {
         }
     }).then((result) => {
         if (result) {
-            const slug = $(this).closest('tr').find('td[data-item-id]').data('itemId');
             let { price, quantity } = getPriceAndQuantity(slug)
             price = price * quantity
             $.ajax({
                 url: '/v1/users/cart/',
                 type: 'PUT',
                 data: {
-                    slug,
+                    pId,
                     price: price
                 },
                 success: (res) => {
@@ -705,7 +704,7 @@ $('.delete-btn').on('click', function () {
             })
         }
     });
-})
+}
 
 $('#clear-cart').click(() => {
     swal('Are you sure?', {
@@ -732,13 +731,13 @@ $('#clear-cart').click(() => {
     })
 })
 
-function changeQuantityAjax(price, slug, quantity) {
+function changeQuantityAjax(price, pId, quantity,slug) {
     return $.ajax({
         url: '/v1/users/cart',
         type: 'PATCH',
         data: {
             price,
-            slug,
+            pId,
             quantity
         },
         success: (res) => {
@@ -753,14 +752,14 @@ function changeQuantityAjax(price, slug, quantity) {
     })
 }
 
-function qtychange(slug, qty) {
+function qtychange(slug, pId, qty) {
 
     let { price, quantity } = getPriceAndQuantity(slug)
     if (Number(qty) < 0) price = -1 * Number(price)
     if (Number(quantity) >= 0 && qty === 1) {
-        return changeQuantityAjax(price, slug, qty)
+        return changeQuantityAjax(price, pId, qty,slug)
     } else if (Number(quantity) > 1 && qty === -1) {
-        return changeQuantityAjax(price, slug, qty)
+        return changeQuantityAjax(price, pId, qty,slug)
     }
 }
 
@@ -933,12 +932,12 @@ function deleteaddress(addressId) {
 }
 
 // add product cart
-function addFromLanding(slug) {
+function addFromLanding(pId) {
     $.ajax({
         url: '/v1/users/cart',
         type: 'POST',
         data: {
-            slug
+            pId
         },
         success: (res) => {
             swal('Success', 'added to cart', 'success')

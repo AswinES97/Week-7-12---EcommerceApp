@@ -1,7 +1,7 @@
 const { 
     httpNewOrder, 
     httpCheckoutPage,
-} = require('../controller/order.controller')
+} = require('../controller/checkout.controller')
 
 const orderRouter = require('express').Router()
 

@@ -131,11 +131,11 @@
                                 <tbody>
                                     <%products.forEach(ele=>{%>
                                     <tr>
-                                        <td class="image product-thumbnail"><img src="<%=ele.pId.image[0]%>" alt="#"></td>
+                                        <td class="image product-thumbnail"><img src="<%=ele.productDetails[0].image[0]%>" alt="#"></td>
                                         <td>
-                                            <h5><a href="#"><%=ele.pId.name%></a></h5> <span class="product-qty">x<%=ele.quantity%></span>
+                                            <h5><a href="#"><%=ele.productDetails[0].name%></a></h5> <span class="product-qty">x<%=ele.product.quantity%></span>
                                         </td>
-                                        <td><%=ele.subTotal%></td>
+                                        <td><%=ele.product.subTotal%></td>
                                     </tr>
                                     <%})%>
                                         <th>SubTotal</th>

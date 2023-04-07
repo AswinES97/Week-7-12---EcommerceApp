@@ -1,23 +1,44 @@
 const { formatCurrency } = require('../services/currencyFormatter');
 const cartSchema = require('./cart.mongo')
+const ObjectId = require('mongodb').ObjectId
 const { getSingleProduct } = require('./products.model')
 
 module.exports = {
     getCartProducts: async (userId) => {
         try {
-            return await cartSchema.findOne({ userId })
-                .populate("product.pId", "name price image slug")
+            return await cartSchema.aggregate([
+                {
+                    $match: {
+                        userId: ObjectId(userId)
+                    }
+                }, {
+                    $unwind: '$product'
+                },{
+                    $lookup: {
+                        from: 'products',
+                        localField:'product.pId',
+                        foreignField:'pId',
+                        as:'productDetails'
+                    }
+                },{
+                    $project:{
+                        '_id':0,
+                        'product':1,
+                        'grandTotal':1,
+                        'productDetails':1
+                    }
+                }
+            ])
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
-                    if (res.product.length > 0) {
+                    if (res.length > 0) {
                         console.log(res);
-                        const product = res.product
-                        const cur = formatCurrency(res.grandTotal)
-                        product.forEach(ele => {
-                            ele.subTotal = formatCurrency(ele.subTotal)
+                        const cur = formatCurrency(res[0].grandTotal)
+                        res.forEach(ele => {
+                            ele.product.subTotal = formatCurrency(ele.product.subTotal)
                         });
                         const data = {
-                            product,
+                            product:res,
                             grandTotal: cur
                         }
                         return Promise.resolve(data)
@@ -32,7 +53,7 @@ module.exports = {
     addToCart: async (data) => {
         try {
             const { userId, size, quantity, subTotal, pId } = data
-            return await cartSchema.findOne({ userId: userId })
+            return await cartSchema.findOne({ userId })
                 .then(res => {
                     if (!res) return false
                     else return res
@@ -100,14 +121,10 @@ module.exports = {
     },
 
     updateProductInCart: async (data, userId) => {
-        let { slug, quantity, price } = data
+        let { pId, quantity, price } = data
         quantity = Number(quantity)
         price = Number(price)
         try {
-            await getSingleProduct(slug, userId)
-                .then(response => pId = JSON.parse(JSON.stringify(response._id)))
-                .catch(err => { throw Error() })
-
             return await cartSchema.findOneAndUpdate({ userId, 'product.pId': pId }, {
                 $inc: {
                     grandTotal: price,

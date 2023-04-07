@@ -14,7 +14,7 @@ const {
     httpAddNewUserEmailOtp,
 } = require('../controller/user.controller')
 const userCartRouter = require('./cart.router')
-const checkoutRouter = require('./order.router')
+const checkoutRouter = require('./checkout.router')
 const dashboardRouter = require('./dashboard.router')
 const addressRouter = require('./address.router')
 
@@ -47,7 +47,7 @@ userRouter.route('/logout')
     .get(httpUserLogout)
 
 userRouter.use('/cart',userLoggedIn,userCartRouter)
-userRouter.use('/order',userLoggedIn,checkoutRouter)
+userRouter.use('/checkout',userLoggedIn,checkoutRouter)
 userRouter.use('/dashboard',userLoggedIn,dashboardRouter)
 userRouter.use('/address',userLoggedIn,addressRouter)
 

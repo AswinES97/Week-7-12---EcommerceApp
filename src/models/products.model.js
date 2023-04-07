@@ -3,9 +3,9 @@ const cloudinary = require('cloudinary').v2;
 const slugify = require('slugify')
 const { v4: uuidv4 } = require('uuid');
 
-const getSingleProduct = (slug) => {
+const getSingleProduct = (pId) => {
     return new Promise(async (resolve, reject) => {
-        await product.findOne({ slug })
+        await product.findOne({ pId })
             .then(data => {
                 resolve(data)
             })

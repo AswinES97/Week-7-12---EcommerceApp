@@ -19,30 +19,30 @@
                             <tbody>
                                 <% products.forEach(ele=>{%>
                                     <tr>
-                                        <td class="image product-thumbnail"><img src="<%=ele.pId.image[0]%>" alt="#">
+                                        <td class="image product-thumbnail"><img src="<%=ele.productDetails[0].image[0]%>" alt="#">
                                         </td>
                                         <td class="product-des product-name">
-                                            <h5 class="product-name"><a href="/v1/product/<%=ele.pId.slug%>">
-                                                    <%=ele.pId.name%>
+                                            <h5 class="product-name"><a href="/v1/product?name=<%=ele.productDetails[0].slug%>&&pId=<%=ele.product.pId%>">
+                                                    <%=ele.productDetails[0].name%>
                                                 </a></h5>
                                         </td>
-                                        <td class="price"><span data-title="<%=ele.pId.slug%>">₹<%=ele.pId.price%>
+                                        <td class="price"><span data-title="<%=ele.productDetails[0].slug%>">₹<%=ele.productDetails[0].price%>
                                                     </span></td>
                                         <td class="text-center" data-title="Stock">
                                             <div class="detail-qty border radius  m-auto">
-                                                <a href="#"  class="qty-down"><i onclick="qtychange('<%=ele.pId.slug%>',-1)" class="fi-rs-angle-small-down"></i></a>
-                                                <span data-id="<%=ele.pId.slug%>" >
-                                                    <%=ele.quantity%>
+                                                <a href="#"  class="qty-down"><i onclick="qtychange('<%=ele.productDetails[0].slug%>','<%=ele.product.pId%>',-1)" class="fi-rs-angle-small-down"></i></a>
+                                                <span data-id="<%=ele.productDetails[0].slug%>" >
+                                                    <%=ele.product.quantity%>
                                                 </span>
-                                                <a href="#"  class="qty-up"><i  onclick="qtychange('<%=ele.pId.slug%>',1)" class="fi-rs-angle-small-up"></i></a>
+                                                <a href="#"  class="qty-up"><i  onclick="qtychange('<%=ele.productDetails[0].slug%>','<%=ele.product.pId%>',1)" class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">
-                                            <span id="subTotal-<%=ele.pId.slug%>">
-                                                <%=ele.subTotal%>
+                                            <span id="subTotal-<%=ele.productDetails[0].slug%>">
+                                                <%=ele.product.subTotal%>
                                             </span>
                                         </td>
-                                        <td class="action" data-title="Remove" data-item-id="<%=ele.pId.slug%>"><button
+                                        <td class="action" data-title="Remove" onclick="deleteItem('<%=ele.productDetails[0].slug%>','<%=ele.product.pId%>')"><button
                                                 class="delete-btn" style="border-color: transparent;"><i
                                                     class="fi-rs-trash"></i></button></td>
                                     </tr>
@@ -392,7 +392,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <a href="/v1/users/order?userName=<%=userName%>" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                                <a href="/v1/users/checkout?userName=<%=userName%>" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                             </div>
                         </div>
                     </div>
