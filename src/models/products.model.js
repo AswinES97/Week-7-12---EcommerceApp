@@ -1,6 +1,7 @@
 const product = require('./products.mongo')
 const cloudinary = require('cloudinary').v2;
 const slugify = require('slugify')
+const { v4: uuidv4 } = require('uuid');
 
 const getSingleProduct = (slug) => {
     return new Promise(async (resolve, reject) => {
@@ -24,11 +25,13 @@ module.exports = {
 
     addNewProduct: (productData, imageLink) => {
         return new Promise(async (resolve, reject) => {
+            const productId = uuidv4()
             let active = (productData.active === 'true')
             const slug = slugify(`${productData.name} ${productData.brand}`, { lower: true, replacement: '_' })
             try {
                 const Product = await new product({
                     name: productData.name,
+                    productId,
                     slug,
                     price: Number(productData.price),
                     brand: productData.brand.toUpperCase(),
