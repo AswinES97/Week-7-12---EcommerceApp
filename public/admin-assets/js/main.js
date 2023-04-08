@@ -256,10 +256,10 @@ function deleteProduct($event, pId) {
     })
 }
 
-function access($event, access, id) {
+function access($event, access, userId) {
     $event.preventDefault()
     $.ajax({
-        url: `http://localhost:3000/v1/admin/users/access?id=${id}&access=${access}`,
+        url: `http://localhost:3000/v1/admin/users/access?userId=${userId}&access=${access}`,
         type: 'PATCH',
         success: (data, status, xhr) => {
             window.location.reload()

@@ -19,9 +19,9 @@ module.exports = {
     },
 
     httpUserAccess: async (req, res) => {
-        let { id, access } = req.query
-        if (id.length == 24) {
-            await userAccess(id, access)
+        let { userId, access } = req.query
+        if (userId) {
+            await userAccess(userId, access)
             .then((access)=>{
                 return res.status(200).json({'access':access})
             })

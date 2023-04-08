@@ -25,9 +25,9 @@ module.exports = {
         })
     },
     
-    userAccess: (id, access) => {
+    userAccess: (userId, access) => {
         return new Promise(async(resolve,reject)=>{
-            await userSchema.findOneAndUpdate({_id:id},{$set:{access:access}},{new:true})
+            await userSchema.findOneAndUpdate({userId},{$set:{access:access}},{new:true})
                 .then(response=>{
                     resolve(response.access)
                 })

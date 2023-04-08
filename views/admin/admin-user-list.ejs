@@ -109,12 +109,12 @@
                             </div> -->
                             <%if(data[i].access){%>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="#" onclick="access(event,false,'<%=data[i]._id%>')" class="btn btn-sm font-sm rounded btn-brand" style="background-color: rgb(145, 6, 6);">
+                                <a href="#" onclick="access(event,false,'<%=data[i].userId%>')" class="btn btn-sm font-sm rounded btn-brand" style="background-color: rgb(145, 6, 6);">
                                     Block
                                 </a>
                                 <%}else{%>
                                     <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                        <a href="#" onclick="access(event,true,'<%=data[i]._id%>')" class="btn btn-sm font-sm rounded btn-brand" style="background-color: rgb(62, 145, 6);">
+                                        <a href="#" onclick="access(event,true,'<%=data[i].userId%>')" class="btn btn-sm font-sm rounded btn-brand" style="background-color: rgb(62, 145, 6);">
                                             Unblock
                                         </a>
                                     <%}%>
