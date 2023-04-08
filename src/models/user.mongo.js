@@ -1,20 +1,29 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
+    userId:{
+        type: String,
+        required: true,
+        unique: true
+    },
     fname: {
         type: String,
+        required: true
     },
     lname: {
         type: String,
     },
     gender: {
         type: String,
+        required: true
     },
     email: {
         type: String,
+        required: true
     },
     password: {
         type: String,
+        required: true
     },
     phn_no: {
         type: Number,
@@ -22,7 +31,8 @@ const userSchema = new mongoose.Schema({
     },
     access: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     }
     
 },{versionKey:false})

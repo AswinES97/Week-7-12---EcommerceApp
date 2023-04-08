@@ -109,10 +109,10 @@
                                 <span class="ms-4"><%=data[i].quantity.quantity%></span>
                             </div>
                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="/v1/admin/products/<%=data[i].slug%>" class="btn btn-sm font-sm rounded btn-brand">
+                                <a href="/v1/admin/products/<%=data[i].pId%>" class="btn btn-sm font-sm rounded btn-brand">
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
-                                <a href="#" onclick="deleteProduct(event,'<%=data[i].slug%>' )" class="btn btn-sm font-sm btn-light rounded">
+                                <a href="#" onclick="deleteProduct(event,'<%=data[i].pId%>' )" class="btn btn-sm font-sm btn-light rounded">
                                     <i class="material-icons md-delete_forever"></i> Delete
                                 </a>
                             </div>

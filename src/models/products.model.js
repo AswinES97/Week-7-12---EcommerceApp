@@ -26,12 +26,13 @@ module.exports = {
     addNewProduct: (productData, imageLink) => {
         return new Promise(async (resolve, reject) => {
             const productId = uuidv4()
-            let active = (productData.active === 'true')
             const slug = slugify(`${productData.name} ${productData.brand}`, { lower: true, replacement: '_' })
+            let active = (productData.active === 'true')
+
             try {
                 const Product = await new product({
                     name: productData.name,
-                    productId,
+                    pId:productId,
                     slug,
                     price: Number(productData.price),
                     brand: productData.brand.toUpperCase(),
@@ -62,18 +63,18 @@ module.exports = {
         })
     },
 
-    editProduct: (slug, productData, imgLink) => {
+    editProduct: (pId, productData, imgLink) => {
         return new Promise(async (resolve, reject) => {
             let active = (productData.active === 'true')
 
             if (imgLink.length != 0) {
-                await deletImageFromCloud(slug)
+                await deletImageFromCloud(pId)
             } else {
                 imgLink = undefined
             }
 
             try {
-                await product.findOneAndUpdate({ slug }, {
+                await product.findOneAndUpdate({ pId }, {
                     $set: {
                         name: productData.name,
                         price: Number(productData.price),
@@ -104,12 +105,12 @@ module.exports = {
         })
     },
 
-    deleteProduct: (slug) => {
+    deleteProduct: (pId) => {
         return new Promise(async (resolve, reject) => {
 
-            await deletImageFromCloud(slug)
+            await deletImageFromCloud(pId)
 
-            await product.deleteOne({ slug })
+            await product.deleteOne({ pId })
                 .then(data => {
                     if (data.deletedCount == 1)
                         resolve(true)
@@ -120,8 +121,8 @@ module.exports = {
     }
 }
 
-const deletImageFromCloud = async (slug) => {
-    await getSingleProduct(slug)
+const deletImageFromCloud = async (pId) => {
+    await getSingleProduct(pId)
         .then(async data => {
             const imgLink = data.image
             for (let i = 0; i < imgLink.length; i++) {

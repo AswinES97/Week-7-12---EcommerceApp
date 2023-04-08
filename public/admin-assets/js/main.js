@@ -229,16 +229,29 @@ async function createCategory($event) {
     }
 }
 
-function deleteProduct($event, slug) {
+function deleteProduct($event, pId) {
     $event.preventDefault()
-    $.ajax({
-        url: `http://localhost:3000/v1/admin/products/${slug}`,
-        type: "DELETE",
-        success: function (data) {
-            window.location.reload()
-        },
-        error: () => {
-            console.log('error');
+
+    swal('Delete','Delete this product?','warning',{
+        buttons: {
+            cancel: "Cancel",
+            catch: {
+                text: "Remove",
+                value: true,
+            }
+        }
+    }).then((result) => {
+        if (result) {
+            $.ajax({
+                url: `http://localhost:3000/v1/admin/products/${pId}`,
+                type: "DELETE",
+                success: function (data) {
+                    window.location.reload()
+                },
+                error: () => {
+                    console.log('error');
+                }
+            })
         }
     })
 }

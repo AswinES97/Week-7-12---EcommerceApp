@@ -15,10 +15,10 @@ module.exports = {
     },
 
     httpGetProductEditPage: async (req, res) => {
-        const slug = req.params.id
+        const pId = req.params.id
 
-        if (slug) {
-            await getSingleProduct(slug)
+        if (pId) {
+            await getSingleProduct(pId)
                 .then(data => {
                     if (data)
                         return res.render('admin/admin-update-product', {
@@ -60,11 +60,11 @@ module.exports = {
     },
 
     httpEditProduct: async (req, res) => {
-        const slug = req.params.id
+        const pId = req.params.id
         const imgLink = req.files.map(data => data.path)
 
-        if (slug && req.body) {
-            await editProduct(slug, req.body, imgLink)
+        if (pId && req.body) {
+            await editProduct(pId, req.body, imgLink)
                 .then(() => {
                     return res.redirect('/v1/admin/products')
                 })
@@ -77,10 +77,10 @@ module.exports = {
     },
 
     httpDeleteProduct: async (req, res) => {
-        const slug = req.params.id
+        const pId = req.params.id
 
-        if (slug) {
-            await deleteProduct(slug)
+        if (pId) {
+            await deleteProduct(pId)
                 .then((status) => {
                     if (status) {
                         return res.status(200).json({ "ok": "deleted" })
