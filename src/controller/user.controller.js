@@ -21,7 +21,7 @@ const {
 
 module.exports = {
 
-
+// otp login
     httpsentOtpToUser: async (req, res) => {
 
         if (req.body.phn_no) {
@@ -93,7 +93,7 @@ module.exports = {
             return res.status(400).json({ 'err': 'No email' })
     },
 
-    // sent otp
+// sent otp
     httpAddNewUserEmailOtp: async (req, res) => {
 
         if (req.body.phn_no && req.body.email) {

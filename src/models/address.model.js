@@ -112,15 +112,14 @@ module.exports = {
 
     deleteaddress: async (userId, addressId)=>{
         try {
-            
-            return await addressSchema.updateOne({userId},{
+            console.log(userId,addressId);
+            return await addressSchema.findOneAndUpdate({userId},{
                 $pull:{
                     address : { addressId: addressId }
                 }
             })
             .then(res => {
-                if (res.modifiedCount > 0) return Promise.resolve(addressId)
-                else return Promise.reject('Not Deleted')
+                console.log(res);
             })
 
         } catch (err) {

@@ -1,4 +1,4 @@
-const { hashPassword } = require('../services/bcrypt');
+const { hashPassword, checkPassword } = require('../services/bcrypt');
 const userSchema = require('./user.mongo')
 const { v4: uuidv4 } = require('uuid');
 
@@ -18,23 +18,23 @@ module.exports = {
         })
     },
 
-    loginUserWithEmailAndPassword: (userData) => {
+    loginUserWithEmailAndPassword: (userData,) => {
         return new Promise(async (resolve, reject) => {
             await userSchema.findOne({ email: userData.email })
-                .then(data => {
+                .then(async data => {
                     if (!data) return reject(false)
-                    if (data.password == userData.pass) return resolve(data)
+                    const passMatch = await checkPassword(userData.pass, data.password)
+                    if (passMatch) return resolve(data)
                     reject(false)
                 })
         })
     },
 
-    addNewUser: (phn_no, email, name,password) => {
+    addNewUser: (phn_no, email, name, password) => {
         const userId = uuidv4()
         return new Promise(async (resolve, reject) => {
             try {
-                const hash = hashPassword(password)
-                console.log(hash);
+                const hash = await hashPassword(password)
                 const user = await userSchema.create({
                     userId,
                     fname: name,
@@ -53,7 +53,7 @@ module.exports = {
         })
     },
 
-    getUserForVeri: (phn_no, email ) => {
+    getUserForVeri: (phn_no, email) => {
         return new Promise(async (resolve, reject) => {
             return await userSchema.findOne({ $or: [{ phn_no: phn_no }, { email: email }] })
                 .then(response => {
