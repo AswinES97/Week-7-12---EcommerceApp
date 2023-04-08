@@ -118,7 +118,9 @@ module.exports = {
                         resolve(false)
                 })
         })
-    }
+    },
+
+    uuidv4
 }
 
 const deletImageFromCloud = async (pId) => {

@@ -1,6 +1,6 @@
+const dashboardRouter = require('express').Router()
 const { httpGetDashboardPage } = require('../controller/dashboard.controller')
 
-const dashboardRouter = require('express').Router()
 
 dashboardRouter.route('/')
     .get(httpGetDashboardPage)

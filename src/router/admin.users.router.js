@@ -1,9 +1,9 @@
+const adminUsersRouter = require('express').Router()
 const {
     httpGetAllUsers,
     httpUserAccess
 } = require('../controller/admin.users.controller')
 
-const adminUsersRouter = require('express').Router()
 
 adminUsersRouter.route('/')
     .get(httpGetAllUsers)

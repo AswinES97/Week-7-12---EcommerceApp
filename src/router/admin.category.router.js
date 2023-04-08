@@ -1,10 +1,10 @@
+const adminCategoryRouter = require('express').Router()
 const { 
     httpGetCategoryPage,
     httpGetCategory,
     httpAddCategory, 
 } = require('../controller/admin.category,controller')
 
-const adminCategoryRouter = require('express').Router()
 
 adminCategoryRouter.route('/')
     .get(httpGetCategoryPage)

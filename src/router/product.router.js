@@ -1,8 +1,8 @@
+const productRouter = require('express').Router()
 const { 
     getSingleProductPage
 } = require('../controller/product.controller')
 
-const productRouter = require('express').Router()
 
 productRouter.route('/')
     .get(getSingleProductPage)

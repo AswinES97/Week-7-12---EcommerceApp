@@ -1,6 +1,6 @@
 const { hashPassword, checkPassword } = require('../services/bcrypt');
 const userSchema = require('./user.mongo')
-const { v4: uuidv4 } = require('uuid');
+const { uuidv4 } = require('./products.model')
 
 module.exports = {
 

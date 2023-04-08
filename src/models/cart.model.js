@@ -1,6 +1,5 @@
 const { formatCurrency } = require('../services/currencyFormatter');
 const cartSchema = require('./cart.mongo')
-const ObjectId = require('mongodb').ObjectId
 const { getSingleProduct } = require('./products.model')
 
 module.exports = {

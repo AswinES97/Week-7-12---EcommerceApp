@@ -1,9 +1,9 @@
+const orderRouter = require('express').Router()
 const { 
     httpNewOrder, 
     httpCheckoutPage,
 } = require('../controller/checkout.controller')
 
-const orderRouter = require('express').Router()
 
 orderRouter.route('/')
     .get(httpCheckoutPage)

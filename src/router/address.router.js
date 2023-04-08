@@ -1,12 +1,13 @@
-const { 
-    httpGetAllAddress, 
+const addressRouter = require('express').Router()
+const {
+    httpGetAllAddress,
     httpAddNewAddress,
     httpUpdateAddress,
     httpGetSingleAddress,
-    httpDeleteAddress 
+    httpDeleteAddress
 } = require('../controller/address.controller')
 
-const addressRouter = require('express').Router()
+
 
 addressRouter.route('/')
     .get(httpGetAllAddress)

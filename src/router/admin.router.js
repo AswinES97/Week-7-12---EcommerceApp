@@ -1,16 +1,15 @@
-const express = require('express')
+const adminRouter = require('express').Router()
 const {
     adminNotLoggedIn, 
     adminLoggedIn
-} = require('../services/session')
-const adminCategoryRouter = require('./admin.category.router')
-const adminUsersRouter = require('./admin.users.router')
+} = require('../middleware/session')
 const {
     httpGetAdminDetails,
 } = require('../controller/admin.controller')
+const adminCategoryRouter = require('./admin.category.router')
+const adminUsersRouter = require('./admin.users.router')
 const adminProductsRouter = require('./admin.products.router')
 
-const adminRouter = express.Router()
 
 adminRouter.route('/')
     .all(adminNotLoggedIn)

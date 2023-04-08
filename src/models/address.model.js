@@ -1,6 +1,6 @@
 const { removeId } = require('../services/remId');
 const addressSchema = require('./address.mongo')
-const { v4: uuidv4 } = require('uuid');
+const { uuidv4 } = require('./products.model')
 
 function removeIdAndReturnAddress(data, uuid) {
     data = data.address.map(({ _id, ...rest }) => {
@@ -61,10 +61,10 @@ module.exports = {
             return await addressSchema.findOne({ userId }, { address: 1, _id: 0 })
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data => {
-                    if(data){
+                    if (data) {
                         data = removeId(data.address)
                         return Promise.resolve(data)
-                    }else{
+                    } else {
                         return Promise.resolve(data)
                     }
                 })
@@ -110,18 +110,18 @@ module.exports = {
         }
     },
 
-    deleteaddress: async (userId, addressId)=>{
+    deleteaddress: async (userId, addressId) => {
         try {
-            console.log(userId,addressId);
-            return await addressSchema.updateOne({userId},{
-                $pull:{
-                    address : { addressId: addressId }
+            console.log(userId, addressId);
+            return await addressSchema.updateOne({ userId }, {
+                $pull: {
+                    address: { addressId: addressId }
                 }
             })
-            .then(res => {
-                if (res.modifiedCount > 0) return Promise.resolve(addressId)
-                else return Promise.reject('Not Deleted')
-            })
+                .then(res => {
+                    if (res.modifiedCount > 0) return Promise.resolve(addressId)
+                    else return Promise.reject('Not Deleted')
+                })
 
         } catch (err) {
             console.log(err);

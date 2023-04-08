@@ -1,9 +1,8 @@
-const express = require('express')
-const userRouter = express.Router()
+const userRouter = require('express').Router()
 const {
-    userLoggedIn, 
+    userLoggedIn,
     userNotLoggedIn,
-} = require('../services/session')
+} = require('../middleware/session')
 const {
     httpsentOtpToUser,
     httpOtpVerify,
@@ -46,10 +45,10 @@ userRouter.route('/logout')
     .all(userLoggedIn)
     .get(httpUserLogout)
 
-userRouter.use('/cart',userLoggedIn,userCartRouter)
-userRouter.use('/checkout',userLoggedIn,checkoutRouter)
-userRouter.use('/dashboard',userLoggedIn,dashboardRouter)
-userRouter.use('/address',userLoggedIn,addressRouter)
+userRouter.use('/cart', userLoggedIn, userCartRouter)
+userRouter.use('/dashboard', userLoggedIn, dashboardRouter)
+userRouter.use('/checkout', userLoggedIn, checkoutRouter)
+userRouter.use('/address', userLoggedIn, addressRouter)
 
 module.exports = {
     userRouter

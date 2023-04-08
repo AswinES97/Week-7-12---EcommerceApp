@@ -1,4 +1,4 @@
-
+const userCartRouter = require('express').Router()
 const { 
     httpUserCart, 
     httpAddToCart,
@@ -7,7 +7,6 @@ const {
     httpUpdateProductInCart,
  } = require('../controller/cart.controller')
 
-const userCartRouter = require('express').Router()
 
 userCartRouter.route('/')
     .get(httpUserCart)

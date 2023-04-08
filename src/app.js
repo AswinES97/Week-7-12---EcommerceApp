@@ -11,7 +11,7 @@ const cloudinary = require('cloudinary').v2;
 
 
 const api = require('./router/api')
-const { userNotLoggedIn } = require('./services/session')
+const { userNotLoggedIn } = require('./middleware/session')
 const { getAllProducts } = require('./models/products.model')
 const app = express()
 
@@ -67,4 +67,7 @@ app.use('/*', (req, res) => {
 })
 
 
-module.exports = app
+module.exports = {
+    app,
+    express
+}

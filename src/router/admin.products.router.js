@@ -1,6 +1,4 @@
-const { 
-    uploadImageMulti
-} = require('../services/multer')
+const adminProductsRouter = require('express').Router()
 const {
     httpGetAllProducts,
     httpAddNewProduct,
@@ -9,8 +7,10 @@ const {
     httpGetAddProductPage,
     httpGetProductEditPage
 } = require('../controller/admin.products.controller')
+const { 
+    uploadImageMulti
+} = require('../services/multer')
 
-const adminProductsRouter = require('express').Router()
 
 adminProductsRouter.route('/')
     .get(httpGetAllProducts)
