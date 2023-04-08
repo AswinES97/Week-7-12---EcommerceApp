@@ -63,6 +63,7 @@ module.exports = {
             let status = ''
             phn_no = `+91${phn_no}`
             status = await otpVerify(otpCode, phn_no)
+            
             if (status)
                 resolve(true)
             reject(false)

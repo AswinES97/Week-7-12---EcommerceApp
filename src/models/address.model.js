@@ -61,8 +61,12 @@ module.exports = {
             return await addressSchema.findOne({ userId }, { address: 1, _id: 0 })
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data => {
-                    data = removeId(data.address)
-                    return Promise.resolve(data)
+                    if(data){
+                        data = removeId(data.address)
+                        return Promise.resolve(data)
+                    }else{
+                        return Promise.resolve(data)
+                    }
                 })
 
         } catch (err) {

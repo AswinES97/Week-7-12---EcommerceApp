@@ -9,7 +9,7 @@ module.exports = {
             return await cartSchema.aggregate([
                 {
                     $match: {
-                        userId: ObjectId(userId)
+                        userId: userId
                     }
                 }, {
                     $unwind: '$product'
@@ -32,7 +32,6 @@ module.exports = {
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
                     if (res.length > 0) {
-                        console.log(res);
                         const cur = formatCurrency(res[0].grandTotal)
                         res.forEach(ele => {
                             ele.product.subTotal = formatCurrency(ele.product.subTotal)

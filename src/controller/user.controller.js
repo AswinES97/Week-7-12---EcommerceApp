@@ -56,7 +56,7 @@ module.exports = {
                     return await getUser(req.body.phn_no, null)
                         .then((data) => {
                             req.session.user = true
-                            req.session.userId = data._id
+                            req.session.userId = data.userId
                             req.session.userName = data.fname
                             return res.json({ 'ok': 'Logged In!' })
                         })
@@ -77,7 +77,7 @@ module.exports = {
                 .then(response => {
                     if (response.access) {
                         req.session.user = true
-                        req.session.userId = response._id
+                        req.session.userId = response.userId
                         req.session.userName = response.fname
 
                         return res.status(200).json({ 'ok': 'loggedIn' })
@@ -93,6 +93,7 @@ module.exports = {
             return res.status(400).json({ 'err': 'No email' })
     },
 
+    // sent otp
     httpAddNewUserEmailOtp: async (req, res) => {
 
         if (req.body.phn_no && req.body.email) {
@@ -120,14 +121,13 @@ module.exports = {
     },
 
     httpAddNewUserVerifyOtp: async (req, res) => {
-
         if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name && req.body.password) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async () => {
                     await addNewUser(req.body.phn_no, req.body.email, req.body.name, req.body.password)
                         .then((response) => {
                             req.session.user = true
-                            req.session.userId = response._id
+                            req.session.userId = response.userId
                             req.session.userName = response.fname
 
                             return res.status(201).json({ 'ok': 'user created' })
@@ -155,7 +155,7 @@ module.exports = {
                 return res.render('homepage', {
                     userStatus: req.session.user,
                     userName: data.fname,
-                    userId: data._id,
+                    userId: data.userId,
                     product
                 })
 

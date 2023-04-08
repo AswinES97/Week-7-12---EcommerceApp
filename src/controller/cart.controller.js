@@ -38,7 +38,6 @@ module.exports = {
 
     httpAddToCart: async (req, res) => {
         let product;
-        console.log(req.body);
         await getSingleProduct(req.body.pId)
             .then(response => {
                 product = JSON.parse(JSON.stringify(response))
@@ -82,7 +81,7 @@ module.exports = {
     },
 
     httpRemoveFromCart: async (req, res) => {
-        const { pId, quantity, price } = req.body
+        const { pId, price } = req.body
         const userId = req.session.userId
         const data = {
             pId,
