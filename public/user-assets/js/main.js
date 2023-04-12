@@ -931,6 +931,33 @@ function deleteaddress(addressId) {
 
 }
 
+// orders-tab dash
+$('#orders-tab').click(()=>{
+    const url = '/v1/users/order/dash'
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    commonAjax(url,'GET',headers,null)
+        .then(res=>{
+            let tr = '' ;
+            res.data.forEach(ele => {
+                tr += `
+                <tr>
+                <td>${ele.orderId}</td>
+                <td>${ele.orderDate}</td>
+                <td>${ele.orderStatus}</td>
+                <td><a href="#" class="btn-small d-block">View</a></td>
+                </tr>
+                `
+            });
+            $('#order-table').html(tr)
+        })
+        .catch(err=>{
+            swal(err.data)
+        })
+        
+})
+
 // add product cart
 function addFromLanding(pId) {
     $.ajax({
@@ -947,3 +974,22 @@ function addFromLanding(pId) {
         }
     })
 }
+
+// place order
+
+$('#placeorder').click(async(event)=>{
+    event.preventDefault()
+    const selectedAddress = $('input[name="address"]:checked').val()
+    const selectedPayment = $('input[name="payment_option"]:checked').val()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    await commonAjax('/v1/users/checkout/','POST',headers,{selectedAddress,selectedPayment})
+            .then(res=>{
+                window.location.assign('/v1/users/order?orderStatus=true')
+            })
+            .catch(err=>{
+                swal(err.orderStatus)
+            })
+})
+

@@ -1,6 +1,5 @@
 const { formatCurrency } = require('../services/currencyFormatter');
 const cartSchema = require('./cart.mongo')
-const { getSingleProduct } = require('./products.model')
 
 module.exports = {
     getCartProducts: async (userId) => {
@@ -41,10 +40,19 @@ module.exports = {
                         }
                         return Promise.resolve(data)
                     }
-                    else return Promise.reject(false)
+                    else return Promise.resolve(res)
                 })
         } catch (err) {
             return Promise.reject(err)
+        }
+    },
+
+    getCartItems: async (userId) => {
+        try {
+            return await cartSchema.findOne({userId: userId})
+                .then(res=>Promise.resolve(JSON.parse(JSON.stringify(res))))
+        } catch (err) {
+            return Promise.reject("Error")
         }
     },
 

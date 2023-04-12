@@ -2,15 +2,22 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.ObjectId
 
 const OrderSchema = new mongoose.Schema({
-    customer: {
-        type: ObjectId,
-        ref: 'User',
+    orderId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    orderStatus:{
+        type: String,
+        default: 'pending'
+    },
+    userId: {
+        type: String,
         required: true
     },
     products: [{
-        product: {
-            type: ObjectId,
-            ref: 'Product',
+        pId: {
+            type: String,
             required: true
         },
         quantity: {
@@ -18,27 +25,61 @@ const OrderSchema = new mongoose.Schema({
             required: true,
             default: 1
         },
-        size:{
-            type: string,
+        size: {
+            type: String,
             required: true
         },
-        boughtPrice:{
-
+        boughtPrice: {
+            type: Number,
+            required: true
         }
     }],
     shippingAddress: {
-        type: String,
-        required: true
+        addressId: {
+            type: String,
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        address1: {
+            type: String,
+            required: true
+        },
+        address2: String,
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        postal_code: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: String,
+            required: true
+        }
+
     },
     paymentMethod: {
         type: String,
         required: true
     },
+    status: {
+        type: String,
+        default: 'pending'
+    },
     paymentResult: {
         id: {
-            type: String
-        },
-        status: {
             type: String
         },
         update_time: {
@@ -62,13 +103,12 @@ const OrderSchema = new mongoose.Schema({
     },
     isDelivered: {
         type: Boolean,
-        required: true,
         default: false
     },
     deliveredAt: {
         type: Date
     }
-}, { timestamps: true }
+}, { timestamps: true , versionKey: false }
 )
 
 module.exports = mongoose.model('Order', OrderSchema);

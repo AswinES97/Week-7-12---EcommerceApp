@@ -1,12 +1,12 @@
-const orderRouter = require('express').Router()
+const checkoutRouter = require('express').Router()
 const { 
-    httpNewOrder, 
     httpCheckoutPage,
+    httpPlaceOrder
 } = require('../controller/checkout.controller')
 
 
-orderRouter.route('/')
+checkoutRouter.route('/')
     .get(httpCheckoutPage)
-    .post(httpNewOrder)
+    .post(httpPlaceOrder)
 
-module.exports = orderRouter
+module.exports = checkoutRouter

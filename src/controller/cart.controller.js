@@ -15,24 +15,18 @@ module.exports = {
         if (userName && userId) {
             getCartProducts(userId)
                 .then(data => {
+                    let dataPresent = true
+                    if(data.length === 0) dataPresent = false
                     return res.render('users/cart', {
                         userStatus: req.session.user,
                         userName,
                         userId,
-                        dataPresent: true,
+                        dataPresent: dataPresent,
                         grandTotal: data.grandTotal,
                         products: data.product
                     })
                 })
-                .catch(err => {
-                    return res.render('users/cart', {
-                        userStatus: req.session.user,
-                        userName,
-                        userId,
-                        dataPresent: false,
-                        grandTotal: 0,
-                    })
-                })
+                .catch(err=>console.log(err))
         }
     },
 

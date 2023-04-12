@@ -1,5 +1,6 @@
 const { getAllAddress } = require("../models/address.model");
 const { getCartProducts } = require("../models/cart.model");
+const { placeOrder } = require("../models/checkout.model");
 
 module.exports = {
     httpCheckoutPage: async (req, res) => {
@@ -9,7 +10,7 @@ module.exports = {
             .then(response => {
                 let addressLength;
 
-                if(!response) addressLength = 0
+                if (!response) addressLength = 0
                 else addressLength = response.length
 
                 return res.render('checkout', {
@@ -27,7 +28,14 @@ module.exports = {
             })
     },
 
-    httpNewOrder: (req, res) => {
-        console.log(req.body);
+    httpPlaceOrder: async (req, res) => {
+        const userId = req.session.userId
+        const addressId = req.body.selectedAddress
+        const paymentMethod = req.body.selectedPayment
+        const orderStatus = await placeOrder(userId,addressId,paymentMethod)
+        
+        if(orderStatus === 'Order Confirmed') 
+            return res.json({orderStatus,ok:true})
+        return res.status(400).json({orderStatus,ok:false})
     }
 }

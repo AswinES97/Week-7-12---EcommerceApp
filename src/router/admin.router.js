@@ -9,6 +9,7 @@ const {
 const adminCategoryRouter = require('./admin.category.router')
 const adminUsersRouter = require('./admin.users.router')
 const adminProductsRouter = require('./admin.products.router')
+const adminOrdersRouter = require('./adminOrder.router')
 
 
 adminRouter.route('/')
@@ -38,8 +39,10 @@ adminRouter.route('/logout')
 
 
 adminRouter.use('/users',adminNotLoggedIn, adminUsersRouter)
-adminRouter.use('/products'/*,adminNotLoggedIn*/, adminProductsRouter)
-adminRouter.use('/category'/*,adminNotLoggedIn*/, adminCategoryRouter)
+adminRouter.use('/products',adminNotLoggedIn, adminProductsRouter)
+adminRouter.use('/category',adminNotLoggedIn, adminCategoryRouter)
+adminRouter.use('/orders',/*adminNotLoggedIn,*/ adminOrdersRouter)
+
 
 module.exports = {
     adminRouter

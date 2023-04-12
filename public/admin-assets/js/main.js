@@ -402,3 +402,30 @@ function validateProduct($event) {
         return false
     }
 }
+
+// pagination orders
+async function pagination(event,skip){
+    event.preventDefault()
+    let data;
+    let tr = ''
+
+    skip = Number(skip)
+    data = await fetch(`/v1/admin/orders/pagination?skip=${skip}`).then(res=>res.json())
+    skip = (skip*10)+1
+    data.data.forEach(ele=>{
+        tr += `
+        <tr>
+        <td>${skip++}</td>
+        <td>${ele.orderId}</td>
+        <td><b>${ele.userId}</b></td>
+        <td>₹${ele.totalPrice}</td>
+        <td><span class="badge rounded-pill alert-warning">Pending</span></td>
+        <td>${ele.orderDate}</td>
+        <td class="text-end">
+            <a href="#" class="btn btn-md rounded font-sm">Detail</a>
+        </td>
+    </tr>
+        `
+    })
+   $('#order-table').html(tr)    
+}
