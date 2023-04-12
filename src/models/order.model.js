@@ -68,16 +68,16 @@ const singleOrderAggreated = async (orderDetails) => {
                     totalPrice: { $first: "$totalPrice" },
                     isPaid: { $first: "$isPaid" },
                     isDelivered: { $first: "$isDelivered" },
-                    isDelivered: { $first: "$isDelivered" },
+                    createdAt: { $first: "$createdAt" },
                     updatedAt: { $first: "$updatedAt" },
                     userDetails: { $first: '$userDetails' },
-                    products:{
+                    products: {
                         $push: {
-                            _id:'$products._id',
-                            pId : '$products.pId',
-                            quantity : '$products.quantity',
+                            _id: '$products._id',
+                            pId: '$products.pId',
+                            quantity: '$products.quantity',
                             size: '$products.size',
-                            boughtPrice:'$products.boughtPrice',
+                            boughtPrice: '$products.boughtPrice',
                         }
                     },
                     productDetails: {
@@ -127,7 +127,8 @@ const pagination = async (skip) => {
             orderStatus: ele.orderStatus,
             userId: ele.userId,
             totalPrice: ele.totalPrice,
-            orderDate: ele.createdAt
+            orderDate: ele.createdAt,
+            payment_status: ele.payment_status
         }
     })
     return Promise.resolve(orders)

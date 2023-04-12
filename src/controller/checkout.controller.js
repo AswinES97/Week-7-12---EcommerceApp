@@ -4,7 +4,6 @@ const { placeOrder } = require("../models/checkout.model");
 
 module.exports = {
     httpCheckoutPage: async (req, res) => {
-        console.log(req.session);
         const cartItems = await getCartProducts(req.session.userId)
         return getAllAddress(req.session.userId)
             .then(response => {
@@ -33,9 +32,11 @@ module.exports = {
         const addressId = req.body.selectedAddress
         const paymentMethod = req.body.selectedPayment
         const orderStatus = await placeOrder(userId,addressId,paymentMethod)
-        
-        if(orderStatus === 'Order Confirmed') 
-            return res.json({orderStatus,ok:true})
+        let orderId
+        if(orderStatus.status === 'Order Confirmed') {
+            orderId = orderStatus.orderId
+            return res.json({orderId,ok:true})
+        }
         return res.status(400).json({orderStatus,ok:false})
     }
 }

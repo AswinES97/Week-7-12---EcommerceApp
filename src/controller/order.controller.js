@@ -1,7 +1,11 @@
-const { getAllOrderDetails } = require("../models/order.model")
+const { getAllOrderDetails, getSingleOrder, singleOrderAggreated } = require("../models/order.model")
 const { format } = require('date-fns');
 
-const httpGetOrderPage = (req, res) => {
+const httpGetOrderPage =async (req, res) => {
+    const orderId = req.query.oId
+    const orderDetails = await getSingleOrder(orderId)
+    const [order] = await singleOrderAggreated(orderDetails)
+    
     res.render('orderPage', {
         userId: req.session.userId,
         userName: req.session.userName,
@@ -17,7 +21,7 @@ const httpGetAllOrderDetails = async (req, res) => {
                 return {
                     orderId: ele.orderId,
                     orderStatus: ele.orderStatus,
-                    orderDate: format(new Date(ele.createdAt), 'yyyy-MM-dd')
+                    orderDate: format(new Date(ele.createdAt), 'MMMM do, yyyy')
                 }
             })
             return res.json({ data: response, ok: true })

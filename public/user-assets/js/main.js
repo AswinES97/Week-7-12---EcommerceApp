@@ -675,7 +675,7 @@ $('#addToCart').click(() => {
     })
 })
 
-function deleteItem(slug,pId) {
+function deleteItem(slug, pId) {
     swal('Remove Item', 'Are you sure you want to remove this item?', 'warning', {
         buttons: {
             cancel: "Cancel",
@@ -731,7 +731,7 @@ $('#clear-cart').click(() => {
     })
 })
 
-function changeQuantityAjax(price, pId, quantity,slug) {
+function changeQuantityAjax(price, pId, quantity, slug) {
     return $.ajax({
         url: '/v1/users/cart',
         type: 'PATCH',
@@ -757,9 +757,9 @@ function qtychange(slug, pId, qty) {
     let { price, quantity } = getPriceAndQuantity(slug)
     if (Number(qty) < 0) price = -1 * Number(price)
     if (Number(quantity) >= 0 && qty === 1) {
-        return changeQuantityAjax(price, pId, qty,slug)
+        return changeQuantityAjax(price, pId, qty, slug)
     } else if (Number(quantity) > 1 && qty === -1) {
-        return changeQuantityAjax(price, pId, qty,slug)
+        return changeQuantityAjax(price, pId, qty, slug)
     }
 }
 
@@ -932,14 +932,14 @@ function deleteaddress(addressId) {
 }
 
 // orders-tab dash
-$('#orders-tab').click(()=>{
+$('#orders-tab').click(() => {
     const url = '/v1/users/order/dash'
     const headers = {
         'Content-Type': 'application/json'
     }
-    commonAjax(url,'GET',headers,null)
-        .then(res=>{
-            let tr = '' ;
+    commonAjax(url, 'GET', headers, null)
+        .then(res => {
+            let tr = '';
             res.data.forEach(ele => {
                 tr += `
                 <tr>
@@ -952,10 +952,10 @@ $('#orders-tab').click(()=>{
             });
             $('#order-table').html(tr)
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
         })
-        
+
 })
 
 // add product cart
@@ -967,7 +967,10 @@ function addFromLanding(pId) {
             pId
         },
         success: (res) => {
-            swal('Success', 'added to cart', 'success')
+            swal("Added to Cart!","Success!",{
+                toast: 'true',
+                timer: 1000
+            })
         },
         error: (err) => {
             swal('Error Adding to cart')
@@ -977,19 +980,20 @@ function addFromLanding(pId) {
 
 // place order
 
-$('#placeorder').click(async(event)=>{
+$('#placeorder').click(async (event) => {
     event.preventDefault()
     const selectedAddress = $('input[name="address"]:checked').val()
     const selectedPayment = $('input[name="payment_option"]:checked').val()
     const headers = {
         'Content-Type': 'application/json'
     }
-    await commonAjax('/v1/users/checkout/','POST',headers,{selectedAddress,selectedPayment})
-            .then(res=>{
-                window.location.assign('/v1/users/order?orderStatus=true')
-            })
-            .catch(err=>{
-                swal(err.orderStatus)
-            })
+    await commonAjax('/v1/users/checkout/', 'POST', headers, { selectedAddress, selectedPayment })
+        .then(res=>JSON.parse(JSON.stringify(res)))
+        .then(res => {
+            window.location.assign(`/v1/users/order?oId=${res.orderId}`)
+        })
+        .catch(err => {
+            swal(err.orderStatus)
+        })
 })
 

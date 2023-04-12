@@ -13,9 +13,10 @@ const placeOrder = async (userId, addressId, paymentMethod) => {
             let products = []
             let order
             let orderStatus
-
+            let item
+            
             cartItems.product.forEach(ele => {
-                let item = {
+                item = {
                     pId : ele.pId,
                     quantity: ele.quantity,
                     size : ele.size,
@@ -34,9 +35,8 @@ const placeOrder = async (userId, addressId, paymentMethod) => {
                 isPaid: false,
             })
             orderStatus = await order.save()
-
             if(orderStatus) await deleteAllProducts(userId)
-            return Promise.resolve('Order Confirmed')
+            return Promise.resolve({orderId,status:'Order Confirmed'})
 
         } catch (err) {
             return Promise.reject('Order Not Placed!')

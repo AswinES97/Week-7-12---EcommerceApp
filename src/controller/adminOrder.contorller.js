@@ -11,10 +11,10 @@ const httpAdminGetOrder = async (req, res) => {
     let buttonLength = 0
     const totalCount = await getOrderCount()
     return await getOrderDetailsAdmin()
-        .then(response => {
-            if (response.length === 0) {
-                isOrders = false
-            }
+    .then(response => {
+        if (response.length === 0) {
+            isOrders = false
+        }
             buttonLength = Math.ceil(totalCount / 10)
             return res.render('admin/admin-order', {
                 layout: 'admin/admin-layout',
@@ -45,8 +45,7 @@ const httpSingleOrder = async (req, res) => {
 }
 
 const httpPagination = async (req, res) => {
-    let skip = req.query.skip
-    skip = Number(skip) * 10
+    let skip = Number(req.query.skip)*10
     const orders = await pagination(skip)
     if (!orders) return res.status(400).json({ data: 'Error!', ok: false })
     return res.json({ data: orders, ok: false })

@@ -26,10 +26,30 @@
     </head>
     
 </head>
+<body>
+    
     <%if(adminTrue){%>
     <%-include('admin-partials/admin-sidebar')%>
     <%}%>
     <%-body%>
+
+    <script>
+        
+        async function commonAjax(url,method,headers,body){
+            const options = {
+                headers: headers,
+                method: method,
+            }
+            if(body) options.body = JSON.stringify(body)
+            return await fetch(url,options)
+                .then(res=>res.json())
+                .then(res=>{
+                    if(res.ok) return Promise.resolve(res)
+                    return Promise.reject(res)}
+                    )
+        }
+    </script>
+    
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/admin-assets/js/vendors/select2.min.js"></script>
@@ -37,4 +57,5 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script defer src="/admin-assets/js/main.js" type="text/javascript"></script>
+    </body>
 </html>

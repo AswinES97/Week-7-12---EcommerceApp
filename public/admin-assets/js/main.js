@@ -419,13 +419,26 @@ async function pagination(event,skip){
         <td>${ele.orderId}</td>
         <td><b>${ele.userId}</b></td>
         <td>₹${ele.totalPrice}</td>
-        <td><span class="badge rounded-pill alert-warning">Pending</span></td>
+        <td><span class="badge rounded-pill alert-warning">${ele.payment_status}</span></td>
         <td>${ele.orderDate}</td>
         <td class="text-end">
-            <a href="#" class="btn btn-md rounded font-sm">Detail</a>
+            <a href="/v1/admin/orders/single?oId=${ele.orderId}" class="btn btn-md rounded font-sm" >Detail</a>
         </td>
     </tr>
         `
     })
    $('#order-table').html(tr)    
 }
+
+// order-status submit change/update
+async function changeOrderStatus(){
+    const orderStatus = $('#order-status').val()
+    const headers = {
+        'Content-Type' : 'application/json'
+    }
+    let res
+    if(orderStatus.length === 0) return swal('Not Updated Order Status')
+    res = commonAjax('/v1/admin/orders/single','POST',headers,{orderStatus:orderStatus})
+}
+
+$('#orderStatus').click(changeOrderStatus)
