@@ -4,8 +4,9 @@ const { placeOrder } = require("../models/checkout.model");
 
 module.exports = {
     httpCheckoutPage: async (req, res) => {
-        const cartItems = await getCartProducts(req.session.userId)
-        return getAllAddress(req.session.userId)
+        const user = req.user
+        const cartItems = await getCartProducts(user.userId)
+        return getAllAddress(user.userId)
             .then(response => {
                 let addressLength;
 
@@ -13,11 +14,11 @@ module.exports = {
                 else addressLength = response.length
 
                 return res.render('checkout', {
-                    userStatus: req.session.user,
-                    userId: req.session.userId,
+                    userStatus: user.loggedIn,
+                    userId: user.userId,
                     userName: req.query.userName,
                     address: response,
-                    addressLength,
+                    addressLength: addressLength,
                     products: cartItems.product,
                     grandTotal: cartItems.grandTotal
                 })
@@ -28,15 +29,15 @@ module.exports = {
     },
 
     httpPlaceOrder: async (req, res) => {
-        const userId = req.session.userId
+        const userId = req.user.userId
         const addressId = req.body.selectedAddress
         const paymentMethod = req.body.selectedPayment
-        const orderStatus = await placeOrder(userId,addressId,paymentMethod)
         let orderId
-        if(orderStatus.status === 'Order Confirmed') {
+        const orderStatus = await placeOrder(userId, addressId, paymentMethod)
+        if (orderStatus.status === 'Order Confirmed') {
             orderId = orderStatus.orderId
-            return res.json({orderId,ok:true})
+            return res.json({ orderId, ok: true })
         }
-        return res.status(400).json({orderStatus,ok:false})
+        return res.status(400).json({ orderStatus, ok: false })
     }
 }

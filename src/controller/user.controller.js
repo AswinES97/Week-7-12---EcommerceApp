@@ -6,10 +6,12 @@ const {
     getUserForVeri,
     getUser
 } = require("../models/user.model")
+const { createAuthToken } = require("../services/jwt")
 const {
     sentOtp,
     verifyOtp
 } = require("../services/otp.service")
+const { saveToken, verifyToken, deleteToken } = require("../services/redis")
 
 const {
     err_user,
@@ -21,7 +23,7 @@ const {
 
 module.exports = {
 
-// otp login
+    // otp login
     httpsentOtpToUser: async (req, res) => {
 
         if (req.body.phn_no) {
@@ -49,12 +51,20 @@ module.exports = {
     },
 
     httpOtpVerify: async (req, res) => {
-
+        let token
+        let data
         if (req.body.otpCode && req.body.phn_no) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async response => {
                     return await getUser(req.body.phn_no, null)
-                        .then((data) => {
+                        .then(async (data) => {
+                            data = {
+                                email: data.email,
+                                name: data.fname
+                            }
+                            token = await createAuthToken(data.userId)
+                            await saveToken(token, data)
+
                             req.session.user = true
                             req.session.userId = data.userId
                             req.session.userName = data.fname
@@ -71,16 +81,28 @@ module.exports = {
     },
 
     httpEmailVerify: async (req, res) => {
+        let data
+        let token
 
         if (req.body.email && req.body.pass)
             await loginUserWithEmailAndPassword(req.body)
-                .then(response => {
+                .then(async response => {
                     if (response.access) {
-                        req.session.user = true
-                        req.session.userId = response.userId
-                        req.session.userName = response.fname
-
-                        return res.status(200).json({ 'ok': 'loggedIn' })
+                        data = {
+                            email: response.email,
+                            name: response.fname,
+                            userId: response.userId,
+                            loggedIn: true
+                        }
+                        token = await createAuthToken(response.userId)
+                        await saveToken(token, data)
+                        const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                        const cookieOptions = {
+                            httpOnly: true,
+                            expires: expiryDate,
+                        };
+                        
+                        return res.cookie('token', token, cookieOptions).json({ 'ok': 'loggedIn' })
                     } else {
                         res.status(400).json({ err_blocked })
                     }
@@ -93,7 +115,7 @@ module.exports = {
             return res.status(400).json({ 'err': 'No email' })
     },
 
-// sent otp
+    // sent otp
     httpAddNewUserEmailOtp: async (req, res) => {
 
         if (req.body.phn_no && req.body.email) {
@@ -121,11 +143,22 @@ module.exports = {
     },
 
     httpAddNewUserVerifyOtp: async (req, res) => {
+        let token
+        let data
         if (req.body.otpCode && req.body.phn_no && req.body.email && req.body.name && req.body.password) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async () => {
                     await addNewUser(req.body.phn_no, req.body.email, req.body.name, req.body.password)
-                        .then((response) => {
+                        .then(async (response) => {
+                            data = {
+                                email: response.email,
+                                name: response.fname,
+                                userId: response.userId,
+                                loggedIn: true
+                            }
+                            token = await createAuthToken(response.userId)
+                            await saveToken(token, data)
+
                             req.session.user = true
                             req.session.userId = response.userId
                             req.session.userName = response.fname
@@ -148,12 +181,12 @@ module.exports = {
     }
     ,
     httpUserHomepage: async (req, res) => {
+        const user = req.user
         let product = await getAllProducts()
-        return await getUser(null, req.session.userId)
+        return await getUser(null, user.userId)
             .then((data) => {
-
                 return res.render('homepage', {
-                    userStatus: req.session.user,
+                    userStatus: user.loggedIn,
                     userName: data.fname,
                     userId: data.userId,
                     product
@@ -162,8 +195,10 @@ module.exports = {
             })
     },
 
-    httpUserLogout: (req, res) => {
-        req.session.user = null
+    httpUserLogout:async (req, res) => {
+        const token = req.cookies.token
+        await deleteToken(token)
+        res.clearCookie('token')
         return res.redirect('/')
     }
 }

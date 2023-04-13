@@ -66,7 +66,8 @@ function loginMail(event) {
                 error.innerHTML = `<p style='color:red'>${text.err_email || text.err_blocked}<p>`
                 error.removeAttribute('hidden')
             },
-            success: (status) => {
+            success: (res) => {
+                console.log(document.cookie);
                 window.location.reload()
             }
         })

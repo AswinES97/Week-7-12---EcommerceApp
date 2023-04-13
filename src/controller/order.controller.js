@@ -2,19 +2,20 @@ const { getAllOrderDetails, getSingleOrder, singleOrderAggreated } = require("..
 const { format } = require('date-fns');
 
 const httpGetOrderPage =async (req, res) => {
+    const user = req.user
     const orderId = req.query.oId
     const orderDetails = await getSingleOrder(orderId)
     const [order] = await singleOrderAggreated(orderDetails)
     
     res.render('orderPage', {
-        userId: req.session.userId,
-        userName: req.session.userName,
-        userStatus: true
+        userId: user.userId,
+        userName: user.name,
+        userStatus: user.loggedIn
     })
 }
 
 const httpGetAllOrderDetails = async (req, res) => {
-    const userId = req.session.userId
+    const userId = req.user.userId
     return await getAllOrderDetails(userId)
         .then(response => {
             response = response.map(ele => {

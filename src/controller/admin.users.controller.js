@@ -9,8 +9,8 @@ module.exports = {
             .then(data => {
                 return res.render('admin/admin-user-list',{
                     layout:'admin/admin-layout',
-                    adminTrue:req.session.admin ,
-                    data
+                    adminTrue:req.admin ,
+                    data: data
                 })
             })
             .catch(err => {

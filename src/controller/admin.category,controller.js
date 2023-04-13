@@ -13,8 +13,8 @@ module.exports = {
                 [data] = data
                 return res.render('admin/admin-category', {
                     layout: 'admin/admin-layout',
-                    adminTrue: req.session.admin,
-                    data
+                    adminTrue: req.admin,
+                    data: data
             })
         })
     },

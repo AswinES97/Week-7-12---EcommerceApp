@@ -13,6 +13,7 @@ const cloudinary = require('cloudinary').v2;
 const api = require('./router/api')
 const { userNotLoggedIn } = require('./middleware/session')
 const { getAllProducts } = require('./models/products.model')
+const cookieParser = require('cookie-parser')
 const app = express()
 
 
@@ -20,8 +21,7 @@ app.use(nocache())
 app.use(cors({
     origin: '*'
 }))
-
-
+app.use(cookieParser());
 app.use(session({
     genid: (req) => uuid.v4(),
     secret: process.env.SESSION_SECRET,

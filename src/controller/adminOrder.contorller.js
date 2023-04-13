@@ -18,7 +18,7 @@ const httpAdminGetOrder = async (req, res) => {
             buttonLength = Math.ceil(totalCount / 10)
             return res.render('admin/admin-order', {
                 layout: 'admin/admin-layout',
-                adminTrue: req.session.admin,
+                adminTrue: req.admin,
                 isOrders: isOrders,
                 orders: response,
                 buttonLength: buttonLength
@@ -36,7 +36,7 @@ const httpSingleOrder = async (req, res) => {
     
     res.render('admin/admin-order-details',{
         layout: 'admin/admin-layout',
-        adminTrue: req.session.admin,
+        adminTrue: req.admin,
         userDetails: userDetails,
         productDetails: productDetails,
         order: order,

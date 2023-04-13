@@ -10,7 +10,7 @@ module.exports = {
     httpGetAddProductPage: (req, res) => {
         res.render('admin/admin-add-product', {
             layout: 'admin/admin-layout',
-            adminTrue: req.session.admin
+            adminTrue: req.admin
         })
     },
 
@@ -23,8 +23,8 @@ module.exports = {
                     if (data)
                         return res.render('admin/admin-update-product', {
                             layout: 'admin/admin-layout',
-                            adminTrue: req.session.admin,
-                            data
+                            adminTrue: req.admin,
+                            data : data
                         })
                     else
                         return res.status(400)
@@ -39,8 +39,8 @@ module.exports = {
             .then(data => {
                 res.render('admin/admin-products-list', {
                     layout: 'admin/admin-layout',
-                    adminTrue: req.session.admin,
-                    data
+                    adminTrue: req.admin,
+                    data: data
                 })
             })
             .catch(err => {

@@ -21,6 +21,7 @@ module.exports = {
     loginUserWithEmailAndPassword: (userData,) => {
         return new Promise(async (resolve, reject) => {
             await userSchema.findOne({ email: userData.email })
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(async data => {
                     if (!data) return reject(false)
                     const passMatch = await checkPassword(userData.pass, data.password)
@@ -56,6 +57,7 @@ module.exports = {
     getUserForVeri: (phn_no, email) => {
         return new Promise(async (resolve, reject) => {
             return await userSchema.findOne({ $or: [{ phn_no: phn_no }, { email: email }] })
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(response => {
                     if (response) {
                         reject(response)
@@ -70,6 +72,7 @@ module.exports = {
         if (phn_no) {
             return new Promise(async (resolve, reject) => {
                 await userSchema.findOne({ phn_no: phn_no })
+                    .then(res => JSON.parse(JSON.stringify(res)))
                     .then(response => {
                         if (response) {
                             resolve(response)
@@ -82,6 +85,7 @@ module.exports = {
         if (userId) {
             return new Promise(async (resolve, reject) => {
                 return await userSchema.findOne({ userId })
+                    .then(res => JSON.parse(JSON.stringify(res)))
                     .then(response => {
                         if (response) {
                             resolve(response)

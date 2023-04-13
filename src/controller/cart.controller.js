@@ -9,28 +9,26 @@ const { getSingleProduct } = require('../models/products.model')
 
 module.exports = {
     httpUserCart: (req, res) => {
-        const userName = req.query.name
-        const userId = req.query.id
-
-        if (userName && userId) {
-            getCartProducts(userId)
-                .then(data => {
-                    let dataPresent = true
-                    if(data.length === 0) dataPresent = false
-                    return res.render('users/cart', {
-                        userStatus: req.session.user,
-                        userName,
-                        userId,
-                        dataPresent: dataPresent,
-                        grandTotal: data.grandTotal,
-                        products: data.product
-                    })
+        const user = req.user
+        let dataPresent
+        getCartProducts(user.userId)
+            .then(data => {
+                dataPresent = true
+                if (data.length === 0) dataPresent = false
+                return res.render('users/cart', {
+                    userStatus: user.loggedIn,
+                    userName: user.name,
+                    userId: user.userId,
+                    dataPresent: dataPresent,
+                    grandTotal: data.grandTotal,
+                    products: data.product
                 })
-                .catch(err=>console.log(err))
-        }
+            })
+            .catch(err => console.log(err))
     },
 
     httpAddToCart: async (req, res) => {
+        const user = req.user
         let product;
         await getSingleProduct(req.body.pId)
             .then(response => {
@@ -39,7 +37,7 @@ module.exports = {
         const { size, quantity } = req.body
         const subTotal = Number(quantity) * product.price
         const data = {
-            userId: req.session.userId,
+            userId: user.userId,
             size,
             quantity,
             subTotal,
@@ -55,9 +53,9 @@ module.exports = {
                     return res.status(400).json({ 'err': 'Not Added!' })
                 })
         }
-        else if (req.session.userId && product) {
+        else if (user.userId && product) {
             const data = {
-                userId: req.session.userId,
+                userId: user.userId,
                 size: product.quantity.size,
                 quantity: 1,
                 subTotal: product.price,
@@ -75,14 +73,14 @@ module.exports = {
     },
 
     httpRemoveFromCart: async (req, res) => {
+        const user = req.user
         const { pId, price } = req.body
-        const userId = req.session.userId
         const data = {
             pId,
             userId,
             price
         }
-        if (!pId || !userId || !price) {
+        if (!pId || !user.userId || !price) {
             return res.status(400).json({ "err": "Not-Removed!" })
         } else {
             removeFromCart(data)
@@ -97,7 +95,7 @@ module.exports = {
     },
 
     httpDeleteAllProducts: (req, res) => {
-        const userId = req.session.userId
+        const userId = req.user.userId
 
         if (!userId) {
             return res.status(400).json({ 'err': 'Cart not cleared!' })
@@ -111,7 +109,7 @@ module.exports = {
     },
 
     httpUpdateProductInCart: (req, res) => {
-        const userId = req.session.userId
+        const userId = req.user.userId
         return updateProductInCart(req.body, userId)
             .then((response) => {
                 return res.json(response)
