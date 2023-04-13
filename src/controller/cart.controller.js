@@ -76,9 +76,9 @@ module.exports = {
         const user = req.user
         const { pId, price } = req.body
         const data = {
-            pId,
-            userId,
-            price
+            pId: pId,
+            userId: user.userId,
+            price: price
         }
         if (!pId || !user.userId || !price) {
             return res.status(400).json({ "err": "Not-Removed!" })

@@ -9,7 +9,7 @@ module.exports = {
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(response => {
                     if (!response)
-                        reject(false)
+                        resolve(false)
                     resolve(response)
                 })
         })
