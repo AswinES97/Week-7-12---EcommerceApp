@@ -25,27 +25,28 @@ module.exports = {
         if (token) {
             data = await verifyToken(token)
             req.user = data
-        } else req.user.loggedIn = false
+        } else req.user = {
+            loggedIn: false
+
+        }
         next()
     },
 
-    adminNotLoggedIn: async(req, res, next) => {
+    adminNotLoggedIn: async (req, res, next) => {
         const adminToken = req.cookies.admin_token
-        let data 
+        let data
         if (!adminToken) return res.redirect('/v1/admin/admin-login')
         data = await verifyToken(adminToken)
-        if(!data) return res.redirect('/v1/admin/admin-login')
+        if (!data) return res.redirect('/v1/admin/admin-login')
         req.admin = data.admin
-        return next()        
+        return next()
     },
 
-    adminLoggedIn: (req, res, next) => {
+    adminLoggedIn: async (req, res, next) => {
         const adminToken = req.cookies.admin_token
-        if (adminToken) {
-            return res.redirect('/v1/admin/')
-        } else {
-            req.admin = false
-            return next()
-        }
+        data = await verifyToken(adminToken)
+        if (data) return res.redirect('/v1/admin/')
+        req.admin = false
+        return next()
     }
 }

@@ -5,7 +5,8 @@ const { v4: uuidv4 } = require('uuid');
 
 const getSingleProduct = (pId) => {
     return new Promise(async (resolve, reject) => {
-        await product.findOne({ pId })
+        await product.findOne({ pId: pId })
+            .then(res => JSON.parse(JSON.stringify(res)))
             .then(data => {
                 resolve(data)
             })
@@ -16,6 +17,7 @@ module.exports = {
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
             await product.find()
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data => resolve(data))
                 .catch(err => reject(err))
         })
@@ -32,7 +34,7 @@ module.exports = {
             try {
                 const Product = await new product({
                     name: productData.name,
-                    pId:productId,
+                    pId: productId,
                     slug,
                     price: Number(productData.price),
                     brand: productData.brand.toUpperCase(),

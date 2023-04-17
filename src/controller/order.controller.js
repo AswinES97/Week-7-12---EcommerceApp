@@ -1,16 +1,25 @@
 const { getAllOrderDetails, getSingleOrder, singleOrderAggreated } = require("../models/order.model")
 const { format } = require('date-fns');
+const { formatCurrency } = require("../services/currencyFormatter");
 
 const httpGetOrderPage =async (req, res) => {
     const user = req.user
     const orderId = req.query.oId
     const orderDetails = await getSingleOrder(orderId)
     const [order] = await singleOrderAggreated(orderDetails)
+    order.products.forEach(ele => {
+        ele.boughtPrice = formatCurrency(ele.boughtPrice)
+    });
+    order.totalPrice = formatCurrency(order.totalPrice)
+    console.log(order);
     
     res.render('orderPage', {
         userId: user.userId,
         userName: user.name,
-        userStatus: user.loggedIn
+        userStatus: user.loggedIn,
+        boughtPrice : order.products,
+        productDetails: order.productDetails,
+        totalPrice: order.totalPrice
     })
 }
 

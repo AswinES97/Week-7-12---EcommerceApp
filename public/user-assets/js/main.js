@@ -993,6 +993,7 @@ $('#placeorder').click(async (event) => {
             window.location.assign(`/v1/users/order?oId=${res.orderId}`)
         })
         .catch(err => {
+            console.log(err);
             swal(err.orderStatus)
         })
 })
