@@ -44,8 +44,10 @@ module.exports = {
 
     adminLoggedIn: async (req, res, next) => {
         const adminToken = req.cookies.admin_token
-        data = await verifyToken(adminToken)
-        if (data) return res.redirect('/v1/admin/')
+        if(adminToken){
+            data = await verifyToken(adminToken)
+            if (data) return res.redirect('/v1/admin/')
+        }
         req.admin = false
         return next()
     }

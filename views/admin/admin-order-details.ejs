@@ -14,16 +14,18 @@
                     <span>
                         <i class="material-icons md-calendar_today"></i> <b><%=order.createdAt%></b>
                     </span> <br>
-                    <small class="text-muted"><%=order.orderId%></small>
+                    <small class="text-muted" id="orderId-order-details"><%=order.orderId%></small>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                    <label for="">Change Status :</label>
                     <select id="order-status" class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                         <option value="">Change Order status</option>
                         <option value="Pending">Pending</option>
                         <option value="Shipped">Shipped</option>
                         <option value="Delivered">Delivered</option>
+                        <option value="Returned">Returned</option>
                     </select>
-                    <a class="btn btn-primary" id="orderStatus" href="#">Save</a>
+                    <a class="btn btn-primary" id="orderStatus" href="#">Update Status</a>
                     <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a>
                 </div>
             </div>
@@ -79,28 +81,35 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th width="10%">No.</th>
                                     <th width="40%">Product</th>
                                     <th width="20%">Unit Price</th>
                                     <th width="20%">Quantity</th>
                                     <th width="20%" class="text-end">Total</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-family: 'Courier New', Courier, monospace;">
                                 <%for(let i = 0; i<productDetails.length;i++){%>
                                 <tr>
+                                    <td><%=i+1%></td>
                                     <td>
                                         <a class="itemside" href="#">
-                                            <div class="left">
                                                 <img src="<%=productDetails[i].image[0]%>" width="40" height="40" class="img-xs" alt="Item">
-                                            </div>
-                                            <div class="info"> <%=productDetails[i].name.substring(0,16)+'...'%> </div>
+                                            <div class="info"> <%=productDetails[i].name.substring(0,15)%>... </div>
                                         </a>
                                     </td>
-                                    <td> ₹<%=productDetails[i].price%> </td>
+                                    <td> <%=productDetails[i].price%> </td>
                                     <td> <%=productOrderDetails[i].quantity%> </td>
-                                    <td class="text-end"> ₹<%=productOrderDetails[i].boughtPrice%> </td>
+                                    <td class="text-end"> <%=productOrderDetails[i].boughtPrice%> </td>
                                 </tr>
                                 <%}%>
+                                <tr>
+                                    <th width="10%"></th>
+                                    <th width="40%"></th>
+                                    <th width="20%"></th>
+                                    <th width="25%">Grand Total:</th>
+                                    <th width="20%" class="text-end"><%=order.totalPrice%></th>
+                                </tr>
                         </table>
                     </div> <!-- table-responsive// -->
                 </div> <!-- col// -->

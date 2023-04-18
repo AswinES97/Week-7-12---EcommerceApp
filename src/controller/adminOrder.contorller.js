@@ -3,8 +3,11 @@ const {
     getOrderCount,
     singleOrderAggreated,
     pagination,
-    getSingleOrder
+    getSingleOrder,
+    changeOrderStatus
 } = require('../models/order.model')
+const { formatCurrency } = require('../services/currencyFormatter')
+const { formatDate } = require('./order.controller')
 
 const httpAdminGetOrder = async (req, res) => {
     let isOrders = true
@@ -14,6 +17,11 @@ const httpAdminGetOrder = async (req, res) => {
     .then(response => {
         if (response.length === 0) {
             isOrders = false
+        }else{
+            response.forEach(ele=>{
+                ele.totalPrice = formatCurrency(ele.totalPrice)
+                ele.createdAt = formatDate(new Date(ele.createdAt), 'MMMM do, yyy')
+            })
         }
             buttonLength = Math.ceil(totalCount / 10)
             return res.render('admin/admin-order', {
@@ -33,7 +41,14 @@ const httpSingleOrder = async (req, res) => {
     const [userDetails] = order.userDetails
     const productDetails = order.productDetails
     const productOrderDetails = order.products
-    
+    order.createdAt = formatDate(new Date(order.createdAt), 'MMMM do, yyy')
+    order.totalPrice = formatCurrency(order.totalPrice)
+    productDetails.forEach(ele=>{
+        ele.price = formatCurrency(ele.price)
+    })
+    productOrderDetails.forEach(ele=>{
+        ele.boughtPrice = formatCurrency(ele.boughtPrice)
+    })
     res.render('admin/admin-order-details',{
         layout: 'admin/admin-layout',
         adminTrue: req.admin,
@@ -42,6 +57,17 @@ const httpSingleOrder = async (req, res) => {
         order: order,
         productOrderDetails:productOrderDetails
     })
+}
+
+const httpChangeOrderStatus = async (req, res) => {
+    console.log(req.body);
+    return await changeOrderStatus(req.body)
+        .then(()=>{
+            return res.json({ok: true, data: 'Status Updated!'})
+        })
+        .catch(()=>{
+            return res.status(400).json({ok:false, data:'Status Not Updated!'})
+        })
 }
 
 const httpPagination = async (req, res) => {
@@ -54,5 +80,6 @@ const httpPagination = async (req, res) => {
 module.exports = {
     httpAdminGetOrder: httpAdminGetOrder,
     httpPagination: httpPagination,
-    httpSingleOrder: httpSingleOrder
+    httpSingleOrder: httpSingleOrder,
+    httpChangeOrderStatus : httpChangeOrderStatus
 }

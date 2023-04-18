@@ -1,6 +1,7 @@
 const { httpAdminGetOrder,
         httpSingleOrder,
-        httpPagination
+        httpPagination,
+        httpChangeOrderStatus
 } = require('../controller/adminOrder.contorller')
 
 const adminOrdersRouter = require('express').Router()
@@ -10,6 +11,7 @@ adminOrdersRouter.route('/')
 
 adminOrdersRouter.route('/single')
         .get(httpSingleOrder)
+        .post(httpChangeOrderStatus)
 
 adminOrdersRouter.route('/pagination')
         .get(httpPagination)

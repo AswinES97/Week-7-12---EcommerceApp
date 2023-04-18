@@ -232,7 +232,7 @@ async function createCategory($event) {
 function deleteProduct($event, pId) {
     $event.preventDefault()
 
-    swal('Delete','Delete this product?','warning',{
+    swal('Delete', 'Delete this product?', 'warning', {
         buttons: {
             cancel: "Cancel",
             catch: {
@@ -404,15 +404,15 @@ function validateProduct($event) {
 }
 
 // pagination orders
-async function pagination(event,skip){
+async function pagination(event, skip) {
     event.preventDefault()
     let data;
     let tr = ''
 
     skip = Number(skip)
-    data = await fetch(`/v1/admin/orders/pagination?skip=${skip}`).then(res=>res.json())
-    skip = (skip*10)+1
-    data.data.forEach(ele=>{
+    data = await fetch(`/v1/admin/orders/pagination?skip=${skip}`).then(res => res.json())
+    skip = (skip * 10) + 1
+    data.data.forEach(ele => {
         tr += `
         <tr>
         <td>${skip++}</td>
@@ -427,18 +427,27 @@ async function pagination(event,skip){
     </tr>
         `
     })
-   $('#order-table').html(tr)    
+    $('#order-table').html(tr)
 }
 
 // order-status submit change/update
-async function changeOrderStatus(){
+async function changeOrderStatus() {
+    const orderId = $('#orderId-order-details').text()
     const orderStatus = $('#order-status').val()
     const headers = {
-        'Content-Type' : 'application/json'
+        'Content-Type': 'application/json'
     }
-    let res
-    if(orderStatus.length === 0) return swal('Not Updated Order Status')
-    res = commonAjax('/v1/admin/orders/single','POST',headers,{orderStatus:orderStatus})
+
+    if (orderStatus.length === 0) return swal('Not Updated Order Status')
+    await commonAjax('/v1/admin/orders/single', 'POST', headers, { orderStatus: orderStatus, orderId: orderId }).catch(res=>res)
+            .then(res=>{
+                return swal(res.data)
+            })
+            .catch(err=>{
+                return swal(err.data)
+            })
 }
 
 $('#orderStatus').click(changeOrderStatus)
+
+// 

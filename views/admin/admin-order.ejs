@@ -45,10 +45,10 @@
                             <tr>
                                 <th scope="col">No.</th>
                                 <th>#ID</th>
-                                <th scope="col">UserId</th>
                                 <th scope="col">Total</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Payment Status</th>
                                 <th scope="col" class="text-end"> Action </th>
                             </tr>
                         </thead>
@@ -57,10 +57,14 @@
                             <tr>
                                 <td><%=i+1%></td>
                                 <td><%=orders[i].orderId%></td>
-                                <td><b><%=orders[i].userId%></b></td>
-                                <td>₹<%=orders[i].totalPrice%></td>
-                                <td><span class="badge rounded-pill alert-warning"><%=orders[i].payment_status%></span></td>
+                                <td><%=orders[i].totalPrice%></td>
+                                <%if(orders[i].orderStatus == 'Delivered'){%>
+                                    <td><span class="badge rounded-pill alert-success"><%=orders[i].orderStatus%></span></td>
+                                <%}else{%>
+                                <td><span class="badge rounded-pill alert-warning"><%=orders[i].orderStatus%></span></td>
+                                <%}%>
                                 <td><%=orders[i].createdAt%></td>
+                                <td><b class="badge rounded-pill alert-warning"><%=orders[i].payment_status%></b></td>
                                 <td class="text-end">
                                     <a href="/v1/admin/orders/single?oId=<%=orders[i].orderId%>" class="btn btn-md rounded font-sm">Detail</a>
                                 </td>

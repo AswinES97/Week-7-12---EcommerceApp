@@ -116,6 +116,20 @@ const getOrderCount = async () => {
     }
 }
 
+const changeOrderStatus = async (data) => {
+    const orderId = Number(data.orderId)
+    try {
+        return await OrdersSchema.findOneAndUpdate({ orderId: orderId }, {
+            $set: {
+                orderStatus: data.orderStatus
+            }
+        })
+            .then(res => Promise.resolve())
+    } catch (err) {
+        return Promise.reject()
+    }
+}
+
 const pagination = async (skip) => {
     let orders = await getOrderDetailsAdmin(skip)
 
@@ -140,6 +154,7 @@ module.exports = {
     getOrderCount: getOrderCount,
     pagination: pagination,
     singleOrderAggreated: singleOrderAggreated,
+    changeOrderStatus: changeOrderStatus,
     getSingleOrder: getSingleOrder
 }
 

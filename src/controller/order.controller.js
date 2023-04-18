@@ -11,7 +11,6 @@ const httpGetOrderPage =async (req, res) => {
         ele.boughtPrice = formatCurrency(ele.boughtPrice)
     });
     order.totalPrice = formatCurrency(order.totalPrice)
-    console.log(order);
     
     res.render('orderPage', {
         userId: user.userId,
@@ -41,5 +40,6 @@ const httpGetAllOrderDetails = async (req, res) => {
 
 module.exports = {
     httpGetOrderPage: httpGetOrderPage,
-    httpGetAllOrderDetails: httpGetAllOrderDetails
+    httpGetAllOrderDetails: httpGetAllOrderDetails,
+    formatDate : format
 }
