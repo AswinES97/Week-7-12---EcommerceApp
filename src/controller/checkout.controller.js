@@ -1,6 +1,7 @@
 const { getAllAddress } = require("../models/address.model");
 const { getCartProducts } = require("../models/cart.model");
-const { placeOrder } = require("../models/checkout.model");
+const { placeOrder, updatePaymentStatus } = require("../models/checkout.model");
+const { razorpayPaymentGeneration, razorpayVerify } = require("../services/razorpay");
 
 module.exports = {
 
@@ -33,19 +34,44 @@ module.exports = {
         const userId = req.user.userId
         const addressId = req.body.selectedAddress
         const paymentMethod = req.body.selectedPayment
+        let orderId = null
+        let totalAmount
         let orderStatus
-        let orderId
+        let quantityErr
+
         await placeOrder(userId, addressId, paymentMethod)
             .then(response => {
+                totalAmount = response.totalAmount
                 orderId = response.orderId
-                return res.json({ orderId: orderId, orderStatus:response.status, ok: true })
+                orderStatus = response.status
             })
             .catch(err => {
-                let orderStatus = err.status
-                let quantityErr = err.quantityErr
-                return res.status(400).json({ orderStatus: orderStatus, quantityErr: quantityErr , ok: false })
+                orderStatus = err.status
+                quantityErr = err.quantityErr
             })
 
+        if (orderId) {
+            if (paymentMethod === 'cod') {
+                return res.json({ orderId: orderId, orderStatus: orderStatus, ok: true })
+            }
+            if (paymentMethod === 'Razorpay') {
+                const order = await razorpayPaymentGeneration(orderId, totalAmount)
+                return res.json({ order: order, ok: true })
+            }
+        } else {
+            return res.status(400).json({ orderStatus: orderStatus, quantityErr: quantityErr, ok: false })
+        }
 
+
+    }
+    ,
+    httpRazorpayVerify: async (req, res) => {
+        const response = await razorpayVerify(req.body.payment)
+            .catch(err => err)
+        if (response.status) {
+            const updated = await updatePaymentStatus(req.body).catch(err => err)
+            if (updated) return res.json({ orderId: updated.orderId })
+        }
+        return res.status(400).json({err:"Payment Unsuccessful!"})
     }
 }

@@ -967,7 +967,7 @@ function addFromLanding(pId) {
             pId
         },
         success: (res) => {
-            swal("Added to Cart!","Success!",{
+            swal("Added to Cart!", "Success!", {
                 toast: 'true',
                 timer: 1000
             })
@@ -979,7 +979,67 @@ function addFromLanding(pId) {
 }
 
 // place order
+// Razorpay
+const verifyPayment = (payment, order) => {
+    $.ajax({
+        type: "post",
+        url: './checkout/verify-payment',
+        data: {
+            payment,
+            order
+        },
+        success: (response) => {
+            swal('Payment Successful!')
+            setTimeout(() => {
+                location.href = `/v1/users/order?oId=${response.orderId}`
+            },500)
+        },
+        error: (err)=>{
+            swal(err.responseJSON)
+            setTimeout(() => {
+                location.href = '/'
+            }, 500)
+        }
+    })
+}
 
+const getRazorpay = (order) => {
+    var options = {
+        "key": "rzp_test_QwyctMFGRE9AVS", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Punch", //your business name
+        "description": "Test Transaction",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response) {
+            verifyPayment(response, order);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar", //your customer's name
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response) {
+        swal(response.error.code);
+        swal(response.error.description);
+        swal(response.error.source);
+        swal(response.error.step);
+        swal(response.error.reason);
+        swal(response.error.metadata.order_id);
+        swal(response.error.metadata.payment_id);
+    });
+
+    rzp1.open();
+}
+// cod + place order
 $('#placeorder').click(async (event) => {
     event.preventDefault()
     const selectedAddress = $('input[name="address"]:checked').val()
@@ -987,14 +1047,30 @@ $('#placeorder').click(async (event) => {
     const headers = {
         'Content-Type': 'application/json'
     }
-    await commonAjax('/v1/users/checkout/', 'POST', headers, { selectedAddress, selectedPayment })
-        .then(res=>JSON.parse(JSON.stringify(res)))
-        .then(res => {
-            window.location.assign(`/v1/users/order?oId=${res.orderId}`)
-        })
-        .catch(err => {
-            console.log(err);
-            swal(err.orderStatus)
-        })
+
+    if (selectedPayment === 'cod') {
+        
+        await commonAjax('/v1/users/checkout/', 'POST', headers, { selectedAddress, selectedPayment })
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => {
+                window.location.assign(`/v1/users/order?oId=${res.orderId}`)
+            })
+            .catch(err => {
+                console.log(err);
+                swal(err.orderStatus)
+            })
+    }
+
+    if (selectedPayment === 'Razorpay') {
+
+        await commonAjax('/v1/users/checkout/', 'POST', headers, { selectedAddress, selectedPayment })
+            .then(res => {
+                getRazorpay(res.order)
+            })
+            .catch(err => {
+                console.log(err);
+                swal(err.orderStatus)
+            })
+    }
 })
 

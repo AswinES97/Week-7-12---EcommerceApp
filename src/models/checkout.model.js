@@ -8,7 +8,6 @@ const productsMongo = require('./products.mongo')
 
 //quatity decrease when order placed
 const decreaseQuantity = async (pId, quantity) => {
-    console.log(pId, quantity);
     try {
         await productsMongo.findOneAndUpdate({ pId: pId }, {
             $inc: {
@@ -85,17 +84,17 @@ const placeOrder = async (userId, addressId, paymentMethod) => {
                     isPaid: false,
                 })
                 orderStatus = await order.save()
-
                 cartItems.product.forEach(async ele => {
                     await decreaseQuantity(ele.pId, ele.quantity)
                 })
                 await deleteAllProducts(userId)
-                return Promise.resolve({ orderId, status: 'Order Confirmed' })
+                return Promise.resolve({ totalAmount: orderStatus.totalPrice, orderId: orderId, status: 'Order Confirmed' })
             } else {
                 return Promise.reject({ status: 'Some items in cart is out of stock', quantityErr })
             }
 
         } catch (err) {
+            console.log(err);
             return Promise.reject({ status: 'Order Not Placed!' })
         }
 
@@ -104,6 +103,29 @@ const placeOrder = async (userId, addressId, paymentMethod) => {
     }
 }
 
+const updatePaymentStatus = async (data) => {
+    const orderId = Number(data.order.receipt)
+    try {
+        return await orderSchema.findOneAndUpdate({ orderId: orderId }, {
+            $set: {
+                payment_status: 'Success',
+                paymentResult: {
+                    id: data.payment.razorpay_payment_id,
+                    update_time: Date.now()
+                },
+                isPaid: true,
+                paidAt: Date.now()
+            }
+        }, { new: true })
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+
 module.exports = {
-    placeOrder: placeOrder
+    placeOrder: placeOrder,
+    updatePaymentStatus: updatePaymentStatus
 }

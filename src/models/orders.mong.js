@@ -83,10 +83,7 @@ const OrderSchema = new mongoose.Schema({
             type: String
         },
         update_time: {
-            type: String
-        },
-        email_address: {
-            type: String
+            type: Date
         }
     },
     totalPrice: {
