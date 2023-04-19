@@ -54,7 +54,11 @@
                         <div class="text">
                             <h6 class="mb-1">Order info</h6>
                             <p class="mb-1">
-                                 Pay method: <%=order.paymentMethod%> <br> Status: <%=order.payment_status%>
+                                Pay method: <%=order.paymentMethod%> <br>
+                                Status: <%=order.payment_status%> <br>
+                                <%if(order.paymentResult){%>
+                                Payment-ID: <%=order.paymentResult.id%>
+                                <%}%>
                             </p>
                             <!-- <a href="#">Download info</a> -->
                         </div>
@@ -93,7 +97,7 @@
                                 <tr>
                                     <td><%=i+1%></td>
                                     <td>
-                                        <a class="itemside" href="#">
+                                        <a class="itemside" href="/v1/product?name=<%=productDetails[i].slug%>&&pId=<%=productDetails[i].pId%>">
                                                 <img src="<%=productDetails[i].image[0]%>" width="40" height="40" class="img-xs" alt="Item">
                                             <div class="info"> <%=productDetails[i].name.substring(0,15)%>... </div>
                                         </a>

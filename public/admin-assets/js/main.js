@@ -417,11 +417,19 @@ async function pagination(event, skip) {
         <tr>
         <td>${skip++}</td>
         <td>${ele.orderId}</td>
-        <td><b>${ele.userId}</b></td>
-        <td>₹${ele.totalPrice}</td>
-        <td><span class="badge rounded-pill alert-warning">${ele.payment_status}</span></td>
-        <td>${ele.orderDate}</td>
-        <td class="text-end">
+        <td>₹${ele.totalPrice}</td>`
+        if (ele.orderStatus === 'Delivered') {
+            tr += `<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
+        } else {
+            tr += `<td><span class="badge rounded-pill alert-warning">${ele.orderStatus}</span></td>`
+        }
+        tr += `<td>${ele.orderDate}</td>`
+        if (ele.payment_status === 'Success') {
+            tr += `<td><b class="badge rounded-pill alert-success">${ele.payment_status}</b></td>`
+        } else {
+            tr += `<td><b class="badge rounded-pill alert-warning">${ele.payment_status}</b></td>`
+        }
+        tr += `<td class="text-end">
             <a href="/v1/admin/orders/single?oId=${ele.orderId}" class="btn btn-md rounded font-sm" >Detail</a>
         </td>
     </tr>
@@ -439,13 +447,13 @@ async function changeOrderStatus() {
     }
 
     if (orderStatus.length === 0) return swal('Not Updated Order Status')
-    await commonAjax('/v1/admin/orders/single', 'POST', headers, { orderStatus: orderStatus, orderId: orderId }).catch(res=>res)
-            .then(res=>{
-                return swal(res.data)
-            })
-            .catch(err=>{
-                return swal(err.data)
-            })
+    await commonAjax('/v1/admin/orders/single', 'POST', headers, { orderStatus: orderStatus, orderId: orderId }).catch(res => res)
+        .then(res => {
+            return swal(res.data)
+        })
+        .catch(err => {
+            return swal(err.data)
+        })
 }
 
 $('#orderStatus').click(changeOrderStatus)

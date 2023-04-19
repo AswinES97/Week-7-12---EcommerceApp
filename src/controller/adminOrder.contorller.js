@@ -14,15 +14,15 @@ const httpAdminGetOrder = async (req, res) => {
     let buttonLength = 0
     const totalCount = await getOrderCount()
     return await getOrderDetailsAdmin()
-    .then(response => {
-        if (response.length === 0) {
-            isOrders = false
-        }else{
-            response.forEach(ele=>{
-                ele.totalPrice = formatCurrency(ele.totalPrice)
-                ele.createdAt = formatDate(new Date(ele.createdAt), 'MMMM do, yyy')
-            })
-        }
+        .then(response => {
+            if (response.length === 0) {
+                isOrders = false
+            } else {
+                response.forEach(ele => {
+                    ele.totalPrice = formatCurrency(ele.totalPrice)
+                    ele.createdAt = formatDate(new Date(ele.createdAt), 'MMMM do, yyy')
+                })
+            }
             buttonLength = Math.ceil(totalCount / 10)
             return res.render('admin/admin-order', {
                 layout: 'admin/admin-layout',
@@ -41,39 +41,46 @@ const httpSingleOrder = async (req, res) => {
     const [userDetails] = order.userDetails
     const productDetails = order.productDetails
     const productOrderDetails = order.products
+    console.log(order);
     order.createdAt = formatDate(new Date(order.createdAt), 'MMMM do, yyy')
     order.totalPrice = formatCurrency(order.totalPrice)
-    productDetails.forEach(ele=>{
+
+    productDetails.forEach(ele => {
         ele.price = formatCurrency(ele.price)
     })
-    productOrderDetails.forEach(ele=>{
+    productOrderDetails.forEach(ele => {
         ele.boughtPrice = formatCurrency(ele.boughtPrice)
     })
-    res.render('admin/admin-order-details',{
+
+    res.render('admin/admin-order-details', {
         layout: 'admin/admin-layout',
         adminTrue: req.admin,
         userDetails: userDetails,
         productDetails: productDetails,
         order: order,
-        productOrderDetails:productOrderDetails
+        productOrderDetails: productOrderDetails
     })
 }
 
 const httpChangeOrderStatus = async (req, res) => {
     console.log(req.body);
     return await changeOrderStatus(req.body)
-        .then(()=>{
-            return res.json({ok: true, data: 'Status Updated!'})
+        .then(() => {
+            return res.json({ ok: true, data: 'Status Updated!' })
         })
-        .catch(()=>{
-            return res.status(400).json({ok:false, data:'Status Not Updated!'})
+        .catch(() => {
+            return res.status(400).json({ ok: false, data: 'Status Not Updated!' })
         })
 }
 
 const httpPagination = async (req, res) => {
-    let skip = Number(req.query.skip)*10
+    let skip = Number(req.query.skip) * 10
     const orders = await pagination(skip)
     if (!orders) return res.status(400).json({ data: 'Error!', ok: false })
+    orders.forEach(ele => {
+        ele.totalPrice = formatCurrency(ele.totalPrice)
+        ele.orderDate = formatDate(new Date(ele.orderDate), 'MMMM do, yyy')
+    })
     return res.json({ data: orders, ok: false })
 }
 
@@ -81,5 +88,5 @@ module.exports = {
     httpAdminGetOrder: httpAdminGetOrder,
     httpPagination: httpPagination,
     httpSingleOrder: httpSingleOrder,
-    httpChangeOrderStatus : httpChangeOrderStatus
+    httpChangeOrderStatus: httpChangeOrderStatus
 }

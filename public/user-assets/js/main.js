@@ -1074,3 +1074,18 @@ $('#placeorder').click(async (event) => {
     }
 })
 
+// dashboard-account-details
+$('#account-detail-tab').on('click',async()=>{
+    let data = await fetch('./dashboard/user-details')
+                    .then(res=>res.json())
+                    .catch(err=>err.json())
+    
+    if(data.ok){
+        $('#fname').val(data.fname)
+        if(!!data.lname) $('#lname').val(data.lname)
+        $('#email').val(data.email)
+        $('#phone').val(data.phn_no)
+    }else{
+        swal(data.data)
+    }
+})

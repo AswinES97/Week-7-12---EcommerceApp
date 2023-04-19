@@ -65,6 +65,7 @@ const singleOrderAggreated = async (orderDetails) => {
                     shippingAddress: { $first: "$shippingAddress" },
                     paymentMethod: { $first: "$paymentMethod" },
                     payment_status: { $first: "$payment_status" },
+                    paymentResult: { $first: "$paymentResult"},
                     totalPrice: { $first: "$totalPrice" },
                     isPaid: { $first: "$isPaid" },
                     isDelivered: { $first: "$isDelivered" },
