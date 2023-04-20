@@ -417,7 +417,7 @@ async function pagination(event, skip) {
         <tr>
         <td>${skip++}</td>
         <td>${ele.orderId}</td>
-        <td>₹${ele.totalPrice}</td>`
+        <td>${ele.totalPrice}</td>`
         if (ele.orderStatus === 'Delivered') {
             tr += `<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
         } else {

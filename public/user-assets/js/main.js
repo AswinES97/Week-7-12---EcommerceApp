@@ -1089,3 +1089,24 @@ $('#account-detail-tab').on('click',async()=>{
         swal(data.data)
     }
 })
+
+$("#disable-btn").on('click',()=>{
+    $("#fname").prop('disabled', !$("#fname").prop('disabled'));
+    $("#lname").prop('disabled', !$("#lname").prop('disabled'));
+    $("#email").prop('disabled', !$("#email").prop('disabled'));
+    $("#phone").prop('disabled', !$("#phone").prop('disabled'));
+    $("#submit-btn").toggle();
+})
+
+$('#change-password-btn').on('click',()=>{
+    $('#change-password-fields').toggle()
+})
+
+$('#userInfo').submit((e)=>{
+    e.preventDefault()
+    console.log('submitted');
+})
+
+$('#change-password').submit(e=>{
+    e.preventDefault()
+})
