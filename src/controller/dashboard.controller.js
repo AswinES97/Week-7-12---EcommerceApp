@@ -1,12 +1,25 @@
 const { getUser } = require("../models/user.model")
+const { getAllOrderDetails } = require('../models/order.model')
+const { formatDate } = require('./order.controller')
 
 module.exports = {
-    httpGetDashboardPage: (req, res) => {
+    httpGetDashboardPage: async (req, res) => {
+        const isOrdered = req.query.isOrdered
         const user = req.user
+        let orderDetails
+
+        if (isOrdered) {
+            orderDetails = await getAllOrderDetails(user.userId)
+            console.log(orderDetails);
+        }
+
         res.render('users/dashboard', {
             userName: user.name,
             userId: user.userId,
-            userStatus: user.loggedIn
+            userStatus: user.loggedIn,
+            isOrdered: isOrdered,
+            orderDetails: orderDetails,
+            formatDate: formatDate
         })
     }
     ,

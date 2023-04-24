@@ -40,7 +40,7 @@
                                     <td class="image product-thumbnail"><img src="<%=productDetails[i].image[0]%>"
                                             alt="#"></td>
                                     <td class="product-des product-name">
-                                        <h5 class="product-name"><a href="#" style="font-family: 'Courier New', Courier, monospace;" ><%=productDetails[i].name.substring(0,30)%>...</a></h5>
+                                        <h5 class="product-name"><a href="../product?slug=<%=productDetails[i].slug%>&&pId=<%=productDetails[i].pId%>" style="font-family: 'Courier New', Courier, monospace;" ><%=productDetails[i].name.substring(0,30)%>...</a></h5>
                                     </td>
                                     <td class="text-center" data-title="Stock">
                                         <div >
@@ -73,7 +73,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <div>
-            <a href="/v1/users/dashboard"><button class="btn me-2">View Orders</button></a>
+            <a href="/v1/users/dashboard?isOrdered=true"><button class="btn me-2">View Orders</button></a>
         </div>
         <div>
             <a href="/"><button class="btn me-2">Shop More</button></a>

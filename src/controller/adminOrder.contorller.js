@@ -24,6 +24,7 @@ const httpAdminGetOrder = async (req, res) => {
                 })
             }
             buttonLength = Math.ceil(totalCount / 10)
+            
             return res.render('admin/admin-order', {
                 layout: 'admin/admin-layout',
                 adminTrue: req.admin,
@@ -41,7 +42,6 @@ const httpSingleOrder = async (req, res) => {
     const [userDetails] = order.userDetails
     const productDetails = order.productDetails
     const productOrderDetails = order.products
-    console.log(order);
     order.createdAt = formatDate(new Date(order.createdAt), 'MMMM do, yyy')
     order.totalPrice = formatCurrency(order.totalPrice)
 
@@ -63,7 +63,6 @@ const httpSingleOrder = async (req, res) => {
 }
 
 const httpChangeOrderStatus = async (req, res) => {
-    console.log(req.body);
     return await changeOrderStatus(req.body)
         .then(() => {
             return res.json({ ok: true, data: 'Status Updated!' })

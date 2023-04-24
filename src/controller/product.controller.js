@@ -4,7 +4,7 @@ module.exports = {
     getSingleProductPage: async (req, res) => {
         const pId = req.query.pId
         const user = req.user
-        
+        console.log(pId);
         getSingleProduct(pId)
             .then(product => {
                 return res.render('singleproductpage', {

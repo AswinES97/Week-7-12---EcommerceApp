@@ -11,7 +11,7 @@ const httpGetOrderPage =async (req, res) => {
         ele.boughtPrice = formatCurrency(ele.boughtPrice)
     });
     order.totalPrice = formatCurrency(order.totalPrice)
-    
+    console.log(order.productDetails);
     res.render('orderPage', {
         userId: user.userId,
         userName: user.name,

@@ -64,7 +64,12 @@
                                 <td><span class="badge rounded-pill alert-warning"><%=orders[i].orderStatus%></span></td>
                                 <%}%>
                                 <td><%=orders[i].createdAt%></td>
-                                <td><b class="badge rounded-pill alert-warning"><%=orders[i].payment_status%></b></td>
+                                <%if(orders[i].payment_status == 'Success'){%>
+                                    <td><span class="badge rounded-pill alert-success"><%=orders[i].payment_status%></span></td>
+                                <%}else{%>
+                                    <td><b class="badge rounded-pill alert-warning"><%=orders[i].payment_status%></b></td>
+                                <%}%>
+                                
                                 <td class="text-end">
                                     <a href="/v1/admin/orders/single?oId=<%=orders[i].orderId%>" class="btn btn-md rounded font-sm">Detail</a>
                                 </td>
@@ -75,7 +80,7 @@
                 </div> <!-- table-responsive //end -->
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
-        <%if(isOrders){%>
+        <%if(buttonLength>1){%>
         <div class="pagination-area mt-15 mb-50">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-start">

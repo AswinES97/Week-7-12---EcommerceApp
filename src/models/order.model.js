@@ -1,8 +1,8 @@
 const OrdersSchema = require('./orders.mong')
 
-const getAllOrderDetails = async (userId) => {
+const getAllOrderDetails = async (userId, skip = 0) => {
     try {
-        let orders = await OrdersSchema.find({ userId }, { _id: 0 })
+        let orders = await OrdersSchema.find({ userId }, { _id: 0 }).sort({ createdAt: -1 }).skip(skip).limit(10)
         orders = JSON.parse(JSON.stringify(orders))
         return Promise.resolve(orders)
     } catch (err) {
@@ -12,7 +12,7 @@ const getAllOrderDetails = async (userId) => {
 
 const getOrderDetailsAdmin = async (skip = 0) => {
     try {
-        let orders = await OrdersSchema.find().skip(skip).limit(10)
+        let orders = await OrdersSchema.find().sort({ createdAt: -1 }).skip(skip).limit(10)
         orders = JSON.parse(JSON.stringify(orders))
         return Promise.resolve(orders)
     } catch (err) {
@@ -65,7 +65,7 @@ const singleOrderAggreated = async (orderDetails) => {
                     shippingAddress: { $first: "$shippingAddress" },
                     paymentMethod: { $first: "$paymentMethod" },
                     payment_status: { $first: "$payment_status" },
-                    paymentResult: { $first: "$paymentResult"},
+                    paymentResult: { $first: "$paymentResult" },
                     totalPrice: { $first: "$totalPrice" },
                     isPaid: { $first: "$isPaid" },
                     isDelivered: { $first: "$isDelivered" },
@@ -104,6 +104,7 @@ const singleOrderAggreated = async (orderDetails) => {
         ])
             .then(res => JSON.parse(JSON.stringify(res)))
             .then(res => Promise.resolve(res))
+
     } catch (err) {
         console.log(err);
     }

@@ -8,9 +8,10 @@ module.exports = {
     httpCheckoutPage: async (req, res) => {
         const user = req.user
         const cartItems = await getCartProducts(user.userId)
+        let addressLength;
+        
         return getAllAddress(user.userId)
             .then(response => {
-                let addressLength;
 
                 if (!response) addressLength = 0
                 else addressLength = response.length

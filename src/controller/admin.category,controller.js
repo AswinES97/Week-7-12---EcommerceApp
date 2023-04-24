@@ -11,6 +11,7 @@ module.exports = {
         getAllCategory()
             .then(data=>{
                 [data] = data
+                console.log(data);
                 return res.render('admin/admin-category', {
                     layout: 'admin/admin-layout',
                     adminTrue: req.admin,
