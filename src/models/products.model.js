@@ -122,6 +122,36 @@ module.exports = {
         })
     },
 
+    updateProductCategory:async(data)=>{
+        try {
+            await product.updateMany({categoryType:data.previousCategoryType},{
+                $set:{
+                    categoryType:data.categoryType
+                }
+            })
+            .then(res=>Promise.resolve(true))
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
+    },
+
+    inactiveAllProducts: async (categoryType) => {
+        try {
+            await product.updateMany({
+                categoryType: categoryType
+            },{
+                $set:{
+                    active: false,
+                    categoryType:''
+                }
+            })
+            .then(res=>console.log(res))
+        } catch (err) {
+            console.log(err)
+        }
+    },
+
     uuidv4
 }
 

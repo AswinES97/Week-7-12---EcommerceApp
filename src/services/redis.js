@@ -5,14 +5,12 @@ client.on('error', (err) => console.error(err))
 client.connect()
 
 const saveToken = async (token, data) => {
-    console.log('here');
     await client.setEx(token, 86400, JSON.stringify(data))
 }
 
 const verifyToken = async (token) => {
     let data
     data = await client.get(token)
-    console.log(data);
     return JSON.parse(data)
 }
 

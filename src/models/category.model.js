@@ -67,10 +67,10 @@ module.exports = {
                 [`${categoryValue}.${subCategoryValue}`]: 1, _id: 0
             })
                 .then(res => {
-                    
+
                     let [data] = res
                     data = data[categoryValue][subCategoryValue]
-                    
+
                     return Promise.resolve(data)
                 })
 
@@ -82,39 +82,75 @@ module.exports = {
     getCategory: async (data) => {
         try {
             const { category } = data
-            return await categorySchema.find({},{
+            return await categorySchema.find({}, {
                 [category]: 1, _id: 0
             })
-            .then(data=>{
+                .then(data => {
 
-                [data] = JSON.parse(JSON.stringify(data))
-                data = data[category]
-                const subCategory = Object.keys(data)
-                const temp = subCategory[0]
-                const categoryType = data[temp]
+                    [data] = JSON.parse(JSON.stringify(data))
+                    data = data[category]
+                    const subCategory = Object.keys(data)
+                    const temp = subCategory[0]
+                    const categoryType = data[temp]
 
-                data = {
-                    subCategory,
-                    categoryType
-                }
+                    data = {
+                        subCategory,
+                        categoryType
+                    }
 
-                return Promise.resolve(data)
-            })
+                    return Promise.resolve(data)
+                })
 
         } catch (error) {
             return Promise.reject('Mongo Error!')
         }
     },
 
-    getAllCategory: async ()=>{
+    getAllCategory: async () => {
         try {
-            
+
             return await categorySchema.find()
-                .then(res=>JSON.parse(JSON.stringify(res)))
-                .then(data=>removeId(data))
+                .then(res => JSON.parse(JSON.stringify(res)))
+                .then(data => removeId(data))
 
         } catch (err) {
             console.log(err);
+        }
+    },
+
+    editCategory: async (data) => {
+        try {
+            await categorySchema.updateOne({
+                $pull:{
+                    [`${data.gender}.${data.category}`]:data.previousCategoryType
+                }
+            
+            })
+            await categorySchema.updateOne({
+                $push:{
+                    [`${data.gender}.${data.category}`]:data.categoryType
+                }
+            })
+            return Promise.resolve(true)
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
+    },
+
+    deleteCategory: async (data) => {
+        const { gender, category, categoryType } = data
+        try {
+            return await categorySchema.updateOne({},
+                {
+                    $pull: {
+                        [`${gender}.${category}`]: categoryType
+                    }
+                })
+                .then(res => Promise.resolve(true))
+
+        } catch (err) {
+            return Promise.reject(false)
         }
     }
 }

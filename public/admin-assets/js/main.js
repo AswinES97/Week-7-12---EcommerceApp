@@ -228,7 +228,105 @@ async function createCategory($event) {
         })
     }
 }
+// delete category
 
+async function deleteCategory(e, i) {
+    e.preventDefault()
+    let bool =false
+    await swal('Delete', 'Delete this Category?', 'warning', {
+        buttons: {
+            cancel: "Cancel",
+            catch: {
+                text: "Remove",
+                value: true,
+            }
+        }
+    }).then((result) => {
+        bool = result
+    })
+    console.log(bool);
+    if (bool) {
+        const rowValues = [];
+        $(`#${i} td`).each(function () {
+            rowValues.push($(this).text());
+        });
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+        const body = {
+            gender: rowValues[0],
+            category: rowValues[1],
+            categoryType: rowValues[2]
+        }
+        await commonAjax('/v1/admin/category/all', "DELETE", headers, body)
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 500);
+            })
+    }
+}
+
+// edit category
+
+function editCategory(e, i) {
+    e.preventDefault()
+    const rowValues = [];
+    $(`#${i} td`).each(function () {
+        rowValues.push($(this).text());
+    });
+    const data = {
+        gender: rowValues[0],
+        category: rowValues[1],
+        categoryType: rowValues[2]
+    }
+    $('#modal-gender').text(data.gender)
+    $('#modal-category').text(data.category)
+    $('#modal-categoryTypeValue').text(data.categoryType)
+    $('#modal-categoryType').val(data.categoryType)
+    $('#staticBackdrop').modal('show')
+
+}
+
+$('#modal-save').on('click', async () => {
+    $('#modal-save').prop('disabled', true)
+    const body = {
+        gender: $('#modal-gender').text().trim(),
+        category: $('#modal-category').text().trim(),
+        previousCategoryType: $('#modal-categoryTypeValue').text(),
+        categoryType: $('#modal-categoryType').val().trim()
+    }
+    console.log(body);
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+
+    if (!body.categoryType) $('#modal-error').attr('hidden', false)
+    else {
+        await commonAjax('/v1/admin/category/all', 'PUT', headers, body)
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
+            })
+            .catch(err => {
+                swal(err.data)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000)
+            })
+    }
+})
+
+// product
 function deleteProduct($event, pId) {
     $event.preventDefault()
 

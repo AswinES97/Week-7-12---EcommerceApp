@@ -32,3 +32,29 @@ const categorySchema = new mongoose.Schema({
 }, { versionKey: false })
 
 module.exports = mongoose.model('Category', categorySchema)
+
+// const ParentCategory = new mongoose.Schema({
+//     parentId: nanoid(),
+//     name: {
+//         type: String,
+//         required: true
+//     }
+// })
+
+// const Category = new mongoose.Schema({
+//     parentId:{
+//         type: String,
+//         required: true
+//     },
+//     name: {
+//         type: String,
+//         required: true
+//     },
+//     subcategory: [
+//         {
+//             name: {
+//                 type: String,
+//             }
+//         }
+//     ]
+// })

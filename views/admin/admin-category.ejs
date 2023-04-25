@@ -1,4 +1,32 @@
+<!-- modal -->
+<div class="modal fade " data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" id="staticBackdrop">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label"><span id="modal-gender"></span>><span id="modal-category"></span>><span id="modal-categoryTypeValue" hidden></span></label>
+              </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="modal-categoryType">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="modal-save" class="btn btn-primary">Save changes</button>
+        </div>
+        <div class="modal-footer">
+            <br><span id="modal-error" style="color:red" hidden>Error!<span>
+        </div>
+    </div>
+      </div>
+</div>
 
+<!-- main -->
 <div class="screen-overlay"></div>
 <main class="main-wrap">
     <header class="main-header navbar">
@@ -51,7 +79,7 @@
         </div>
     </header>
     
-    <section class="content-main" style="background-color: antiquewhite;">
+    <section class="content-main" >
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Categories </h2>
@@ -98,29 +126,23 @@
                                         <th>Gender</th>
                                         <th>Sub-Category</th>
                                         <th>Category-Type</th>
-                                        <th>Order</th>
                                         <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%for(let props in data){%>
-                                    <tr>
-                                        <td><b><%=props%></b></td>
-                                        <td>Men clothes</td>
-                                        <td>/men</td>
-                                        <td>1</td>
+                                    <%for(let gender in data){%>
+                                        <%for(let category in data[gender]){%>
+                                            <%for(let i=0;i<data[gender][category].length;i++){%>
+                                    <tr id="<%=++id%>">
+                                        <td><b><%=gender%></b></td>
+                                        <td><%=category%></td>
+                                        <td><%=data[gender][category][i]%></td>
                                         <td class="text-end">
-                                            <div class="dropdown">
-                                                <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#">View detail</a>
-                                                    <a class="dropdown-item" href="#">Edit info</a>
-                                                    <a class="dropdown-item text-danger" href="#">Delete</a>
-                                                </div>
-                                            </div> <!-- dropdown //end -->
+                                            <a href="#" onclick="editCategory(event,'<%=id%>')"><button class="btn" style="background-color: rgb(94, 66, 85);color: white;">Edit</button></a>
+                                            <a href="#" onclick="deleteCategory(event,'<%=id%>')"><button class="btn" style="background-color: rgba(199, 1, 1, 0.884);color: white;">Delete</button></a>
                                         </td>
                                     </tr>           
-                                    <%}%>                     
+                                    <%}}}%>                     
                                 </tbody>
                             </table>
                         </div>
@@ -132,6 +154,7 @@
     </section> <!-- content-main end// -->
   
 </main>
+
 <script src="assets/js/vendors/jquery-3.6.0.min.js"></script>
 <script src="assets/js/vendors/bootstrap.bundle.min.js"></script>
 <script src="assets/js/vendors/select2.min.js"></script>

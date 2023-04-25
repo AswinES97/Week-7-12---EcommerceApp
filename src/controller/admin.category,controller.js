@@ -3,21 +3,25 @@ const {
     getCategoryInitially,
     getCategoryType,
     getCategory,
-    getAllCategory
-} = require('../models/category.model')
+    editCategory,
+    getAllCategory,
+    deleteCategory
+} = require('../models/category.model');
+const { inactiveAllProducts, updateProductCategory } = require('../models/products.model');
 
 module.exports = {
     httpGetCategoryPage: (req, res) => {
         getAllCategory()
-            .then(data=>{
+            .then(data => {
                 [data] = data
                 console.log(data);
                 return res.render('admin/admin-category', {
                     layout: 'admin/admin-layout',
                     adminTrue: req.admin,
-                    data: data
+                    data: data,
+                    id: 0
+                })
             })
-        })
     },
 
     httpAddCategory: async (req, res) => {
@@ -60,5 +64,27 @@ module.exports = {
                 })
         }
     },
+
+    httpEditCatagory: async (req, res) => {
+        const response = await editCategory(req.body).catch(err => err)
+        if (!response) return res.status(400).json({ ok: false, data: 'Error Updating' })
+        await updateProductCategory(req.body)
+        return res.json({ ok: true, data: "Updated!" })
+    },
+
+    httpDeleteCategory: async (req, res) => {
+        let data
+
+        if (!req.body.gender || !req.body.category || !req.body.categoryType) {
+            return res.status(400).json({ ok: false, data: 'Invalid Input!' })
+        }
+        data = await deleteCategory(req.body).catch(err => err)
+
+        if (data) {
+            await inactiveAllProducts(req.body.categoryType)
+            return res.json({ ok: true, data: "Deleted Category and Related Products!" })
+        }
+        return res.status(400).json({ ok: false, data: "Error deleting Category!" })
+    }
 
 }
