@@ -17,6 +17,7 @@ const checkoutRouter = require('./checkout.router')
 const dashboardRouter = require('./dashboard.router')
 const addressRouter = require('./address.router')
 const orderRouter = require('./order.router.js')
+const wishlishtRouter = require('./wishlistRouter')
 
 userRouter.route('/login')
     .all(userNotLoggedIn)
@@ -47,9 +48,10 @@ userRouter.route('/logout')
     .get(httpUserLogout)
 
 userRouter.use('/cart', userLoggedIn, userCartRouter)
+userRouter.use('/wishlist', userLoggedIn, wishlishtRouter)
 userRouter.use('/dashboard', userLoggedIn, dashboardRouter)
 userRouter.use('/checkout', userLoggedIn, checkoutRouter)
-userRouter.use('/order',userLoggedIn, orderRouter)
+userRouter.use('/order', userLoggedIn, orderRouter)
 userRouter.use('/address', userLoggedIn, addressRouter)
 
 module.exports = {

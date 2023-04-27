@@ -1110,3 +1110,47 @@ $('#userInfo').submit((e)=>{
 $('#change-password').submit(e=>{
     e.preventDefault()
 })
+
+// wishllist
+async function wishlitBtn(e,slug){
+    e.preventDefault()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    const body = {
+        slug
+    }
+    await commonAjax('/v1/users/wishlist','POST',headers,body)
+        .then(res=>{
+            swal(res.data)
+        })
+        .catch(err=>{
+            swal(err.data)
+        })
+}
+
+//remove from wishlist
+
+async function removeFromWishlist(e,slug){
+    e.preventDefault()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    const body = {
+        slug:slug
+    }
+
+    await commonAjax('/v1/users/wishlist','PUT',headers,body)
+        .then(res=>{
+            swal(res.data)
+            setTimeout(() => {
+                window.location.reload()
+            }, 750);
+        })
+        .catch(err=>{
+            swal(err.data)
+            setTimeout(() => {
+                window.location.reload()
+            }, 750);
+        })
+}
