@@ -1,5 +1,5 @@
 const {
-    getAllProducts,
+    getAllProductsAdmin,
     addNewProduct,
     editProduct,
     deleteProduct,
@@ -35,7 +35,7 @@ module.exports = {
     },
 
     httpGetAllProducts: async (req, res) => {
-        await getAllProducts()
+        await getAllProductsAdmin()
             .then(data => {
                 res.render('admin/admin-products-list', {
                     layout: 'admin/admin-layout',

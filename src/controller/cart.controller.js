@@ -6,6 +6,7 @@ const {
     updateProductInCart
 } = require("../models/cart.model")
 const { getSingleProduct } = require('../models/products.model')
+const { updateRedis } = require("../services/redis")
 
 module.exports = {
     httpUserCart: (req, res) => {
@@ -19,6 +20,8 @@ module.exports = {
                     userStatus: user.loggedIn,
                     userName: user.name,
                     userId: user.userId,
+                    cartCount: user.cartC,
+                    wishlistCount: user.wishlistC,
                     dataPresent: dataPresent,
                     grandTotal: data.grandTotal,
                     products: data.product
@@ -46,8 +49,12 @@ module.exports = {
 
         if (data.userId && quantity && subTotal && size) {
             return await addToCart(data)
-                .then(response => {
-                    return res.json({ "ok": 'Proudct Added!' })
+                .then(async response => {
+                    const count = response.product.length
+                    user.cartC = count
+                    await updateRedis(req.cookies.token, user)
+
+                    return res.json({ "ok": 'Proudct Added!' ,cartC : user.cartC})
                 })
                 .catch(err => {
                     return res.status(400).json({ 'err': 'Not Added!' })
@@ -62,8 +69,11 @@ module.exports = {
                 pId: req.body.pId
             }
             return await addToCart(data)
-                .then(response => {
-                    return res.json({ "ok": 'Proudct Added!' })
+                .then(async response => {
+                    const count = response.product.length
+                    user.cartC = count
+                    await updateRedis(req.cookies.token, user)
+                    return res.json({ "ok": 'Proudct Added!' ,cartC : user.cartC})
                 })
                 .catch(err => res.status(400).json({ 'err': 'Not Added!' }))
 
@@ -84,7 +94,10 @@ module.exports = {
             return res.status(400).json({ "err": "Not-Removed!" })
         } else {
             removeFromCart(data)
-                .then(response => {
+                .then(async response => {
+                    const count = response.product.length
+                    user.cartC = count
+                    await updateRedis(req.cookies.token, user)
                     return res.json({ 'ok': 'Removed!' })
                 })
                 .catch(err => {

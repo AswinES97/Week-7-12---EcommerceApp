@@ -14,19 +14,30 @@ const verifyToken = async (token) => {
     return JSON.parse(data)
 }
 
-const deleteToken = async(token)=> {
+const deleteToken = async (token) => {
     await client.del(token)
 }
 
 // generate orderId
-
-const generateOrderId = async ()=>{
+const generateOrderId = async () => {
     const orderId = await client.get('orderId')
-    if(!orderId){
-        await client.set('orderId',10001)
+    if (!orderId) {
+        await client.set('orderId', 10001)
         return 10001
-    }else{
+    } else {
         return await client.incr('orderId')
+    }
+}
+
+// update data
+const updateRedis = async (token, data) => {
+    try {
+        const ttl = await client.ttl(token)
+        const res = await client.setEx(token, ttl, JSON.stringify(data))
+        return Promise.resolve(true)
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
     }
 }
 
@@ -34,5 +45,6 @@ module.exports = {
     saveToken: saveToken,
     verifyToken: verifyToken,
     deleteToken: deleteToken,
+    updateRedis: updateRedis,
     generateOrderId: generateOrderId
 }

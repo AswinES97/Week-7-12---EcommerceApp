@@ -13,11 +13,13 @@ module.exports = {
             console.log(orderDetails);
         }
 
-        res.render('users/dashboard', {
+        return res.render('users/dashboard', {
             userName: user.name,
             userId: user.userId,
             userStatus: user.loggedIn,
             isOrdered: isOrdered,
+            cartCount: user.cartC,
+            wishlistCount: user.wishlistC,
             orderDetails: orderDetails,
             formatDate: formatDate
         })

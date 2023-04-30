@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-    pId:{
+    pId: {
         type: String,
         required: true,
         unique: true
@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    slug:{
+    slug: {
         type: String,
         required: true
     },
@@ -18,11 +18,19 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    offerprice: {
+        type: Number,
+        default: 0
+    },
+    offerpercentage: {
+        type: Number,
+        default: 0
+    },
     brand: {
         type: String,
         required: true
     },
-    description:{
+    description: {
         type: String,
         required: true
     },
@@ -38,7 +46,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    categoryType:{
+    categoryType: {
         type: String,
         required: true
     },
@@ -46,7 +54,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
-    image:[{
+    image: [{
         type: String,
         required: true
     }],
@@ -59,11 +67,11 @@ const productSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        quantity:{
+        quantity: {
             type: Number,
             required: true
         }
     }
-},{ timestamps: true ,versionKey:false})
+}, { timestamps: true, versionKey: false })
 
 module.exports = mongoose.model('Product', productSchema)

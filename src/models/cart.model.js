@@ -2,6 +2,17 @@ const { formatCurrency } = require('../services/currencyFormatter');
 const cartSchema = require('./cart.mongo')
 
 module.exports = {
+    cartCount: async (userId) => {
+        try {
+            const cartDoc = await cartSchema.findOne({ userId: userId }).then(res => JSON.parse(JSON.stringify(res)))
+            const count = cartDoc.product.length
+            return Promise.resolve(count)
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
+    },
+
     getCartProducts: async (userId) => {
         try {
             return await cartSchema.aggregate([
@@ -11,19 +22,19 @@ module.exports = {
                     }
                 }, {
                     $unwind: '$product'
-                },{
+                }, {
                     $lookup: {
                         from: 'products',
-                        localField:'product.pId',
-                        foreignField:'pId',
-                        as:'productDetails'
+                        localField: 'product.pId',
+                        foreignField: 'pId',
+                        as: 'productDetails'
                     }
-                },{
-                    $project:{
-                        '_id':0,
-                        'product':1,
-                        'grandTotal':1,
-                        'productDetails':1
+                }, {
+                    $project: {
+                        '_id': 0,
+                        'product': 1,
+                        'grandTotal': 1,
+                        'productDetails': 1
                     }
                 }
             ])
@@ -35,7 +46,7 @@ module.exports = {
                             ele.product.subTotal = formatCurrency(ele.product.subTotal)
                         });
                         const data = {
-                            product:res,
+                            product: res,
                             grandTotal: cur
                         }
                         return Promise.resolve(data)
@@ -49,8 +60,8 @@ module.exports = {
 
     getCartItems: async (userId) => {
         try {
-            return await cartSchema.findOne({userId: userId})
-                .then(res=>Promise.resolve(JSON.parse(JSON.stringify(res))))
+            return await cartSchema.findOne({ userId: userId })
+                .then(res => Promise.resolve(JSON.parse(JSON.stringify(res))))
         } catch (err) {
             return Promise.reject("Error")
         }
@@ -70,20 +81,19 @@ module.exports = {
                     else {
                         const present = res.product.find(item => item.pId == pId)
                         if (present) {
-                            return await cartSchema.updateOne({ userId, 'product.pId': pId }, {
+                            return await cartSchema.findOneAndUpdate({ userId, 'product.pId': pId }, {
                                 $inc: {
                                     grandTotal: Number(subTotal),
                                     'product.$.quantity': Number(quantity),
                                     'product.$.subTotal': Number(subTotal),
                                 }
 
-                            })
+                            }, { new: true })
                                 .then(res => {
-                                    if (res.modifiedCount === 1) return true
-                                    else throw Error()
+                                    return res
                                 })
                         } else {
-                            return await cartSchema.updateOne({ userId: userId }, {
+                            return await cartSchema.findOneAndUpdate({ userId: userId }, {
                                 $inc: { grandTotal: Number(subTotal) }
                                 ,
                                 $push: {
@@ -94,9 +104,9 @@ module.exports = {
                                         subTotal: Number(subTotal),
                                     }]
                                 }
-                            })
+                            }, { new: true })
                                 .then(res => {
-                                    return true
+                                    return res
                                 })
                         }
                     }
@@ -116,7 +126,7 @@ module.exports = {
                         })
                         return cartNew.save()
                             .then(res => {
-                                return Promise.resolve(true)
+                                return Promise.resolve(res)
                             })
                     }
                 })
@@ -158,18 +168,16 @@ module.exports = {
         const { pId, userId, price } = data
 
         try {
-            return await cartSchema.updateOne(
+            return await cartSchema.findOneAndUpdate(
                 { userId },
                 {
                     $inc: { grandTotal: -price },
                     $pull: { product: { pId: pId } }
-                })
+                }, { new: true })
+                .then(res=>JSON.parse(JSON.stringify(res)))
                 .then(res => {
-                    if (res.modifiedCount > 0) return Promise.resolve(false)
-                    else throw Error()
+                    return Promise.resolve(res)
                 })
-
-
         } catch (err) {
             return Promise.reject(false)
         }

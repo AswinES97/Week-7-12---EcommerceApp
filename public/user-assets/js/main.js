@@ -666,6 +666,7 @@ $('#addToCart').click(() => {
             quantity
         },
         success: (res) => {
+            $('#cart-count').text(res.cartC)
             swal('Success', 'added to cart', 'success')
             $('#addToCart').prop('disabled', false)
         },
@@ -967,6 +968,7 @@ function addFromLanding(pId) {
             pId
         },
         success: (res) => {
+            $('#cart-count').text(res.cartC)
             swal("Added to Cart!", "Success!", {
                 toast: 'true',
                 timer: 1000
@@ -1122,7 +1124,8 @@ async function wishlitBtn(e,slug){
     }
     await commonAjax('/v1/users/wishlist','POST',headers,body)
         .then(res=>{
-            swal(res.data)
+            swal(res.data.text)
+            $('#wishlist-count').text(res.data.newWishlistCount)
         })
         .catch(err=>{
             swal(err.data)

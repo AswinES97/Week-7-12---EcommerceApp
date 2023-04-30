@@ -159,7 +159,11 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-action-1">
+                                                    <%if(userStatus){%>
                                                     <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#" onclick="wishlitBtn(event,'<%=ele.slug%>')"><i class="fi-rs-heart"></i></a>
+                                                    <%}else{%>
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-user=false onclick="cartHome()" ><i class="fi-rs-heart"></i></a>
+                                                    <%}%>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
@@ -170,15 +174,21 @@
                                                     <a href="/v1/product?name=<%=ele.slug%>&&pId=<%=ele.pId%>"><%=ele.brand%></a>
                                                 </div>
                                                 <h2><a href="/v1/product?name=<%=ele.slug%>&&pId=<%=ele.pId%>"><%=ele.name.substring(0,30)%>...</a></h2>
-                                                <div class="rating-result" title="90%">
+                                                <%if(ele.offerpercentage){%>
+                                                <div >
                                                     <span>
-                                                        <span>90%</span>
+                                                        <span><%=ele.offerpercentage%>% off</span>
                                                     </span>
                                                 </div>
                                                 <div class="product-price">
-                                                    <span>₹<%=ele.price%></span>
-                                                    <!-- <span class="old-price">$245.8</span> -->
+                                                    <span>₹<%=ele.offerprice%></span>
+                                                    <span class="old-price">₹<%=ele.price%></span>
                                                 </div>
+                                                <%}else{%>
+                                                    <div class="product-price">
+                                                        <span>₹<%=ele.price%></span>
+                                                    </div>
+                                                <%}%>
                                                 <%if(userStatus){%>
                                                 <div class="product-action-1 show">
                                                     <a id="addLanding" onclick="addFromLanding('<%=ele.pId%>')" data-user=<%=userStatus%> aria-label="Add To Cart" class="action-btn hover-up" ><i class="fi-rs-shopping-bag-add"></i></a>

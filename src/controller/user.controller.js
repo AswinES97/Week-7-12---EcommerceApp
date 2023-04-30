@@ -1,4 +1,5 @@
 const { getAllProducts } = require("../models/products.model")
+const { cartCount } = require('../models/cart.model')
 const {
     loginUserWithPhone,
     loginUserWithEmailAndPassword,
@@ -20,6 +21,7 @@ const {
     otp_sent,
     err_email
 } = require('../services/responses')
+const { wishlistCount } = require("../models/wishlist.model")
 
 module.exports = {
 
@@ -83,15 +85,21 @@ module.exports = {
     httpEmailVerify: async (req, res) => {
         let data
         let token
+        let cartC
+        let wishlistC
 
         if (req.body.email && req.body.pass)
             await loginUserWithEmailAndPassword(req.body)
                 .then(async response => {
                     if (response.access) {
+                        cartC = await cartCount(response.userId)
+                        wishlistC = await wishlistCount(response.userId)
                         data = {
                             email: response.email,
                             name: response.fname,
                             userId: response.userId,
+                            cartC: cartC,
+                            wishlistC: wishlistC,
                             loggedIn: true
                         }
                         token = await createAuthToken(response.userId)
@@ -101,7 +109,7 @@ module.exports = {
                             httpOnly: true,
                             expires: expiryDate,
                         };
-                        
+
                         return res.cookie('token', token, cookieOptions).json({ 'ok': 'loggedIn' })
                     } else {
                         res.status(400).json({ err_blocked })
@@ -189,13 +197,15 @@ module.exports = {
                     userStatus: user.loggedIn,
                     userName: data.fname,
                     userId: data.userId,
-                    product
+                    product: product,
+                    cartCount: user.cartC,
+                    wishlistCount: user.wishlistC
                 })
 
             })
     },
 
-    httpUserLogout:async (req, res) => {
+    httpUserLogout: async (req, res) => {
         const token = req.cookies.token
         await deleteToken(token)
         res.clearCookie('token')

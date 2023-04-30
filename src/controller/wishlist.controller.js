@@ -1,5 +1,6 @@
 const { addToWishlist, getWishlistData, removeFormWishlist } = require("../models/wishlist.model")
 const { formatCurrency } = require("../services/currencyFormatter");
+const { updateRedis } = require("../services/redis");
 
 const httpGetWishlistPage = async (req, res) => {
     const user = req.user
@@ -11,6 +12,8 @@ const httpGetWishlistPage = async (req, res) => {
                 userName: user.name,
                 userId: user.userId,
                 userStatus: user.loggedIn,
+                cartCount: user.cartC,
+                wishlistCount: user.wishlistC,
                 productStatus: productStatus,
                 products: products,
                 formatCurrency: formatCurrency
@@ -21,27 +24,41 @@ const httpGetWishlistPage = async (req, res) => {
                 userName: user.name,
                 userId: user.userId,
                 userStatus: user.loggedIn,
+                wishlistCount: user.wishlistC,
+                cartCount: user.cartC,
                 productStatus: productStatus
             })
         })
 }
 
 const httpAddToWishlist = async (req, res) => {
+    const token = req.cookies.token
+    const user = req.user
     const userId = req.user.userId
     const slug = req.body.slug
     const response = await addToWishlist({ userId, slug }).catch(err => err)
+    const newWishlistCount = response.products?.length
+    user.wishlistC = newWishlistCount
+    await updateRedis(token, user)
+    const data = {
+        text: 'Added to Wishlist!',
+        newWishlistCount: newWishlistCount
+    }
 
-    if (response) return res.json({ ok: true, data: 'Added to Wishlist!' })
+    if (response) return res.json({ ok: true, data: data })
     return res.status(400).json({ ok: false, data: 'Already Exist in Wishlist!' })
 }
 
 const httpRemoveFromWishlist = async (req, res) => {
+    const user = req.user
     const userId = req.user.userId
     const slug = req.body.slug
     const response = await removeFormWishlist({ userId, slug }).catch(err => err)
+    user.wishlistC = user.wishlistC - 1
+    await updateRedis(req.cookies.token, user)
 
-    if(response) return res.json({ok:true,data:"Wishlist Updated!"})
-    return res.status(400).json({ok:true,data:"Wishlist Not Updated!"})
+    if (response) return res.json({ ok: true, data: "Wishlist Updated!" })
+    return res.status(400).json({ ok: true, data: "Wishlist Not Updated!" })
 }
 
 module.exports = {

@@ -1,5 +1,17 @@
 const wishlishtSchema = require('./wishlist.mong')
 
+const wishlistCount = async (userId) => {
+    try {
+        const wishlishDoc = await wishlishtSchema.findOne({ userId: userId }).then(res => JSON.parse(JSON.stringify(res)))
+        console.log(wishlishDoc);
+        const count = wishlishDoc.products.length
+        return Promise.resolve(count)
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+
 const addToWishlist = async ({ userId, slug }) => {
     let user
     let wishlist
@@ -19,12 +31,13 @@ const addToWishlist = async ({ userId, slug }) => {
         hasSlug = user.products.includes(slug)
         if (hasSlug) return Promise.reject(false)
 
-        return await wishlishtSchema.updateOne({ userId: userId }, {
+        return await wishlishtSchema.findOneAndUpdate({ userId: userId }, {
             $push: {
                 products: slug
             }
-        })
-            .then(res => Promise.resolve(true))
+        }, { new: true })
+        .then(res=>JSON.parse(JSON.stringify(res)))
+        .then(res => Promise.resolve(res))
 
     } catch (err) {
         console.log(err)
@@ -84,8 +97,8 @@ const getWishlistData = async (userId) => {
             }
         ])
             .then(res => JSON.parse(JSON.stringify(res)))
-            .then(res =>{ 
-                if(res.length === 0) return Promise.reject(false)
+            .then(res => {
+                if (res.length === 0) return Promise.reject(false)
                 return Promise.resolve(res)
             })
     } catch (err) {
@@ -102,7 +115,7 @@ const removeFormWishlist = async ({ userId, slug }) => {
             }
         })
 
-        if(res.modifiedCount === 1)  return Promise.resolve(true)
+        if (res.modifiedCount === 1) return Promise.resolve(true)
         return Promise.reject(false)
 
     } catch (err) {
@@ -114,5 +127,6 @@ const removeFormWishlist = async ({ userId, slug }) => {
 module.exports = {
     addToWishlist: addToWishlist,
     getWishlistData: getWishlistData,
-    removeFormWishlist: removeFormWishlist
+    removeFormWishlist: removeFormWishlist,
+    wishlistCount: wishlistCount
 }

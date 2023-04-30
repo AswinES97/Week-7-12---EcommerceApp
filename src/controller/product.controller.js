@@ -11,7 +11,9 @@ module.exports = {
                     product: product,
                     userStatus: user.loggedIn,
                     userName: user.name,
-                    userId: user.userId
+                    userId: user.userId,
+                    cartCount: user.cartC,
+                    wishlistCount: user.wishlistC
                 })
             })
             .catch(err => {

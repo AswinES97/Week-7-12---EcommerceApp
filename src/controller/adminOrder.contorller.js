@@ -24,7 +24,7 @@ const httpAdminGetOrder = async (req, res) => {
                 })
             }
             buttonLength = Math.ceil(totalCount / 10)
-            
+
             return res.render('admin/admin-order', {
                 layout: 'admin/admin-layout',
                 adminTrue: req.admin,
@@ -85,7 +85,7 @@ const httpPagination = async (req, res) => {
 
 module.exports = {
     httpAdminGetOrder: httpAdminGetOrder,
-    httpPagination: httpPagination,
     httpSingleOrder: httpSingleOrder,
-    httpChangeOrderStatus: httpChangeOrderStatus
+    httpChangeOrderStatus: httpChangeOrderStatus,
+    httpPagination: httpPagination,
 }

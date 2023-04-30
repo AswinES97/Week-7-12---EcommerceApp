@@ -2,7 +2,7 @@ const { getAllOrderDetails, getSingleOrder, singleOrderAggreated } = require("..
 const { format } = require('date-fns');
 const { formatCurrency } = require("../services/currencyFormatter");
 
-const httpGetOrderPage =async (req, res) => {
+const httpGetOrderPage = async (req, res) => {
     const user = req.user
     const orderId = req.query.oId
     const orderDetails = await getSingleOrder(orderId)
@@ -11,12 +11,14 @@ const httpGetOrderPage =async (req, res) => {
         ele.boughtPrice = formatCurrency(ele.boughtPrice)
     });
     order.totalPrice = formatCurrency(order.totalPrice)
-    console.log(order.productDetails);
-    res.render('orderPage', {
+
+    return res.render('orderPage', {
         userId: user.userId,
         userName: user.name,
         userStatus: user.loggedIn,
-        boughtPrice : order.products,
+        cartCount: user.cartC,
+        wishlistCount: user.wishlistC,
+        boughtPrice: order.products,
         productDetails: order.productDetails,
         totalPrice: order.totalPrice
     })
@@ -41,5 +43,5 @@ const httpGetAllOrderDetails = async (req, res) => {
 module.exports = {
     httpGetOrderPage: httpGetOrderPage,
     httpGetAllOrderDetails: httpGetAllOrderDetails,
-    formatDate : format
+    formatDate: format
 }

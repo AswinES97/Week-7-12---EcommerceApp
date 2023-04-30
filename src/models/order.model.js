@@ -1,5 +1,24 @@
 const OrdersSchema = require('./orders.mong')
 
+const totalRevenue = async () => {
+    try {
+        return await OrdersSchema.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: '$totalPrice' }
+                }
+            }
+        ])
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+
 const getAllOrderDetails = async (userId, skip = 0) => {
     try {
         let orders = await OrdersSchema.find({ userId }, { _id: 0 }).sort({ createdAt: -1 }).skip(skip).limit(10)
@@ -118,6 +137,57 @@ const getOrderCount = async () => {
     }
 }
 
+const getMonthlyDataForAdmin = async () => {
+    try {
+        return await OrdersSchema.aggregate([
+            {
+                $group: {
+                    _id: {
+                        year: { $year: '$createdAt' },
+                        month: { $month: '$createdAt' },
+                    },
+                    value: { $sum: 1 },
+                }
+            },
+            {
+                $project: {
+                    country: {
+                        $switch: {
+                            branches: [
+                                { case: { $eq: ["$_id.month", 1] }, then: "January" },
+                                { case: { $eq: ["$_id.month", 2] }, then: "February" },
+                                { case: { $eq: ["$_id.month", 3] }, then: "March" },
+                                { case: { $eq: ["$_id.month", 4] }, then: "April" },
+                                { case: { $eq: ["$_id.month", 5] }, then: "May" },
+                                { case: { $eq: ["$_id.month", 6] }, then: "June" },
+                                { case: { $eq: ["$_id.month", 7] }, then: "July" },
+                                { case: { $eq: ["$_id.month", 8] }, then: "August" },
+                                { case: { $eq: ["$_id.month", 9] }, then: "September" },
+                                { case: { $eq: ["$_id.month", 10] }, then: "October" },
+                                { case: { $eq: ["$_id.month", 11] }, then: "November" },
+                                { case: { $eq: ["$_id.month", 12] }, then: "December" }
+                            ],
+                            default: "Unknown"
+                        }
+                    },
+                    value: 1,
+                    _id: 0
+                }
+            }, {
+                $sort: {
+                    country: -1,
+                }
+            }
+        ])
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+
 const changeOrderStatus = async (data) => {
     const orderId = Number(data.orderId)
     try {
@@ -151,12 +221,14 @@ const pagination = async (skip) => {
 }
 
 module.exports = {
+    totalRevenue: totalRevenue,
     getAllOrderDetails: getAllOrderDetails,
     getOrderDetailsAdmin: getOrderDetailsAdmin,
     getOrderCount: getOrderCount,
     pagination: pagination,
     singleOrderAggreated: singleOrderAggreated,
     changeOrderStatus: changeOrderStatus,
-    getSingleOrder: getSingleOrder
+    getSingleOrder: getSingleOrder,
+    getMonthlyDataForAdmin: getMonthlyDataForAdmin
 }
 

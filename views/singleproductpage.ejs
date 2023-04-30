@@ -85,11 +85,13 @@
                                     <div class="product-extra-link2">
                                         <%if(userStatus){%>
                                         <button type="submit" id="addToCart" class="button button-add-to-cart">Add to cart</button>
+                                        <a aria-label="Add To Wishlist" onclick="wishlitBtn(event,'<%=product.slug%>')" class="action-btn hover-up"
+                                            href="#"><i class="fi-rs-heart"></i></a>
                                         <%}else{%>
                                         <button  data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="submit" onclick="cartHome()" class="button button-add-to-cart">Add to cart</button>
+                                        <a aria-label="Add To Wishlist" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="action-btn hover-up"
+                                            href="#" onclick="cartHome()" ><i class="fi-rs-heart"></i></a>
                                         <%}%>
-                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                            href="#"><i class="fi-rs-heart"></i></a>
                             
                                     </div>
                                 </div>

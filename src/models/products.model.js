@@ -16,14 +16,21 @@ const getSingleProduct = (pId) => {
 module.exports = {
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
-            await product.find()
+            await product.find({ active: true, 'quantity.quantity': { $gt: 0 } })
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data => resolve(data))
                 .catch(err => reject(err))
         })
     },
 
-    getSingleProduct,
+    getAllProductsAdmin: () => {
+        return new Promise(async (resolve, reject) => {
+            await product.find()
+                .then(res => JSON.parse(JSON.stringify(res)))
+                .then(data => resolve(data))
+                .catch(err => reject(err))
+        })
+    },
 
     addNewProduct: (productData, imageLink) => {
         return new Promise(async (resolve, reject) => {
@@ -63,6 +70,15 @@ module.exports = {
             }
 
         })
+    },
+
+    productCount: async () => {
+        try {
+            return product.countDocuments()
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
     },
 
     editProduct: (pId, productData, imgLink) => {
@@ -122,14 +138,14 @@ module.exports = {
         })
     },
 
-    updateProductCategory:async(data)=>{
+    updateProductCategory: async (data) => {
         try {
-            await product.updateMany({categoryType:data.previousCategoryType},{
-                $set:{
-                    categoryType:data.categoryType
+            await product.updateMany({ categoryType: data.previousCategoryType }, {
+                $set: {
+                    categoryType: data.categoryType
                 }
             })
-            .then(res=>Promise.resolve(true))
+                .then(res => Promise.resolve(true))
         } catch (err) {
             console.log(err);
             return Promise.reject(false)
@@ -140,17 +156,67 @@ module.exports = {
         try {
             await product.updateMany({
                 categoryType: categoryType
-            },{
-                $set:{
+            }, {
+                $set: {
                     active: false,
-                    categoryType:''
+                    categoryType: ''
                 }
             })
-            .then(res=>console.log(res))
+                .then(res => console.log(res))
         } catch (err) {
             console.log(err)
         }
     },
+
+    productOfferApply: async (data) => {
+        try {
+            return await product.updateMany({
+                category: data.category,
+                subcategory: data.subcategory,
+                categoryType: data.categoryType
+            }, [
+                { $set: { offerpercentage: data.offerpercentage } },
+                {
+                    $set: {
+                        offerprice: {
+                            $floor: {
+                                $multiply: ['$price', {
+                                    $subtract: [
+                                        1, {
+                                            $divide: [data.offerpercentage, 100]
+                                        }
+                                    ]
+                                }]
+                            }
+                        }
+                    }
+                }
+            ])
+                .then(res => Promise.resolve(true))
+
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
+
+    },
+
+    productOfferClear: async (categoryType) => {
+        try {
+            return await product.updateMany({ categoryType: categoryType }, {
+                $set: {
+                    offerpercentage: null,
+                    offerprice: null,
+                }
+            })
+                .then(res => Promise.resolve(true))
+        } catch (err) {
+            console.log(err);
+            return Promise.reject(false)
+        }
+    },
+
+    getSingleProduct,
 
     uuidv4
 }

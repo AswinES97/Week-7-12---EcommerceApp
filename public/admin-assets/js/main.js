@@ -93,7 +93,7 @@ $(document).ready(async function () {
     let productId = document.location.pathname.split('/')
     productId = productId[productId.length - 1]
 
-    if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product') {
+    if (document.location.href == 'http://localhost:3000/v1/admin/products/add-product' || document.location.href == `http://localhost:3000/v1/admin/offer`) {
         const data = await categoryInitialDisplay()
         option(data)
     }
@@ -232,7 +232,7 @@ async function createCategory($event) {
 
 async function deleteCategory(e, i) {
     e.preventDefault()
-    let bool =false
+    let bool = false
     await swal('Delete', 'Delete this Category?', 'warning', {
         buttons: {
             cancel: "Cancel",
@@ -303,7 +303,6 @@ $('#modal-save').on('click', async () => {
         previousCategoryType: $('#modal-categoryTypeValue').text(),
         categoryType: $('#modal-categoryType').val().trim()
     }
-    console.log(body);
     const headers = {
         'Content-Type': 'application/json'
     }
@@ -556,4 +555,83 @@ async function changeOrderStatus() {
 
 $('#orderStatus').click(changeOrderStatus)
 
-// 
+// getAllCategoryOffer
+async function getAllCategoryOffer(){
+    await commonAjax('/v1/admin/offer/category')
+        .then(res=>{
+            $('#category-offer-display').html(res.data)
+        })
+        .catch(err=>{
+            swal(err.data)
+        })
+}
+
+// offer change tabs
+$('#change-offer').on('change',async () => {
+    const offerDropVal = $('#change-offer').val()
+    $('#category-offer').hide()
+    $('#product-offer').hide()
+
+    if (offerDropVal === 'category') {
+        await getAllCategoryOffer()
+        $('#category-offer').show()
+    }
+    if (offerDropVal === 'product') $('#product-offer').show()
+})
+
+// category offer
+$("#category-offer-form").submit((event) => {
+    event.preventDefault()
+    const formData = $('#category-offer-form').serializeArray()
+    let body = {}
+    formData.forEach(ele => {
+        body[ele.name] = ele.value
+    })
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    commonAjax('/v1/admin/offer/category', 'POST', headers, body)
+        .then(res=>{
+            swal(res.data)
+            setTimeout(() => {
+                location.reload()
+            }, 750);
+        })
+        .catch(err=>{
+            swal(err.data)
+            setTimeout(() => {
+                location.reload()
+            }, 750);
+        })
+})
+
+function deactivateOffer(categoryType){
+
+}
+
+function activateOffer(categoryType){
+
+}
+
+async function deleteOffer(categoryType){
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    const body = {
+        categoryType: categoryType
+    }
+
+    await commonAjax('/v1/admin/offer/category','DELETE',headers,body)
+        .then(res=>{
+            swal(res.data)
+            setTimeout(() => {
+                location.reload()
+            }, 750);
+        })
+        .catch(err=>{
+            swal(err.data)
+            setTimeout(() => {
+                location.reload()
+            }, 750);
+        })
+}
