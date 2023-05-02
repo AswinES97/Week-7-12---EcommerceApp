@@ -108,13 +108,15 @@ module.exports = {
     },
 
     httpDeleteAllProducts: (req, res) => {
-        const userId = req.user.userId
+        const user = req.user
 
-        if (!userId) {
+        if (!user.userId) {
             return res.status(400).json({ 'err': 'Cart not cleared!' })
         } else {
-            deleteAllProducts(userId)
-                .then(response => {
+            deleteAllProducts(user.userId)
+                .then(async response => {
+                    user.cartC = 0
+                    await updateRedis(req.cookies.token,user)
                     return res.json({ 'ok': 'deleted' })
                 })
                 .catch(err => res.status(400).json({ 'err': 'Cart not cleared!' }))

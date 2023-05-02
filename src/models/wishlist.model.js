@@ -3,9 +3,9 @@ const wishlishtSchema = require('./wishlist.mong')
 const wishlistCount = async (userId) => {
     try {
         const wishlishDoc = await wishlishtSchema.findOne({ userId: userId }).then(res => JSON.parse(JSON.stringify(res)))
-        console.log(wishlishDoc);
-        const count = wishlishDoc.products.length
-        return Promise.resolve(count)
+        const count = wishlishDoc?.products?.length
+        console.log(wishlishDoc,count);
+        return count != null ? Promise.resolve(count) : Promise.resolve(0)
     } catch (err) {
         console.log(err);
         return Promise.reject(false)
@@ -36,8 +36,8 @@ const addToWishlist = async ({ userId, slug }) => {
                 products: slug
             }
         }, { new: true })
-        .then(res=>JSON.parse(JSON.stringify(res)))
-        .then(res => Promise.resolve(res))
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
 
     } catch (err) {
         console.log(err)

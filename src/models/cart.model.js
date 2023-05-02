@@ -5,8 +5,8 @@ module.exports = {
     cartCount: async (userId) => {
         try {
             const cartDoc = await cartSchema.findOne({ userId: userId }).then(res => JSON.parse(JSON.stringify(res)))
-            const count = cartDoc.product.length
-            return Promise.resolve(count)
+            const count = cartDoc?.product?.length
+            return count != null ? Promise.resolve(count) : Promise.resolve(0)
         } catch (err) {
             console.log(err);
             return Promise.reject(false)
@@ -174,7 +174,7 @@ module.exports = {
                     $inc: { grandTotal: -price },
                     $pull: { product: { pId: pId } }
                 }, { new: true })
-                .then(res=>JSON.parse(JSON.stringify(res)))
+                .then(res => JSON.parse(JSON.stringify(res)))
                 .then(res => {
                     return Promise.resolve(res)
                 })

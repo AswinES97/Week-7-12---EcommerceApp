@@ -185,7 +185,7 @@
                                                             <td><%=ele.orderId%></td>
                                                             <td><%=formatDate(new Date(ele.createdAt), 'MMMM do, yyyy')%></td>
                                                             <td><%=ele.orderStatus%></td>
-                                                            <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            <td><a href="/v1/users/dashboard/single-order?oId=<%=ele.orderId%>" class="btn-small d-block">View</a></td>
                                                             </tr>
                                                         <%})%>
                                                     </tbody>

@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const session = require('express-session')
 const ejsLayout = require('express-ejs-layouts')
 const cloudinary = require('cloudinary').v2;
+const compression = require('compression')
 
 
 
@@ -17,6 +18,7 @@ const cookieParser = require('cookie-parser')
 const app = express()
 
 
+app.use(compression())
 app.use(nocache())
 app.use(cors({
     origin: '*'

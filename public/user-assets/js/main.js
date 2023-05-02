@@ -945,9 +945,10 @@ $('#orders-tab').click(() => {
                 tr += `
                 <tr>
                 <td>${ele.orderId}</td>
-                <td>${ele.orderDate}</td>
-                <td>${ele.orderStatus}</td>
-                <td><a href="#" class="btn-small d-block">View</a></td>
+                <td>${ele.orderDate}</td>`
+                if(ele.orderStatus === 'Delivered') tr +=`<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
+                else tr +=`<td><span class="badge rounded-pill alert-danger">${ele.orderStatus}</span></td>`              
+                tr +=`<td><a href="/v1/users/dashboard/single-order?oId=${ele.orderId}" class="btn-small d-block">View</a></td>
                 </tr>
                 `
             });
@@ -1157,3 +1158,28 @@ async function removeFromWishlist(e,slug){
             }, 750);
         })
 }
+
+// order cancel
+
+$("#form-cancel-order").on('click',async(event)=>{
+    event.preventDefault()
+    const headers= {
+        'Content-type':'application/json'
+    }
+    const msg = $('input[name=cancel]:checked').val().trim()
+    const oId = window.location.search.split('=')[1]
+    
+    await commonAjax('/v1/users/dashboard/single-order','PUT',headers,{oId,msg})
+        .then(res=>{
+            swal(res.data)
+            setTimeout(() => {
+                location.reload()
+            }, 1000);
+        })
+        .catch(err=>{
+            swal(err.data)
+            setTimeout(() => {
+                location.reload()
+            }, 1000);
+        })
+})

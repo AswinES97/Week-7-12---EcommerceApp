@@ -1,5 +1,5 @@
 const { httpGetOrderPage,
-        httpGetAllOrderDetails
+        httpGetAllOrderDetails,
 } = require('../controller/order.controller')
 
 const orderRouter = require('express').Router()
@@ -9,5 +9,6 @@ orderRouter.route('/')
 
 orderRouter.route('/dash')
         .get(httpGetAllOrderDetails)
+
 
 module.exports = orderRouter

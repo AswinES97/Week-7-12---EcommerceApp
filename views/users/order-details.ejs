@@ -1,0 +1,234 @@
+<link rel="stylesheet" href="/admin-assets/css/main.css">
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" id="staticBackdrop" id="address-modal">
+    <div class="modal-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Reason</h1>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mx-auto card-login">
+                      <div class="card-body">
+                        <form>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancel" id="change-of-mind" value="change of mind">
+                            <label class="form-check-label" for="change-of-mind">
+                              Change of mind
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancel" id="found-better-option" value="Found a better option">
+                            <label class="form-check-label" for="found-better-option">
+                              Found a better option
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancel" id="ordered-by-mistake" value="Ordered by mistake">
+                            <label class="form-check-label" for="ordered-by-mistake">
+                              Ordered by mistake
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancel" id="no-longer-needed" value="No longer needed">
+                            <label class="form-check-label" for="no-longer-needed">
+                              No longer needed
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="cancel" id="incorrect-size" value="Incorrect Size">
+                            <label class="form-check-label" for="incorrect-size">
+                              Incorrect Size
+                            </label>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="form-cancel-order"
+                       >Cancel Order</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="container">
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order detail</h2>
+                <p>Details for Order ID: 3453012</p>
+            </div>
+        </div>
+        <div class="card">
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                        <span>
+                            <i class="material-icons md-calendar_today"></i> <b><%=formatDate(new Date(orderDetails.createdAt),'MMMM do, yyyy')%></b>
+                        </span> <br>
+                        <small class="text-muted">Order ID: <%=orderDetails.orderId%></small>
+                    </div>
+                    <%if(orderDetails.orderStatus === 'pending'){%>
+                    <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                        <a class="btn btn-primary" href="#" onclick="clearmodel('dash')">Cancle Order</a>
+                        <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> -->
+                    </div>
+                    <%}else if(orderDetails.orderStatus === 'Delivered'){%>
+                        <%if(returnDate < 10){%>
+                        <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                            <a class="btn btn-primary" href="#" >Return</a>
+                            <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> -->
+                        </div>
+                        <%}%>
+                    <%}%>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body"> 
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="table-responsive">
+                            <table class="table">
+
+                                        <thead>
+                                            <tr>
+                                                <th width="40%">Product</th>
+                                                <th width="20%">Bought Price</th>
+                                                <th width="20%">Quantity</th>
+                                                <th width="20%" class="text-end">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%products.forEach((ele,i)=>{%>
+                                                <tr>
+                                                    <td>
+                                                        <a class="itemside" href="#">
+                                                            <div class="left">
+                                                                <img src="<%=ele.image[0]%>" width="40" height="40" class="img-xs" alt="Item">
+                                                            </div>
+                                                            <div class="info"><%=ele.name.substring(0,15)%>...</div>
+                                                        </a>
+                                                    </td>
+                                                    <td> <%=formatCurrency(ele.price)%> </td>
+                                                    <td> <%=orderDetails.products[i].quantity%> </td>
+                                                    <td class="text-end"> <%=formatCurrency(orderDetails.products[i].boughtPrice)%> </td>
+                                                </tr>
+                                            <%})%>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <article class="float-end">
+                                                        <dl class="dlist">
+                                                            <dt>Grand total:</dt>
+                                                            <dd> <b class="h5"><%=formatCurrency(orderDetails.totalPrice)%></b> </dd>
+                                                        </dl>
+                                                        <%if(orderDetails.orderStatus != 'Cancled' && orderDetails.orderStatus != 'Returned'){%>
+                                                        <dl class="dlist">
+                                                            <dt class="text-muted">Status:</dt>
+                                                            <%if(orderDetails.isPaid){%>
+                                                                <dd>
+                                                                    <span class="badge rounded-pill alert-success text-success">Payment done</span>
+                                                                </dd>
+                                                            <%}else{%>
+                                                                <dd>
+                                                                    <span class="badge rounded-pill alert-danger text-danger">Payment Not done</span>
+                                                                </dd>    
+                                                            <%}%>
+                                                        </dl>
+                                                        <%}%>
+                                                    </article>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                            </table>
+                        </div> <!-- table-responsive// -->
+                    </div> <!-- col// -->
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">
+                        <%if(orderDetails.orderStatus != 'Cancled' && orderDetails.orderStatus != 'Returned'){%>
+                        <div class="box shadow-sm bg-light">
+                            <h6 class="mb-15">Payment info</h6>
+                            <p>
+                                Payment: <%=orderDetails.paymentMethod%> <br>
+                                Status: <%=orderDetails.payment_status%>
+                            </p>
+                        </div>
+                        <%}else if(orderDetails.orderStatus === 'Cancled'){%>
+                            <div class="box shadow-sm bg-light">
+                                <h6 class="mb-15">Order Cancled</h6>
+                                <p>
+                                    Reason: <%=orderDetails.cancelReason%> <br>
+                                </p>
+                            </div>
+                        <%}else{%>
+                            <div class="box shadow-sm bg-light">
+                                <h6 class="mb-15">Order Returned</h6>
+                                <p>
+                                    Reason: <%=orderDetails.returnReason%> <br>
+                                </p>
+                            </div>
+                        <%}%>                            
+                        
+                    </div> 
+                </div>
+                <div class="row mb-50 mt-20 order-info-wrap">
+                    
+                    <div class="col-md-6">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-local_shipping"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                        Status: <%=orderDetails.orderStatus%>
+                                    </p>
+                                    <!-- <a href="#">Download info</a> -->
+                                </div>
+                            </article>
+                    </div> <!-- col// -->
+                    <div class="col-md-6">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-place"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Deliver to</h6>
+                                <p class="mb-1">
+                                    Name: <%=address.name%> <br>
+                                    City:  <%=address.city%>,<%=address.state%> <br>
+                                    <%=address.address1%>,<%=address.address2%>,<br> 
+                                    Pin:<%=address.postal_code%> <br>
+                                    Phone: <%=address.phone%>,
+                                </p>
+                                <!-- <a href="#">View profile</a> -->
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+                document.write(new Date().getFullYear())
+                </script> ©, Evara - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>

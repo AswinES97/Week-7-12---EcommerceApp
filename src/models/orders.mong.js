@@ -6,7 +6,7 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    orderStatus:{
+    orderStatus: {
         type: String,
         default: 'pending'
     },
@@ -103,8 +103,14 @@ const OrderSchema = new mongoose.Schema({
     },
     deliveredAt: {
         type: Date
+    },
+    cancelReason: {
+        type: String
+    },
+    returnReson: {
+        type: String
     }
-}, { timestamps: true , versionKey: false }
+}, { timestamps: true, versionKey: false }
 )
 
 module.exports = mongoose.model('Order', OrderSchema);

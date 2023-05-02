@@ -30,14 +30,14 @@
       <ul class="navbar-nav">
         <div class="dropdown">
           <button
-            class="btn dropdown-toggle"
+            class="btn rounded-circle p-4 btn-sm"
             type="button"
             id="dropdownMenuButton"
             data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <%=userName%>
+            <%=userName.substring(0,1).toUpperCase()%>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li class="ps-4 py-2">

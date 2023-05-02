@@ -1,6 +1,17 @@
 const { getUser } = require("../models/user.model")
-const { getAllOrderDetails } = require('../models/order.model')
+const { getAllOrderDetails, getSingleOrder, singleOrderAggreated, cancelOrder } = require('../models/order.model')
 const { formatDate } = require('./order.controller')
+const { formatCurrency } = require('../services/currencyFormatter')
+const { updateWallet } = require("../models/wallet.model")
+
+const returnD = (date) => {
+    const specificDate = new Date(date);
+    const currentDate = new Date();
+    const difference = currentDate.getTime() - specificDate.getTime();
+    const differenceInDays = Math.round(difference / 86400000);
+
+    return differenceInDays
+}
 
 module.exports = {
     httpGetDashboardPage: async (req, res) => {
@@ -10,7 +21,6 @@ module.exports = {
 
         if (isOrdered) {
             orderDetails = await getAllOrderDetails(user.userId)
-            console.log(orderDetails);
         }
 
         return res.render('users/dashboard', {
@@ -34,5 +44,64 @@ module.exports = {
             .catch(err => {
                 return res.status(400).json({ ok: false, data: "Error fetching UserInfo" })
             })
+    },
+
+    httpSingleOrderDetails: async (req, res) => {
+        const user = req.user
+        const orderId = req.query.oId
+        const singleOrderDetaisl = await getSingleOrder(orderId).catch(err => err)
+        const [orderDetails] = await singleOrderAggreated(singleOrderDetaisl)
+        const returnDate = returnD(orderDetails.createdAt)
+
+        return res.render('users/order-details', {
+            userName: user.name,
+            userId: user.userId,
+            userStatus: user.loggedIn,
+            cartCount: user.cartC,
+            wishlistCount: user.wishlistC,
+            orderDetails: orderDetails,
+            products: orderDetails.productDetails,
+            address: orderDetails.shippingAddress,
+            returnDate: returnDate,
+            formatDate: formatDate,
+            formatCurrency: formatCurrency
+        })
+    },
+
+    httpCancelOrder: async (req, res) => {
+        let isUpdated
+        const user = req.user
+        const response = await cancelOrder(req.body).catch(err => err)
+        console.log(response);
+        if (response.orderStatus === 'Cancled' && response.isPaid) {
+            isUpdated = await updateWallet(user.userId, response.totalPrice, "Order Cancled").catch(err => err)
+
+            if (isUpdated) {
+
+                return res.json({
+                    ok: true,
+                    data: 'Order Cancled and Updated Wallet'
+                })
+            }
+
+            return res.json({
+                ok: true,
+                data: "Cancled order, Not updated Wallet, Contact Customer Care"
+            })
+
+        } else if (response.orderStatus === 'Cancled') {
+
+            return res.json({
+                ok: true,
+                data: 'Order Cancled'
+            })
+
+        } else {
+
+            return res.status(400).json({
+                ok: false,
+                data: 'Error Cancling Order'
+            })
+        }
     }
 }

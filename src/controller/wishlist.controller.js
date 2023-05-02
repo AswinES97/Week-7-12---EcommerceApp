@@ -1,4 +1,4 @@
-const { addToWishlist, getWishlistData, removeFormWishlist } = require("../models/wishlist.model")
+const { addToWishlist, getWishlistData, removeFormWishlist, wishlistCount } = require("../models/wishlist.model")
 const { formatCurrency } = require("../services/currencyFormatter");
 const { updateRedis } = require("../services/redis");
 
@@ -37,7 +37,7 @@ const httpAddToWishlist = async (req, res) => {
     const userId = req.user.userId
     const slug = req.body.slug
     const response = await addToWishlist({ userId, slug }).catch(err => err)
-    const newWishlistCount = response.products?.length
+    const newWishlistCount = await wishlistCount(userId)
     user.wishlistC = newWishlistCount
     await updateRedis(token, user)
     const data = {
