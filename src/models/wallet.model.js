@@ -14,7 +14,7 @@ const createNewWallet = async (userId, amount, transactions) => {
     }
 }
 
-const updateExistingWallet = async (userId, transactions) => {
+const updateExistingWallet = async (userId, amount,transactions) => {
     try {
 
         return await WalletSchema.findOneAndUpdate({ userId: userId }, {
@@ -27,6 +27,7 @@ const updateExistingWallet = async (userId, transactions) => {
         }, { new: true }).then(res => JSON.parse(JSON.stringify(res)))
 
     } catch (err) {
+        console.log(err);
         return Promise.reject(false)
     }
 }
@@ -44,7 +45,6 @@ const updateWallet = async (userId, amount, description) => {
 
     if (!doesExist) return await createNewWallet(userId, amount, transactions)
     return updateExistingWallet(userId, amount, transactions)
-
 }
 
 module.exports = {

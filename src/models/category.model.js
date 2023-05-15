@@ -152,5 +152,14 @@ module.exports = {
         } catch (err) {
             return Promise.reject(false)
         }
+    },
+
+    getCategoryFilter: async (category)=>{
+        try {
+            return await categorySchema.find({},{[category]:1,_id:0}).then(res=>JSON.parse(JSON.stringify(res)))
+        } catch (err) {
+            console.log(err)
+            return Promise.reject(false)
+        }
     }
 }

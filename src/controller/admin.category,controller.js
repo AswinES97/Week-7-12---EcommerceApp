@@ -19,7 +19,8 @@ module.exports = {
                     layout: 'admin/admin-layout',
                     adminTrue: req.admin,
                     data: data,
-                    id: 0
+                    active: 'category',
+                    id: 0,
                 })
             })
     },

@@ -227,7 +227,7 @@ function verifyOtp($event, state) {
                     if (status == 'error') {
                         error.innerHTML = "<p>Invalid Otp!<p>"
                     } else {
-                        window.location.reload()
+                       location.href = 'http://localhost:3000/v1/users'
                     }
                 }
             })

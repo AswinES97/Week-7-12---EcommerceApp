@@ -1,6 +1,7 @@
-const { getAllOrderDetails, getSingleOrder, singleOrderAggreated } = require("../models/order.model")
+const { getAllOrderDetails, getSingleOrder, singleOrderAggreated, orderReturn } = require("../models/order.model")
 const { format } = require('date-fns');
 const { formatCurrency } = require("../services/currencyFormatter");
+const { updateWallet } = require("../models/wallet.model");
 
 const httpGetOrderPage = async (req, res) => {
     const user = req.user
@@ -40,8 +41,39 @@ const httpGetAllOrderDetails = async (req, res) => {
         .catch(err => res.status(400).json({ data: err, ok: false }))
 }
 
+const httpOrderReturn = async (req, res) => {
+    const user = req.user
+    const isReturned = await orderReturn(req.body).catch(err => err)
+    console.log(isReturned);
+    if (isReturned.orderStatus === 'Returned' && isReturned.isPaid) {
+        const isUpdated = await updateWallet(user.userId, isReturned.totalPrice, 'Order Returned').catch(err => err)
+        console.log(isUpdated);
+        if (isUpdated) {
+            return res.json({
+                ok: true,
+                data: 'Order Return Status and Wallet Updated '
+            })
+        }
+
+        return res.json({
+            ok: true,
+            data: "Order Return Status Updated, Not updated Wallet, Contact Customer Care"
+        })
+    } else if (isReturned.orderStatus === 'Returned') {
+
+        return res.json({
+            ok: true,
+            data: 'Order Cancled'
+        })
+
+    } else {
+        return res.status(400).json({ ok: false, data: "Error Updating return" })
+    }
+}
+
 module.exports = {
     httpGetOrderPage: httpGetOrderPage,
     httpGetAllOrderDetails: httpGetAllOrderDetails,
+    httpOrderReturn: httpOrderReturn,
     formatDate: format
 }

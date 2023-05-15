@@ -502,37 +502,18 @@ function validateProduct($event) {
 
 // pagination orders
 async function pagination(event, skip) {
-    event.preventDefault()
+    if (event) event.preventDefault()
     let data;
     let tr = ''
+    let paginationApiEnd = location.href.split('/')
+    paginationApiEnd = paginationApiEnd[paginationApiEnd.length - 1]
 
     skip = Number(skip)
-    data = await fetch(`/v1/admin/orders/pagination?skip=${skip}`).then(res => res.json())
-    skip = (skip * 10) + 1
-    data.data.forEach(ele => {
-        tr += `
-        <tr>
-        <td>${skip++}</td>
-        <td>${ele.orderId}</td>
-        <td>${ele.totalPrice}</td>`
-        if (ele.orderStatus === 'Delivered') {
-            tr += `<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
-        } else {
-            tr += `<td><span class="badge rounded-pill alert-warning">${ele.orderStatus}</span></td>`
-        }
-        tr += `<td>${ele.orderDate}</td>`
-        if (ele.payment_status === 'Success') {
-            tr += `<td><b class="badge rounded-pill alert-success">${ele.payment_status}</b></td>`
-        } else {
-            tr += `<td><b class="badge rounded-pill alert-warning">${ele.payment_status}</b></td>`
-        }
-        tr += `<td class="text-end">
-            <a href="/v1/admin/orders/single?oId=${ele.orderId}" class="btn btn-md rounded font-sm" >Detail</a>
-        </td>
-    </tr>
-        `
-    })
-    $('#order-table').html(tr)
+    data = await fetch(`/v1/admin/pagination?skip=${skip}&type=${paginationApiEnd}`).then(res => res.json())
+    if(!data.ok) swal(data.data)
+
+    if(paginationApiEnd === 'orders') $('#order-table').html(data.data)
+    if(paginationApiEnd === 'products') $('#product-card-admin').html(data.data)
 }
 
 // order-status submit change/update
@@ -556,18 +537,18 @@ async function changeOrderStatus() {
 $('#orderStatus').click(changeOrderStatus)
 
 // getAllCategoryOffer
-async function getAllCategoryOffer(){
+async function getAllCategoryOffer() {
     await commonAjax('/v1/admin/offer/category')
-        .then(res=>{
+        .then(res => {
             $('#category-offer-display').html(res.data)
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
         })
 }
 
 // offer change tabs
-$('#change-offer').on('change',async () => {
+$('#change-offer').on('change', async () => {
     const offerDropVal = $('#change-offer').val()
     $('#category-offer').hide()
     $('#product-offer').hide()
@@ -591,13 +572,13 @@ $("#category-offer-form").submit((event) => {
         'Content-Type': 'application/json'
     }
     commonAjax('/v1/admin/offer/category', 'POST', headers, body)
-        .then(res=>{
+        .then(res => {
             swal(res.data)
             setTimeout(() => {
                 location.reload()
             }, 750);
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
             setTimeout(() => {
                 location.reload()
@@ -605,15 +586,15 @@ $("#category-offer-form").submit((event) => {
         })
 })
 
-function deactivateOffer(categoryType){
+function deactivateOffer(categoryType) {
 
 }
 
-function activateOffer(categoryType){
+function activateOffer(categoryType) {
 
 }
 
-async function deleteOffer(categoryType){
+async function deleteOffer(categoryType) {
     const headers = {
         'Content-Type': 'application/json'
     }
@@ -621,17 +602,57 @@ async function deleteOffer(categoryType){
         categoryType: categoryType
     }
 
-    await commonAjax('/v1/admin/offer/category','DELETE',headers,body)
-        .then(res=>{
+    await commonAjax('/v1/admin/offer/category', 'DELETE', headers, body)
+        .then(res => {
             swal(res.data)
             setTimeout(() => {
                 location.reload()
             }, 750);
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
             setTimeout(() => {
                 location.reload()
             }, 750);
         })
 }
+
+// Search
+$('#search').on("keydown", async (event) => {
+    $('#search-err').attr('hidden', true)
+    const code = event.which || event.keyCode || event.charCode;
+
+    if (code === 8) {
+        pagination(null, 0)
+        $('#pagination').attr('hidden', false)
+    }
+
+    if (code === 13) {
+        const val = $('#search').val().trim()
+        let searchApiEnd = location.href.split('/')
+        searchApiEnd = searchApiEnd[searchApiEnd.length - 1]
+
+        if (val.length != 0) {
+            const headers = {
+                'Content-Type': 'application/json'
+            }
+            await commonAjax(`/v1/admin/search?type=${searchApiEnd}&value=${val}`, 'GET', headers)
+                .then(res => {
+                    if(searchApiEnd === 'orders'){
+                        $('#pagination').attr('hidden', true)
+                        $('#order-table').html(res.data)
+                    }
+                    if(searchApiEnd === 'products'){
+                        $('#pagination').attr('hidden', true)
+                        $('#product-card-admin').html(res.data)
+                    }
+                })
+                .catch(err => {
+                    if (!err.ok) $('#search-err').attr('hidden', false)
+                    else swal(err.data)
+                })
+        } else {
+            $('#search-err').attr('hidden', false)
+        }
+    }
+})

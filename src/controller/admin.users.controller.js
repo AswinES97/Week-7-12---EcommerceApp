@@ -10,7 +10,8 @@ module.exports = {
                 return res.render('admin/admin-user-list',{
                     layout:'admin/admin-layout',
                     adminTrue:req.admin ,
-                    data: data
+                    data: data,
+                    active: 'user'
                 })
             })
             .catch(err => {

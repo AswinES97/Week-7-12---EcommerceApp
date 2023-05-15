@@ -1,6 +1,82 @@
+<div id="preloader-active">
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-inner position-relative">
+            <div class="text-center">
+                <div class="loader">
+                    <div class="bar bar1"></div>
+                    <div class="bar bar2"></div>
+                    <div class="bar bar3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <link rel="stylesheet" href="/admin-assets/css/main.css">
+<%if(orderDetails.orderStatus === 'Delivered'){%>
+    <%if(returnDate < 10){%>
+        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true" id="staticBackdrop" id="address-modal">
+        <div class="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Reason</h1>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mx-auto card-login">
+                          <div class="card-body">
+                            <form>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="return" id="wrong-product" value="Wrong product received">
+                                <label class="form-check-label" for="wrong-product">
+                                    Wrong product received
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="return" id="defective-product" value="Defective product">
+                                <label class="form-check-label" for="defective-product">
+                                    Defective product
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="return" id="incorrect-size-color" value="Incorrect size or color">
+                                <label class="form-check-label" for="incorrect-size-color">
+                                 Incorrect size or color
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="return" id="shipping-damage" value="Shipping damage">
+                                <label class="form-check-label" for="shipping-damage">
+                                    Shipping damage
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="return" id="incorrect-size" value="Duplicate order">
+                                <label class="form-check-label" for="incorrect-size">
+                                  Duplicate order
+                                </label>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="form-return-order"
+                           >Return</button>
+                    </div>
+                    </form>
+    
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<%}}else if(orderDetails.orderStatus === 'pending'){%>
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true" id="staticBackdrop" id="address-modal">
     <div class="modal-dialog">
         <div class="modal-dialog">
@@ -21,8 +97,8 @@
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cancel" id="found-better-option" value="Found a better option">
-                            <label class="form-check-label" for="found-better-option">
+                            <input class="form-check-input" type="radio" name="cancel" id="defective-product" value="Found a better option">
+                            <label class="form-check-label" for="defective-product">
                               Found a better option
                             </label>
                           </div>
@@ -39,9 +115,9 @@
                             </label>
                           </div>
                           <div class="form-check">
-                            <input class="form-check-input" type="radio" name="cancel" id="incorrect-size" value="Incorrect Size">
-                            <label class="form-check-label" for="incorrect-size">
-                              Incorrect Size
+                            <input class="form-check-input" type="radio" name="cancel" id="duplicate-order" value="Duplicate order">
+                            <label class="form-check-label" for="duplicate-order">
+                              Duplicate order
                             </label>
                           </div>
                         </form>
@@ -60,6 +136,10 @@
         </div>
     </div>
 </div>
+
+<%}%>
+    
+
 
 <main class="container">
     <section class="content-main">
@@ -86,7 +166,7 @@
                     <%}else if(orderDetails.orderStatus === 'Delivered'){%>
                         <%if(returnDate < 10){%>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                            <a class="btn btn-primary" href="#" >Return</a>
+                            <a class="btn btn-primary" href="#" onclick="clearmodel('dash')">Return</a>
                             <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> -->
                         </div>
                         <%}%>

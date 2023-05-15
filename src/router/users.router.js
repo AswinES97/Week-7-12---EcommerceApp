@@ -18,6 +18,8 @@ const dashboardRouter = require('./dashboard.router')
 const addressRouter = require('./address.router')
 const orderRouter = require('./order.router.js')
 const wishlishtRouter = require('./wishlistRouter')
+const shopRouter = require('./user.shop.router')
+const paginationRouter = require('./user.pagination')
 
 userRouter.route('/login')
     .all(userNotLoggedIn)
@@ -53,6 +55,8 @@ userRouter.use('/dashboard', userLoggedIn, dashboardRouter)
 userRouter.use('/checkout', userLoggedIn, checkoutRouter)
 userRouter.use('/order', userLoggedIn, orderRouter)
 userRouter.use('/address', userLoggedIn, addressRouter)
+userRouter.use('/shop',userLoggedIn,shopRouter)
+userRouter.use('/pagination',userLoggedIn,paginationRouter)
 
 module.exports = {
     userRouter

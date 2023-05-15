@@ -1,641 +1,641 @@
-// (function ($) {
-//     "use strict";
-//     // Page loading
-//     $(window).on('load', function() {
-//         $('#preloader-active').delay(450).fadeOut('slow');
-//         $('body').delay(450).css({
-//             'overflow': 'visible'
-//         });
-//         $("#onloadModal").modal('show');
-//     });
-//     /*-----------------
-//         Menu Stick
-//     -----------------*/
-//     var header = $('.sticky-bar');
-//     var win = $(window);
-//     win.on('scroll', function() {
-//         var scroll = win.scrollTop();
-//         if (scroll < 200) {
-//             header.removeClass('stick');
-//             $('.header-style-2 .categori-dropdown-active-large').removeClass('open');
-//             $('.header-style-2 .categori-button-active').removeClass('open');
-//         } else {
-//             header.addClass('stick');
-//         }
-//     });
 
-//     /*------ ScrollUp -------- */
-//     $.scrollUp({
-//         scrollText: '<i class="fi-rs-arrow-up"></i>',
-//         easingType: 'linear',
-//         scrollSpeed: 900,
-//         animation: 'fade'
-//     });
+(function ($) {
+    "use strict";
+    // Page loading
+    $(window).on('load', function () {
+        $('#preloader-active').delay(450).fadeOut('slow');
+        $('body').delay(450).css({
+            'overflow': 'visible'
+        });
+        $("#onloadModal").modal('show');
+    });
+    /*-----------------
+        Menu Stick
+    -----------------*/
+    var header = $('.sticky-bar');
+    var win = $(window);
+    win.on('scroll', function () {
+        var scroll = win.scrollTop();
+        if (scroll < 200) {
+            header.removeClass('stick');
+            $('.header-style-2 .categori-dropdown-active-large').removeClass('open');
+            $('.header-style-2 .categori-button-active').removeClass('open');
+        } else {
+            header.addClass('stick');
+        }
+    });
 
-//     /*------ Wow Active ----*/
-//     new WOW().init();  
+    /*------ ScrollUp -------- */
+    $.scrollUp({
+        scrollText: '<i class="fi-rs-arrow-up"></i>',
+        easingType: 'linear',
+        scrollSpeed: 900,
+        animation: 'fade'
+    });
 
-//     //sidebar sticky
-//     if ($('.sticky-sidebar').length) { 
-//         $('.sticky-sidebar').theiaStickySidebar();
-//     }
+    /*------ Wow Active ----*/
+    new WOW().init();
 
-//     // Slider Range JS 
-//     if ( $("#slider-range").length ) {
-//         $("#slider-range").slider({
-//             range: true,
-//             min: 0,
-//             max: 500,
-//             values: [130, 250],
-//             slide: function (event, ui) {
-//                 $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-//             }
-//         });
-//         $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-//             " - $" + $("#slider-range").slider("values", 1));
-//     }  
+    //sidebar sticky
+    if ($('.sticky-sidebar').length) {
+        $('.sticky-sidebar').theiaStickySidebar();
+    }
 
-//     /*------ Hero slider 1 ----*/
-//     $('.hero-slider-1').slick({
-//         slidesToShow: 1,
-//         slidesToScroll: 1,
-//         fade: true,
-//         loop: true,
-//         dots: true,
-//         arrows: true,
-//         prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
-//         nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
-//         appendArrows: '.hero-slider-1-arrow',
-//         autoplay: true,
-//     });
+    // Slider Range JS 
+    if ($("#slider-range").length) {
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [130, 250],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            }
+        });
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+            " - $" + $("#slider-range").slider("values", 1));
+    }
 
-//     /*Carausel 6 columns*/
-//     $(".carausel-6-columns").each(function(key, item) {
-//         var id=$(this).attr("id");
-//         var sliderID='#'+id;
-//         var appendArrowsClassName = '#'+id+'-arrows'
+    /*------ Hero slider 1 ----*/
+    $('.hero-slider-1').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        fade: true,
+        loop: true,
+        dots: true,
+        arrows: true,
+        prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
+        nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
+        appendArrows: '.hero-slider-1-arrow',
+        autoplay: true,
+    });
 
-//         $(sliderID).slick({
-//             dots: false,
-//             infinite: true,
-//             speed: 1000,
-//             arrows: true,
-//             autoplay: true,
-//             slidesToShow: 6,
-//             slidesToScroll: 1,
-//             loop: true,
-//             adaptiveHeight: true,
-//             responsive: [
-//                 {
-//                     breakpoint: 1025,
-//                     settings: {
-//                         slidesToShow: 4,
-//                         slidesToScroll: 1,
-//                     }
-//                 },
-//                 {
-//                     breakpoint: 768,
-//                     settings: {
-//                         slidesToShow: 3,
-//                         slidesToScroll: 1,
-//                     }
-//                 },
-//                 {
-//                     breakpoint: 480,
-//                     settings: {
-//                         slidesToShow: 1,
-//                         slidesToScroll: 1
-//                     }
-//                 }
-//             ],
-//             prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
-//             nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
-//             appendArrows:  (appendArrowsClassName),
-//         });
-//     });
+    /*Carausel 6 columns*/
+    $(".carausel-6-columns").each(function (key, item) {
+        var id = $(this).attr("id");
+        var sliderID = '#' + id;
+        var appendArrowsClassName = '#' + id + '-arrows'
 
-//     /*Carausel 4 columns*/
-//     $(".carausel-4-columns").each(function(key, item) {
-//         var id=$(this).attr("id");
-//         var sliderID='#'+id;
-//         var appendArrowsClassName = '#'+id+'-arrows'
+        $(sliderID).slick({
+            dots: false,
+            infinite: true,
+            speed: 1000,
+            arrows: true,
+            autoplay: true,
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            loop: true,
+            adaptiveHeight: true,
+            responsive: [
+                {
+                    breakpoint: 1025,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1,
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ],
+            prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
+            nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
+            appendArrows: (appendArrowsClassName),
+        });
+    });
 
-//         $(sliderID).slick({
-//             dots: false,
-//             infinite: true,
-//             speed: 1000,
-//             arrows: true,
-//             autoplay: true,
-//             slidesToShow: 4,
-//             slidesToScroll: 1,
-//             loop: true,
-//             adaptiveHeight: true,
-//             responsive: [
-//                 {
-//                     breakpoint: 1025,
-//                     settings: {
-//                         slidesToShow: 3,
-//                         slidesToScroll: 3,
-//                     }
-//                 },
-//                 {
-//                     breakpoint: 480,
-//                     settings: {
-//                         slidesToShow: 1,
-//                         slidesToScroll: 1
-//                     }
-//                 }
-//             ],
-//             prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
-//             nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
-//             appendArrows:  (appendArrowsClassName),
-//         });
-//     });
+    /*Carausel 4 columns*/
+    $(".carausel-4-columns").each(function (key, item) {
+        var id = $(this).attr("id");
+        var sliderID = '#' + id;
+        var appendArrowsClassName = '#' + id + '-arrows'
 
-//     /*Fix Bootstrap 5 tab & slick slider*/
+        $(sliderID).slick({
+            dots: false,
+            infinite: true,
+            speed: 1000,
+            arrows: true,
+            autoplay: true,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            loop: true,
+            adaptiveHeight: true,
+            responsive: [
+                {
+                    breakpoint: 1025,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ],
+            prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
+            nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
+            appendArrows: (appendArrowsClassName),
+        });
+    });
 
-//     $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-// 		$('.carausel-4-columns').slick('setPosition');
-// 	});
+    /*Fix Bootstrap 5 tab & slick slider*/
 
-//      /*------ Timer Countdown ----*/
+    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $('.carausel-4-columns').slick('setPosition');
+    });
 
-//     $('[data-countdown]').each(function() {
-//         var $this = $(this), finalDate = $(this).data('countdown');
-//         $this.countdown(finalDate, function(event) {
-//             $(this).html(      
-//                 event.strftime(''      
-//                     + '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>'
-//                     + '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>'
-//                     + '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>'
-//                     + '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
-//                 )
-//             );           
-//         });
-//     });
+    /*------ Timer Countdown ----*/
 
-//     /*------ Product slider active 1 ----*/
-//     $('.product-slider-active-1').slick({
-//         slidesToShow: 5,
-//         slidesToScroll: 1,
-//         autoplay: true,
-//         fade: false,
-//         loop: true,
-//         dots: false,
-//         arrows: true,
-//         prevArrow: '<span class="pro-icon-1-prev"><i class="fi-rs-angle-small-left"></i></span>',
-//         nextArrow: '<span class="pro-icon-1-next"><i class="fi-rs-angle-small-right"></i></span>',
-//         responsive: [
-//             {
-//                 breakpoint: 1199,
-//                 settings: {
-//                     slidesToShow: 3, 
-//                 }
-//             },
-//             {
-//                 breakpoint: 991,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             },
-//             {
-//                 breakpoint: 767,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             },
-//             {
-//                 breakpoint: 575,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             }
-//         ]
-//     });
+    $('[data-countdown]').each(function () {
+        var $this = $(this), finalDate = $(this).data('countdown');
+        $this.countdown(finalDate, function (event) {
+            $(this).html(
+                event.strftime(''
+                    + '<span class="countdown-section"><span class="countdown-amount hover-up">%d</span><span class="countdown-period"> days </span></span>'
+                    + '<span class="countdown-section"><span class="countdown-amount hover-up">%H</span><span class="countdown-period"> hours </span></span>'
+                    + '<span class="countdown-section"><span class="countdown-amount hover-up">%M</span><span class="countdown-period"> mins </span></span>'
+                    + '<span class="countdown-section"><span class="countdown-amount hover-up">%S</span><span class="countdown-period"> sec </span></span>'
+                )
+            );
+        });
+    });
 
-//     /*------ Testimonial active 1 ----*/
-//     $('.testimonial-active-1').slick({
-//         slidesToShow: 3,
-//         slidesToScroll: 1,
-//         fade: false,
-//         loop: true,
-//         dots: false,
-//         arrows: true,
-//         prevArrow: '<span class="pro-icon-1-prev"><i class="fi-rs-angle-small-left"></i></span>',
-//         nextArrow: '<span class="pro-icon-1-next"><i class="fi-rs-angle-small-right"></i></span>',
-//         responsive: [
-//             {
-//                 breakpoint: 1199,
-//                 settings: {
-//                     slidesToShow: 3, 
-//                 }
-//             },
-//             {
-//                 breakpoint: 991,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             },
-//             {
-//                 breakpoint: 767,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             },
-//             {
-//                 breakpoint: 575,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             }
-//         ]
-//     });
+    /*------ Product slider active 1 ----*/
+    $('.product-slider-active-1').slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        autoplay: true,
+        fade: false,
+        loop: true,
+        dots: false,
+        arrows: true,
+        prevArrow: '<span class="pro-icon-1-prev"><i class="fi-rs-angle-small-left"></i></span>',
+        nextArrow: '<span class="pro-icon-1-next"><i class="fi-rs-angle-small-right"></i></span>',
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 575,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }
+        ]
+    });
 
-//     /*------ Testimonial active 3 ----*/
-//     $('.testimonial-active-3').slick({
-//         slidesToShow: 3,
-//         slidesToScroll: 1,
-//         fade: false,
-//         loop: true,
-//         dots: true,
-//         arrows: false,
-//         responsive: [
-//             {
-//                 breakpoint: 1199,
-//                 settings: {
-//                     slidesToShow: 3, 
-//                 }
-//             },
-//             {
-//                 breakpoint: 991,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             },
-//             {
-//                 breakpoint: 767,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             },
-//             {
-//                 breakpoint: 575,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             }
-//         ]
-//     });
+    /*------ Testimonial active 1 ----*/
+    $('.testimonial-active-1').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        fade: false,
+        loop: true,
+        dots: false,
+        arrows: true,
+        prevArrow: '<span class="pro-icon-1-prev"><i class="fi-rs-angle-small-left"></i></span>',
+        nextArrow: '<span class="pro-icon-1-next"><i class="fi-rs-angle-small-right"></i></span>',
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                }
+            },
+            {
+                breakpoint: 575,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }
+        ]
+    });
 
-//     /*------ Categories slider 1 ----*/
-//     $('.categories-slider-1').slick({
-//         slidesToShow: 6,
-//         slidesToScroll: 1,
-//         fade: false,
-//         loop: true,
-//         dots: false,
-//         arrows: false,
-//         responsive: [
-//             {
-//                 breakpoint: 1199,
-//                 settings: {
-//                     slidesToShow: 4, 
-//                 }
-//             },
-//             {
-//                 breakpoint: 991,
-//                 settings: {
-//                     slidesToShow: 3,
-//                 }
-//             },
-//             {
-//                 breakpoint: 767,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             },
-//             {
-//                 breakpoint: 575,
-//                 settings: {
-//                     slidesToShow: 1,
-//                 }
-//             }
-//         ]
-//     });  
+    /*------ Testimonial active 3 ----*/
+    $('.testimonial-active-3').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        fade: false,
+        loop: true,
+        dots: true,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                }
+            },
+            {
+                breakpoint: 575,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }
+        ]
+    });
 
-//     /*----------------------------
-//         Category toggle function
-//     ------------------------------*/
-//     var searchToggle = $('.categori-button-active');
-//     searchToggle.on('click', function(e){
-//         e.preventDefault();
-//         if($(this).hasClass('open')){
-//            $(this).removeClass('open');
-//            $(this).siblings('.categori-dropdown-active-large').removeClass('open');
-//         }else{
-//            $(this).addClass('open');
-//            $(this).siblings('.categori-dropdown-active-large').addClass('open');
-//         }
-//     })
+    /*------ Categories slider 1 ----*/
+    $('.categories-slider-1').slick({
+        slidesToShow: 6,
+        slidesToScroll: 1,
+        fade: false,
+        loop: true,
+        dots: false,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 4,
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 575,
+                settings: {
+                    slidesToShow: 1,
+                }
+            }
+        ]
+    });
 
-
-//     /*---------------------
-//         Price range
-//     --------------------- */
-//     var sliderrange = $('#slider-range');
-//     var amountprice = $('#amount');
-//     $(function() {
-//         sliderrange.slider({
-//             range: true,
-//             min: 16,
-//             max: 400,
-//             values: [0, 300],
-//             slide: function(event, ui) {
-//                 amountprice.val("$" + ui.values[0] + " - $" + ui.values[1]);
-//             }
-//         });
-//         amountprice.val("$" + sliderrange.slider("values", 0) +
-//             " - $" + sliderrange.slider("values", 1));
-//     }); 
-
-//     /*-------------------------------
-//         Sort by active
-//     -----------------------------------*/
-//     if ($('.sort-by-product-area').length) {
-//         var $body = $('body'),
-//             $cartWrap = $('.sort-by-product-area'),
-//             $cartContent = $cartWrap.find('.sort-by-dropdown');
-//         $cartWrap.on('click', '.sort-by-product-wrap', function(e) {
-//             e.preventDefault();
-//             var $this = $(this);
-//             if (!$this.parent().hasClass('show')) {
-//                 $this.siblings('.sort-by-dropdown').addClass('show').parent().addClass('show');
-//             } else {
-//                 $this.siblings('.sort-by-dropdown').removeClass('show').parent().removeClass('show');
-//             }
-//         });
-//         /*Close When Click Outside*/
-//         $body.on('click', function(e) {
-//             var $target = e.target;
-//             if (!$($target).is('.sort-by-product-area') && !$($target).parents().is('.sort-by-product-area') && $cartWrap.hasClass('show')) {
-//                 $cartWrap.removeClass('show');
-//                 $cartContent.removeClass('show');
-//             }
-//         });
-//     }
-
-//     /*-----------------------
-//         Shop filter active 
-//     ------------------------- */
-//     $('.shop-filter-toogle').on('click', function(e) {
-//         e.preventDefault();
-//         $('.shop-product-fillter-header').slideToggle();
-//     })
-//     var shopFiltericon = $('.shop-filter-toogle');
-//     shopFiltericon.on('click', function() {
-//         $('.shop-filter-toogle').toggleClass('active');
-//     })
-
-//     /*-------------------------------------
-//         Product details big image slider
-//     ---------------------------------------*/
-//     $('.pro-dec-big-img-slider').slick({
-//         slidesToShow: 1,
-//         slidesToScroll: 1,
-//         arrows: false,
-//         draggable: false,
-//         fade: false,
-//         asNavFor: '.product-dec-slider-small , .product-dec-slider-small-2',
-//     });
-
-//     /*---------------------------------------
-//         Product details small image slider
-//     -----------------------------------------*/
-//     $('.product-dec-slider-small').slick({
-//         slidesToShow: 4,
-//         slidesToScroll: 1,
-//         asNavFor: '.pro-dec-big-img-slider',
-//         dots: false,
-//         focusOnSelect: true,
-//         fade: false,
-//         arrows: false,
-//         responsive: [{
-//                 breakpoint: 991,
-//                 settings: {
-//                     slidesToShow: 3,
-//                 }
-//             },
-//             {
-//                 breakpoint: 767,
-//                 settings: {
-//                     slidesToShow: 4,
-//                 }
-//             },
-//             {
-//                 breakpoint: 575,
-//                 settings: {
-//                     slidesToShow: 2,
-//                 }
-//             }
-//         ]
-//     });
-
-//     /*-----------------------
-//         Magnific Popup
-//     ------------------------*/
-//     $('.img-popup').magnificPopup({
-//         type: 'image',
-//         gallery: {
-//             enabled: true
-//         }
-//     });   
-
-//     /*---------------------
-//         Select active
-//     --------------------- */
-//     $('.select-active').select2();    
-
-//     /*--- Checkout toggle function ----*/
-//     $('.checkout-click1').on('click', function(e) {
-//         e.preventDefault();
-//         $('.checkout-login-info').slideToggle(900);
-//     });
-
-//     /*--- Checkout toggle function ----*/
-//     $('.checkout-click3').on('click', function(e) {
-//         e.preventDefault();
-//         $('.checkout-login-info3').slideToggle(1000);
-//     });
-
-//     /*-------------------------
-//         Create an account toggle
-//     --------------------------*/
-//     $('.checkout-toggle2').on('click', function() {
-//         $('.open-toggle2').slideToggle(1000);
-//     });
-
-//     $('.checkout-toggle').on('click', function() {
-//         $('.open-toggle').slideToggle(1000);
-//     });    
+    /*----------------------------
+        Category toggle function
+    ------------------------------*/
+    var searchToggle = $('.categori-button-active');
+    searchToggle.on('click', function (e) {
+        e.preventDefault();
+        if ($(this).hasClass('open')) {
+            $(this).removeClass('open');
+            $(this).siblings('.categori-dropdown-active-large').removeClass('open');
+        } else {
+            $(this).addClass('open');
+            $(this).siblings('.categori-dropdown-active-large').addClass('open');
+        }
+    })
 
 
-//     /*-------------------------------------
-//         Checkout paymentMethod function
-//     ---------------------------------------*/
-//     paymentMethodChanged();
-// 	function paymentMethodChanged() {
-// 		var $order_review = $( '.payment-method' );
+    /*---------------------
+        Price range
+    --------------------- */
+    var sliderrange = $('#slider-range');
+    var amountprice = $('#amount');
+    $(function () {
+        sliderrange.slider({
+            range: true,
+            min: 16,
+            max: 400,
+            values: [0, 300],
+            slide: function (event, ui) {
+                amountprice.val("$" + ui.values[0] + " - $" + ui.values[1]);
+            }
+        });
+        amountprice.val("$" + sliderrange.slider("values", 0) +
+            " - $" + sliderrange.slider("values", 1));
+    });
 
-// 		$order_review.on( 'click', 'input[name="payment_method"]', function() {
-// 			var selectedClass = 'payment-selected';
-// 			var parent = $( this ).parents( '.sin-payment' ).first();
-// 			parent.addClass( selectedClass ).siblings().removeClass( selectedClass );
-// 		} );
-// 	}
+    /*-------------------------------
+        Sort by active
+    -----------------------------------*/
+    if ($('.sort-by-product-area').length) {
+        var $body = $('body'),
+            $cartWrap = $('.sort-by-product-area'),
+            $cartContent = $cartWrap.find('.sort-by-dropdown');
+        $cartWrap.on('click', '.sort-by-product-wrap', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            if (!$this.parent().hasClass('show')) {
+                $this.siblings('.sort-by-dropdown').addClass('show').parent().addClass('show');
+            } else {
+                $this.siblings('.sort-by-dropdown').removeClass('show').parent().removeClass('show');
+            }
+        });
+        /*Close When Click Outside*/
+        $body.on('click', function (e) {
+            var $target = e.target;
+            if (!$($target).is('.sort-by-product-area') && !$($target).parents().is('.sort-by-product-area') && $cartWrap.hasClass('show')) {
+                $cartWrap.removeClass('show');
+                $cartContent.removeClass('show');
+            }
+        });
+    }
 
-//     /*---- CounterUp ----*/
-//     $('.count').counterUp({
-//         delay: 10,
-//         time: 2000
-//     });
+    /*-----------------------
+        Shop filter active 
+    ------------------------- */
+    $('.shop-filter-toogle').on('click', function (e) {
+        e.preventDefault();
+        $('.shop-product-fillter-header').slideToggle();
+    })
+    var shopFiltericon = $('.shop-filter-toogle');
+    shopFiltericon.on('click', function () {
+        $('.shop-filter-toogle').toggleClass('active');
+    })
 
-//     // Isotope active
-//     $('.grid').imagesLoaded(function() {
-//         // init Isotope
-//         var $grid = $('.grid').isotope({
-//             itemSelector: '.grid-item',
-//             percentPosition: true,
-//             layoutMode: 'masonry',
-//             masonry: {
-//                 // use outer width of grid-sizer for columnWidth
-//                 columnWidth: '.grid-item',
-//             }
-//         });
-//     });
+    /*-------------------------------------
+        Product details big image slider
+    ---------------------------------------*/
+    $('.pro-dec-big-img-slider').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        draggable: false,
+        fade: false,
+        asNavFor: '.product-dec-slider-small , .product-dec-slider-small-2',
+    });
 
-//     /*====== SidebarSearch ======*/
-//     function sidebarSearch() {
-//         var searchTrigger = $('.search-active'),
-//             endTriggersearch = $('.search-close'),
-//             container = $('.main-search-active');
+    /*---------------------------------------
+        Product details small image slider
+    -----------------------------------------*/
+    $('.product-dec-slider-small').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        asNavFor: '.pro-dec-big-img-slider',
+        dots: false,
+        focusOnSelect: true,
+        fade: false,
+        arrows: false,
+        responsive: [{
+            breakpoint: 991,
+            settings: {
+                slidesToShow: 3,
+            }
+        },
+        {
+            breakpoint: 767,
+            settings: {
+                slidesToShow: 4,
+            }
+        },
+        {
+            breakpoint: 575,
+            settings: {
+                slidesToShow: 2,
+            }
+        }
+        ]
+    });
 
-//         searchTrigger.on('click', function(e) {
-//             e.preventDefault();
-//             container.addClass('search-visible');
-//         });
+    /*-----------------------
+        Magnific Popup
+    ------------------------*/
+    $('.img-popup').magnificPopup({
+        type: 'image',
+        gallery: {
+            enabled: true
+        }
+    });
 
-//         endTriggersearch.on('click', function() {
-//             container.removeClass('search-visible');
-//         });
+    /*---------------------
+        Select active
+    --------------------- */
+    $('.select-active').select2();
 
-//     };
-//     sidebarSearch();
+    /*--- Checkout toggle function ----*/
+    $('.checkout-click1').on('click', function (e) {
+        e.preventDefault();
+        $('.checkout-login-info').slideToggle(900);
+    });
 
-//      /*====== Sidebar menu Active ======*/
-//     function mobileHeaderActive() {
-//         var navbarTrigger = $('.burger-icon'),
-//             endTrigger = $('.mobile-menu-close'),
-//             container = $('.mobile-header-active'),
-//             wrapper4 = $('body');
+    /*--- Checkout toggle function ----*/
+    $('.checkout-click3').on('click', function (e) {
+        e.preventDefault();
+        $('.checkout-login-info3').slideToggle(1000);
+    });
 
-//         wrapper4.prepend('<div class="body-overlay-1"></div>');
+    /*-------------------------
+        Create an account toggle
+    --------------------------*/
+    $('.checkout-toggle2').on('click', function () {
+        $('.open-toggle2').slideToggle(1000);
+    });
 
-//         navbarTrigger.on('click', function(e) {
-//             e.preventDefault();
-//             container.addClass('sidebar-visible');
-//             wrapper4.addClass('mobile-menu-active');
-//         });
-
-//         endTrigger.on('click', function() {
-//             container.removeClass('sidebar-visible');
-//             wrapper4.removeClass('mobile-menu-active');
-//         });
-
-//         $('.body-overlay-1').on('click', function() {
-//             container.removeClass('sidebar-visible');
-//             wrapper4.removeClass('mobile-menu-active');
-//         });
-//     };
-//     mobileHeaderActive();
+    $('.checkout-toggle').on('click', function () {
+        $('.open-toggle').slideToggle(1000);
+    });
 
 
-//    /*---------------------
-//         Mobile menu active
-//     ------------------------ */
-//     var $offCanvasNav = $('.mobile-menu'),
-//         $offCanvasNavSubMenu = $offCanvasNav.find('.dropdown');
+    /*-------------------------------------
+        Checkout paymentMethod function
+    ---------------------------------------*/
+    paymentMethodChanged();
+    function paymentMethodChanged() {
+        var $order_review = $('.payment-method');
 
-//     /*Add Toggle Button With Off Canvas Sub Menu*/
-//     $offCanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="fi-rs-angle-small-down"></i></span>');
+        $order_review.on('click', 'input[name="payment_method"]', function () {
+            var selectedClass = 'payment-selected';
+            var parent = $(this).parents('.sin-payment').first();
+            parent.addClass(selectedClass).siblings().removeClass(selectedClass);
+        });
+    }
 
-//     /*Close Off Canvas Sub Menu*/
-//     $offCanvasNavSubMenu.slideUp();
+    /*---- CounterUp ----*/
+    $('.count').counterUp({
+        delay: 10,
+        time: 2000
+    });
 
-//     /*Category Sub Menu Toggle*/
-//     $offCanvasNav.on('click', 'li a, li .menu-expand', function(e) {
-//         var $this = $(this);
-//         if ( ($this.parent().attr('class').match(/\b(menu-item-has-children|has-children|has-sub-menu)\b/)) && ($this.attr('href') === '#' || $this.hasClass('menu-expand')) ) {
-//             e.preventDefault();
-//             if ($this.siblings('ul:visible').length){
-//                 $this.parent('li').removeClass('active');
-//                 $this.siblings('ul').slideUp();
-//             } else {
-//                 $this.parent('li').addClass('active');
-//                 $this.closest('li').siblings('li').removeClass('active').find('li').removeClass('active');
-//                 $this.closest('li').siblings('li').find('ul:visible').slideUp();
-//                 $this.siblings('ul').slideDown();
-//             }
-//         }
-//     });
+    // Isotope active
+    $('.grid').imagesLoaded(function () {
+        // init Isotope
+        var $grid = $('.grid').isotope({
+            itemSelector: '.grid-item',
+            percentPosition: true,
+            layoutMode: 'masonry',
+            masonry: {
+                // use outer width of grid-sizer for columnWidth
+                columnWidth: '.grid-item',
+            }
+        });
+    });
 
-//     /*--- language currency active ----*/
-//     $('.mobile-language-active').on('click', function(e) {
-//         e.preventDefault();
-//         $('.lang-dropdown-active').slideToggle(900);
-//     });    
+    /*====== SidebarSearch ======*/
+    function sidebarSearch() {
+        var searchTrigger = $('.search-active'),
+            endTriggersearch = $('.search-close'),
+            container = $('.main-search-active');
 
-//     /*--- Categori-button-active-2 ----*/
-//     $('.categori-button-active-2').on('click', function(e) {
-//         e.preventDefault();
-//         $('.categori-dropdown-active-small').slideToggle(900);
-//     });
+        searchTrigger.on('click', function (e) {
+            e.preventDefault();
+            container.addClass('search-visible');
+        });
 
-//     /*--- Mobile demo active ----*/
-//     var demo = $('.tm-demo-options-wrapper');
-//     $('.view-demo-btn-active').on('click', function (e) {
-//         e.preventDefault();
-//         demo.toggleClass('demo-open');
-//     });
+        endTriggersearch.on('click', function () {
+            container.removeClass('search-visible');
+        });
 
-//     /*-----More Menu Open----*/
-//     $('.more_slide_open').slideUp();	
-//     $('.more_categories').on('click', function (){
-//         $(this).toggleClass('show');
-//         $('.more_slide_open').slideToggle();
-//     });
+    };
+    sidebarSearch();
 
-//     $('.modal').on('shown.bs.modal', function (e) {
-//         $('.product-image-slider').slick('setPosition');
-//         $('.slider-nav-thumbnails').slick('setPosition');    
-//         $('.product-image-slider .slick-active img').elevateZoom({
-//             zoomType: "inner",
-//             cursor: "crosshair",
-//             zoomWindowFadeIn: 500,
-//             zoomWindowFadeOut: 750
-//         });
-//     })
+    /*====== Sidebar menu Active ======*/
+    function mobileHeaderActive() {
+        var navbarTrigger = $('.burger-icon'),
+            endTrigger = $('.mobile-menu-close'),
+            container = $('.mobile-header-active'),
+            wrapper4 = $('body');
 
-//     /*--- VSticker ----*/
-//     $('#news-flash').vTicker({
-//         speed: 500,
-//         pause: 3000,
-//         animation: 'fade',
-//         mousePause: false,
-//         showItems: 1
-//     });
+        wrapper4.prepend('<div class="body-overlay-1"></div>');
 
-// })(jQuery);
-// 
+        navbarTrigger.on('click', function (e) {
+            e.preventDefault();
+            container.addClass('sidebar-visible');
+            wrapper4.addClass('mobile-menu-active');
+        });
+
+        endTrigger.on('click', function () {
+            container.removeClass('sidebar-visible');
+            wrapper4.removeClass('mobile-menu-active');
+        });
+
+        $('.body-overlay-1').on('click', function () {
+            container.removeClass('sidebar-visible');
+            wrapper4.removeClass('mobile-menu-active');
+        });
+    };
+    mobileHeaderActive();
+
+
+    /*---------------------
+         Mobile menu active
+     ------------------------ */
+    var $offCanvasNav = $('.mobile-menu'),
+        $offCanvasNavSubMenu = $offCanvasNav.find('.dropdown');
+
+    /*Add Toggle Button With Off Canvas Sub Menu*/
+    $offCanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="fi-rs-angle-small-down"></i></span>');
+
+    /*Close Off Canvas Sub Menu*/
+    $offCanvasNavSubMenu.slideUp();
+
+    /*Category Sub Menu Toggle*/
+    $offCanvasNav.on('click', 'li a, li .menu-expand', function (e) {
+        var $this = $(this);
+        if (($this.parent().attr('class').match(/\b(menu-item-has-children|has-children|has-sub-menu)\b/)) && ($this.attr('href') === '#' || $this.hasClass('menu-expand'))) {
+            e.preventDefault();
+            if ($this.siblings('ul:visible').length) {
+                $this.parent('li').removeClass('active');
+                $this.siblings('ul').slideUp();
+            } else {
+                $this.parent('li').addClass('active');
+                $this.closest('li').siblings('li').removeClass('active').find('li').removeClass('active');
+                $this.closest('li').siblings('li').find('ul:visible').slideUp();
+                $this.siblings('ul').slideDown();
+            }
+        }
+    });
+
+    /*--- language currency active ----*/
+    $('.mobile-language-active').on('click', function (e) {
+        e.preventDefault();
+        $('.lang-dropdown-active').slideToggle(900);
+    });
+
+    /*--- Categori-button-active-2 ----*/
+    $('.categori-button-active-2').on('click', function (e) {
+        e.preventDefault();
+        $('.categori-dropdown-active-small').slideToggle(900);
+    });
+
+    /*--- Mobile demo active ----*/
+    var demo = $('.tm-demo-options-wrapper');
+    $('.view-demo-btn-active').on('click', function (e) {
+        e.preventDefault();
+        demo.toggleClass('demo-open');
+    });
+
+    /*-----More Menu Open----*/
+    $('.more_slide_open').slideUp();
+    $('.more_categories').on('click', function () {
+        $(this).toggleClass('show');
+        $('.more_slide_open').slideToggle();
+    });
+
+    $('.modal').on('shown.bs.modal', function (e) {
+        $('.product-image-slider').slick('setPosition');
+        $('.slider-nav-thumbnails').slick('setPosition');
+        $('.product-image-slider .slick-active img').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 500,
+            zoomWindowFadeOut: 750
+        });
+    })
+
+    /*--- VSticker ----*/
+    $('#news-flash').vTicker({
+        speed: 500,
+        pause: 3000,
+        animation: 'fade',
+        mousePause: false,
+        showItems: 1
+    });
+
+})(jQuery);
 
 
 function getPriceAndQuantity(slug) {
@@ -946,9 +946,9 @@ $('#orders-tab').click(() => {
                 <tr>
                 <td>${ele.orderId}</td>
                 <td>${ele.orderDate}</td>`
-                if(ele.orderStatus === 'Delivered') tr +=`<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
-                else tr +=`<td><span class="badge rounded-pill alert-danger">${ele.orderStatus}</span></td>`              
-                tr +=`<td><a href="/v1/users/dashboard/single-order?oId=${ele.orderId}" class="btn-small d-block">View</a></td>
+                if (ele.orderStatus === 'Delivered') tr += `<td><span class="badge rounded-pill alert-success">${ele.orderStatus}</span></td>`
+                else tr += `<td><span class="badge rounded-pill alert-danger">${ele.orderStatus}</span></td>`
+                tr += `<td><a href="/v1/users/dashboard/single-order?oId=${ele.orderId}" class="btn-small d-block">View</a></td>
                 </tr>
                 `
             });
@@ -995,9 +995,9 @@ const verifyPayment = (payment, order) => {
             swal('Payment Successful!')
             setTimeout(() => {
                 location.href = `/v1/users/order?oId=${response.orderId}`
-            },500)
+            }, 500)
         },
-        error: (err)=>{
+        error: (err) => {
             swal(err.responseJSON)
             setTimeout(() => {
                 location.href = '/'
@@ -1052,7 +1052,7 @@ $('#placeorder').click(async (event) => {
     }
 
     if (selectedPayment === 'cod') {
-        
+
         await commonAjax('/v1/users/checkout/', 'POST', headers, { selectedAddress, selectedPayment })
             .then(res => JSON.parse(JSON.stringify(res)))
             .then(res => {
@@ -1078,22 +1078,22 @@ $('#placeorder').click(async (event) => {
 })
 
 // dashboard-account-details
-$('#account-detail-tab').on('click',async()=>{
+$('#account-detail-tab').on('click', async () => {
     let data = await fetch('./dashboard/user-details')
-                    .then(res=>res.json())
-                    .catch(err=>err.json())
-    
-    if(data.ok){
+        .then(res => res.json())
+        .catch(err => err.json())
+
+    if (data.ok) {
         $('#fname').val(data.fname)
-        if(!!data.lname) $('#lname').val(data.lname)
+        if (!!data.lname) $('#lname').val(data.lname)
         $('#email').val(data.email)
         $('#phone').val(data.phn_no)
-    }else{
+    } else {
         swal(data.data)
     }
 })
 
-$("#disable-btn").on('click',()=>{
+$("#disable-btn").on('click', () => {
     $("#fname").prop('disabled', !$("#fname").prop('disabled'));
     $("#lname").prop('disabled', !$("#lname").prop('disabled'));
     $("#email").prop('disabled', !$("#email").prop('disabled'));
@@ -1101,21 +1101,21 @@ $("#disable-btn").on('click',()=>{
     $("#submit-btn").toggle();
 })
 
-$('#change-password-btn').on('click',()=>{
+$('#change-password-btn').on('click', () => {
     $('#change-password-fields').toggle()
 })
 
-$('#userInfo').submit((e)=>{
+$('#userInfo').submit((e) => {
     e.preventDefault()
     console.log('submitted');
 })
 
-$('#change-password').submit(e=>{
+$('#change-password').submit(e => {
     e.preventDefault()
 })
 
 // wishllist
-async function wishlitBtn(e,slug){
+async function wishlitBtn(e, slug) {
     e.preventDefault()
     const headers = {
         'Content-Type': 'application/json'
@@ -1123,35 +1123,35 @@ async function wishlitBtn(e,slug){
     const body = {
         slug
     }
-    await commonAjax('/v1/users/wishlist','POST',headers,body)
-        .then(res=>{
+    await commonAjax('/v1/users/wishlist', 'POST', headers, body)
+        .then(res => {
             swal(res.data.text)
             $('#wishlist-count').text(res.data.newWishlistCount)
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
         })
 }
 
 //remove from wishlist
 
-async function removeFromWishlist(e,slug){
+async function removeFromWishlist(e, slug) {
     e.preventDefault()
     const headers = {
         'Content-Type': 'application/json'
     }
     const body = {
-        slug:slug
+        slug: slug
     }
 
-    await commonAjax('/v1/users/wishlist','PUT',headers,body)
-        .then(res=>{
+    await commonAjax('/v1/users/wishlist', 'PUT', headers, body)
+        .then(res => {
             swal(res.data)
             setTimeout(() => {
                 window.location.reload()
             }, 750);
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
             setTimeout(() => {
                 window.location.reload()
@@ -1161,25 +1161,85 @@ async function removeFromWishlist(e,slug){
 
 // order cancel
 
-$("#form-cancel-order").on('click',async(event)=>{
+$("#form-cancel-order").on('click', async (event) => {
     event.preventDefault()
-    const headers= {
-        'Content-type':'application/json'
+    const headers = {
+        'Content-type': 'application/json'
     }
     const msg = $('input[name=cancel]:checked').val().trim()
     const oId = window.location.search.split('=')[1]
-    
-    await commonAjax('/v1/users/dashboard/single-order','PUT',headers,{oId,msg})
-        .then(res=>{
+
+    await commonAjax('/v1/users/dashboard/single-order', 'PUT', headers, { oId, msg })
+        .then(res => {
             swal(res.data)
             setTimeout(() => {
                 location.reload()
             }, 1000);
         })
-        .catch(err=>{
+        .catch(err => {
             swal(err.data)
             setTimeout(() => {
                 location.reload()
             }, 1000);
         })
 })
+
+$('#form-return-order').on('click', async (event) => {
+    event.preventDefault()
+    const headers = {
+        "Content-Type": "application/json"
+    }
+    const msg = $('input[name=return]:checked').val().trim()
+    const oId = window.location.search.split('=')[1]
+
+    // TODO: check date in backend for return verify, do backend return and wishlisht update
+    await commonAjax('/v1/users/dashboard/order-return', 'POST', headers, { msg, oId })
+        .then(res => {
+            swal(res.data)
+            setTimeout(() => {
+                location.reload()
+            }, 1000);
+        })
+        .catch(err => {
+            swal(err.data)
+            setTimeout(() => {
+                location.reload()
+            }, 1000);
+        })
+})
+
+// pagination
+async function pagination(e, skip, data) {
+    e.preventDefault()
+    $('#pagination-list').find('li').removeClass('active')
+    const headers = {
+        "Content-type": "application/json"
+    }
+    const skipNo = skip * 10
+
+    await commonAjax(`/v1/users/pagination?skip=${skipNo}&category=${data.category}`, 'GET', headers)
+        .then(res => {
+            $('#shop-products').html(res.data)
+            $('#pagination-list li').filter(`[data-id='${skip}']`).addClass('active')
+        })
+        .catch(err => {
+            swal(err.data)
+        })
+}
+
+// category filter
+async function categoryFilter(e, category, categoryType) {
+    e.preventDefault()
+    const headers = {
+        "Content-type": "application/json"
+    }
+
+    await commonAjax(`/v1/users/shop/categoryFilter?category=${category}&categoryType=${categoryType}`, 'GET', headers)
+        .then(res => {
+            if (res.pcount < 10) $('#shop-pagination').css('display', 'none')
+            $('#shop-products').html(res.data)
+        })
+        .catch(err => {
+            swal(err.data)
+        })
+}

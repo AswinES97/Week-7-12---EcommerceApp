@@ -32,28 +32,37 @@
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <span>No.</span>
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search User Id..."  id="search" class="form-control">
+                                <span id="search-err" style="color: red;" hidden>Invalid</span>
                             </div>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <span>Name</span>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
+                       
+                        <!-- <div class="col-md-2 col-6">
                             <select class="form-select">
                                 <option selected>Status</option>
                                 <option>Active</option>
                                 <option>Disabled</option>
                                 <option>Show all</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
+                    <header class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col flex-grow-0">
+                                <div >
+                                    <span>No.</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-3 me-auto mb-md-0 mb-3">
+                                <span>Name</span>
+                            </div>
+                            <div class="col-md-3 col-3 me-auto mb-md-0 mb-3">
+                                <span>User Id</span>
+                            </div>
+                        </div>
+                    </header>
                     <% for(i=0;i<data.length;i++){%>
                     <article class="itemlist">
                         <div class="row align-items-center">
@@ -119,7 +128,7 @@
                 <div class="col-sm-6">
                     <script>
                     document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
+                    </script> ©, Punch
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end">

@@ -1,7 +1,7 @@
 <aside class="navbar-aside" id="offcanvas_aside">
     <div class="aside-top">
-        <a href="index.html" class="brand-wrap">
-            <img src="" class="logo" alt="Punch Dashboard">
+        <a href="/v1/admin/" class="brand-wrap">
+            <img  style="height: 100px;" src="/img/logo/punch_logo.png" class="logo" alt="Punch Dashboard">
         </a>
         <div>
             <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -9,40 +9,92 @@
     </div>
     <nav>
         <ul class="menu-aside">
-            <li class="menu-item ">
-                <a class="menu-link" href="/v1/admin/"> <i class="icon material-icons md-home"></i>
+            <%if(active === 'dashboard'){%>
+            <li class="menu-item active">
+                <a class="menu-link " href="/v1/admin/"> <i class="icon material-icons md-home"></i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li class="menu-item has-submenu" >
+            <%}else{%>
+                <li class="menu-item">
+                    <a class="menu-link " href="/v1/admin/"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+            <%}%>
+            <%if(active === 'products'){%>    
+            <li class="menu-item has-submenu active" >
                 <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_bag"></i>
                     <span class="text">Products</span>
                 </a>
                 <div class="submenu">
-                    <a href="/v1/admin/products/">Product List</a>
+                    <a href="/v1/admin/products">Product List</a>
                     <a href="/v1/admin/products/add-product">Add Product</a>
                 </div>
             </li>
-            <li class="menu-item">
+            <%}else{%>
+                <li class="menu-item has-submenu" >
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/v1/admin/products">Product List</a>
+                        <a href="/v1/admin/products/add-product">Add Product</a>
+                    </div>
+                </li>
+            <%}%>
+            <%if(active === 'category'){%>
+            <li class="menu-item active">
                 <a class="menu-link" href="/v1/admin/category"> <i class="icon material-icons md-category"></i>
                     <span class="text">Category</span>
                 </a>
             </li>
-            <li class="menu-item">
+            <%}else{%>
+                <li class="menu-item">
+                    <a class="menu-link" href="/v1/admin/category"> <i class="icon material-icons md-category"></i>
+                        <span class="text">Category</span>
+                    </a>
+                </li>
+            <%}%>
+            <%if(active === 'user'){%>
+            <li class="menu-item active">
                 <a class="menu-link" href="/v1/admin/users"> <i class="icon material-icons md-home"></i>
                     <span class="text">Users</span>
                 </a>
             </li>
-            <li class="menu-item">
+            <%}else{%>
+                <li class="menu-item">
+                    <a class="menu-link" href="/v1/admin/users"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Users</span>
+                    </a>
+                </li>
+            <%}%>
+            <%if(active === 'orders'){%>
+            <li class="menu-item active">
                 <a class="menu-link" href="/v1/admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
                     <span class="text">Orders</span>
                 </a>
             </li>
-            <li class="menu-item">
+            <%}else{%>
+                <li class="menu-item">
+                    <a class="menu-link" href="/v1/admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+            <%}%>
+            <%if(active === 'offers'){%>
+            <li class="menu-item active">
                 <a class="menu-link" href="/v1/admin/offer"> <i class="icon material-icons md-stars"></i>
                     <span class="text">Offers</span>
                 </a>
             </li>
+            <%}else{%>
+                <li class="menu-item">
+                    <a class="menu-link" href="/v1/admin/offer"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                </li>
+            <%}%>
             <li class="menu-item">
                 <a class="menu-link" href="/v1/admin/logout"><i class="icon material-icons md-exit_to_app"></i>
                     <span class="text">Logout</span>

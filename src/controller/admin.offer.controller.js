@@ -5,6 +5,7 @@ const httpOfferPage = (req, res) => {
     return res.render('admin/admin-offer', {
         layout: 'admin/admin-layout',
         adminTrue: req.admin,
+        active: 'offers'
     })
 }
 

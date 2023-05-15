@@ -35,5 +35,6 @@ module.exports = {
                     resolve(response.access)
                 })
         })
-    }
+    },
+
 }

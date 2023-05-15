@@ -3,14 +3,17 @@ const {
     addNewProduct,
     editProduct,
     deleteProduct,
-    getSingleProduct
+    getSingleProduct,
+    productCount
 } = require("../models/products.model")
+const { formatCurrency } = require("../services/currencyFormatter")
 
 module.exports = {
     httpGetAddProductPage: (req, res) => {
         res.render('admin/admin-add-product', {
             layout: 'admin/admin-layout',
-            adminTrue: req.admin
+            adminTrue: req.admin,
+            active: 'products'
         })
     },
 
@@ -24,7 +27,8 @@ module.exports = {
                         return res.render('admin/admin-update-product', {
                             layout: 'admin/admin-layout',
                             adminTrue: req.admin,
-                            data : data
+                            data: data,
+                            active: 'products'
                         })
                     else
                         return res.status(400)
@@ -35,12 +39,27 @@ module.exports = {
     },
 
     httpGetAllProducts: async (req, res) => {
-        await getAllProductsAdmin()
+        let hasProducts = true
+        let buttonLength = 0
+        const pCount = await productCount()
+        return await getAllProductsAdmin()
             .then(data => {
-                res.render('admin/admin-products-list', {
+                if (data.length === 0) hasProducts = false
+                else {
+                    console.log(data);
+                    data.forEach(ele => {
+                        ele.price = formatCurrency(ele.price)
+                    });
+                }
+                buttonLength = Math.ceil(pCount / 10)
+
+                return res.render('admin/admin-products-list', {
                     layout: 'admin/admin-layout',
                     adminTrue: req.admin,
-                    data: data
+                    data: data,
+                    hasProducts: hasProducts,
+                    buttonLength: buttonLength,
+                    active: 'products'
                 })
             })
             .catch(err => {

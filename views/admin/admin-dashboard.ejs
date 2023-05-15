@@ -1,70 +1,113 @@
+  <!-- Report modal -->
+  <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/v1/admin/report" method="get" enctype="application/x-www-form-urlencoded" >
+            <div class="mb-3">
+              <label for="reportType" class="form-label">Report Type</label>
+              <select class="form-select" id="reportType" name="reportType" required>
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="startDate" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="endDate" class="form-label">End Date</label>
+              <input type="date" class="form-control" id="endDate" name="endDate" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="generateReportBtn">Generate</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<div class="screen-overlay"></div>
 
+<main class="main-wrap">
+    <header class="main-header navbar">
+        <div class="col-search">
+        </div>
+        <div class="col-nav">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-icon darkmode" href="#">
+                        <i class="material-icons md-nights_stay"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Dashboard </h2>
+                <p>Whole data about your business here</p>
+            </div>
+            <div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reportModal"><i
+                        class="text-muted material-icons md-post_add"></i>Create report</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                class="text-primary material-icons md-monetization_on"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Revenue</h6>
+                            <span>
+                                <%=totalamount%>
+                            </span>
 
-    <div class="screen-overlay"></div>
-    
-    <main class="main-wrap">
-        <header class="main-header navbar">
-            <div class="col-search">
-            </div>
-            <div class="col-nav">        
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#">
-                            <i class="material-icons md-nights_stay"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </header>
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Dashboard </h2>
-                    <p>Whole data about your business here</p>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
+                        </div>
+                    </article>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Revenue</h6>
-                                <span><%=totalamount%></span>
-                                
-                            </div>
-                        </article>
-                    </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-success-light"><i
+                                class="text-success material-icons md-local_shipping"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Orders</h6> <span>
+                                <%=orderCount%>
+                            </span>
+                        </div>
+                    </article>
                 </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Orders</h6> <span><%=orderCount%></span>
-                            </div>
-                        </article>
-                    </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                                class="text-warning material-icons md-qr_code"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Products</h6> <span>
+                                <%=productTotalCount%>
+                            </span>
+
+                        </div>
+                    </article>
                 </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span><%=productTotalCount%></span>
-                               
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
+            </div>
+            <div class="col-lg-3">
+                <!-- <div class="card card-body mb-4">
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
                             <div class="text">
@@ -74,27 +117,27 @@
                                 </span>
                             </div>
                         </article>
-                    </div>
-                </div>
+                    </div> -->
             </div>
-            <div class="row">
-                <div class="col-xl-8 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Sale statistics</h5>
-                                <div id="chartdiv"></div>
-                        </article>
-                    </div>
-                    <div class="row"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-8 col-lg-12">
+                <div class="card mb-4">
+                    <article class="card-body">
+                        <h5 class="card-title">Sale statistics</h5>
+                        <div id="chartdiv"></div>
+                    </article>
                 </div>
-                <div class="col-xl-4 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Revenue Base on Area</h5>
-                            <canvas id="myChart2" height="217"></canvas>
-                        </article>
-                    </div>
-                    <!-- <div class="card mb-4">
+                <div class="row"></div>
+            </div>
+            <div class="col-xl-4 col-lg-12">
+                <!-- <div class="card mb-4">
+                    <article class="card-body">
+                        <h5 class="card-title">Revenue Base on Area</h5>
+                        <canvas id="myChart2" height="217"></canvas>
+                    </article>
+                </div> -->
+                <!-- <div class="card mb-4">
                         <article class="card-body">
                             <h5 class="card-title">Marketing Chanel</h5>
                             <span class="text-muted font-xs">Facebook</span>
@@ -119,9 +162,9 @@
                             </div>
                         </article>
                     </div> -->
-                </div>
             </div>
-            <!-- <div class="card mb-4">
+        </div>
+        <!-- <div class="card mb-4">
                 <header class="card-header">
                     <h4 class="card-title">Latest orders</h4>
                     <div class="row align-items-center">
@@ -334,9 +377,9 @@
                             </table>
                         </div>
                     </div> <!-- table-responsive end// -->
-                </div>
-            </div> -->
-            <!-- <div class="pagination-area mt-30 mb-50">
+        </div>
+        </div> -->
+        <!-- <div class="pagination-area mt-30 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
                         <li class="page-item active"><a class="page-link" href="#">01</a></li>
@@ -348,136 +391,137 @@
                     </ul>
                 </nav>
             </div> -->
-        </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
-            <div class="row pb-30 pt-15">
-                <div class="col-sm-6">
-                    <script>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
                     document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end">
-                        All rights reserved
-                    </div>
+                </script> ©, Evara - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
                 </div>
             </div>
-        </footer>
-    </main>
+        </div>
+    </footer>
+</main>
 </body>
 
 <style>
     #chartdiv {
-      width: 100%;
-      height: 500px;
+        width: 100%;
+        height: 500px;
     }
-    </style>
-    
-    <!-- Resources -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    
-    <!-- Chart code -->
-    <script>
-    am5.ready(function() {
-    
-    // Create root element
-    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-    var root = am5.Root.new("chartdiv");
-    
-    
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([
-      am5themes_Animated.new(root)
-    ]);
-    
-    
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    var chart = root.container.children.push(am5xy.XYChart.new(root, {
-      panX: true,
-      panY: true,
-      wheelX: "panX",
-      wheelY: "zoomX",
-      pinchZoomX: true
-    }));
-    
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-    cursor.lineY.set("visible", false);
-    
-    
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-    xRenderer.labels.template.setAll({
-      rotation: -90,
-      centerY: am5.p50,
-      centerX: am5.p100,
-      paddingRight: 15
-    });
-    
-    xRenderer.grid.template.setAll({
-      location: 1
-    })
-    
-    var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-      maxDeviation: 0.3,
-      categoryField: "country",
-      renderer: xRenderer,
-      tooltip: am5.Tooltip.new(root, {})
-    }));
-    
-    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-      maxDeviation: 0.3,
-      renderer: am5xy.AxisRendererY.new(root, {
-        strokeOpacity: 0.1
-      })
-    }));
-    
-    
-    // Create series
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-    var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-      name: "Series 1",
-      xAxis: xAxis,
-      yAxis: yAxis,
-      valueYField: "value",
-      sequencedInterpolation: true,
-      categoryXField: "country",
-      tooltip: am5.Tooltip.new(root, {
-        labelText: "{valueY}"
-      })
-    }));
-    
-    series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
-    series.columns.template.adapters.add("fill", function(fill, target) {
-      return chart.get("colors").getIndex(series.columns.indexOf(target));
-    });
-    
-    series.columns.template.adapters.add("stroke", function(stroke, target) {
-      return chart.get("colors").getIndex(series.columns.indexOf(target));
-    });
-    
-    var monthlyChartData = '<%-JSON.stringify(monthlyData) %>'
-    
-    // Set data
-    var data = JSON.parse(monthlyChartData)
-    
-    xAxis.data.setAll(data);
-    series.data.setAll(data);
-    
-    
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    series.appear(1000);
-    chart.appear(1000, 100);
-    
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<!-- Chart code -->
+<script>
+    am5.ready(function () {
+
+        // Create root element
+        // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+        var root = am5.Root.new("chartdiv");
+
+
+        // Set themes
+        // https://www.amcharts.com/docs/v5/concepts/themes/
+        root.setThemes([
+            am5themes_Animated.new(root)
+        ]);
+
+
+        // Create chart
+        // https://www.amcharts.com/docs/v5/charts/xy-chart/
+        var chart = root.container.children.push(am5xy.XYChart.new(root, {
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            pinchZoomX: true
+        }));
+
+        // Add cursor
+        // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+        var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+        cursor.lineY.set("visible", false);
+
+
+        // Create axes
+        // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+        var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+        xRenderer.labels.template.setAll({
+            rotation: -90,
+            centerY: am5.p50,
+            centerX: am5.p100,
+            paddingRight: 15
+        });
+
+        xRenderer.grid.template.setAll({
+            location: 1
+        })
+
+        var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+            maxDeviation: 0.3,
+            categoryField: "country",
+            renderer: xRenderer,
+            tooltip: am5.Tooltip.new(root, {})
+        }));
+
+        var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+            maxDeviation: 0.3,
+            renderer: am5xy.AxisRendererY.new(root, {
+                strokeOpacity: 0.1
+            })
+        }));
+
+
+        // Create series
+        // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+        var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+            name: "Series 1",
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: "value",
+            sequencedInterpolation: true,
+            categoryXField: "country",
+            tooltip: am5.Tooltip.new(root, {
+                labelText: "{valueY}"
+            })
+        }));
+
+        series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5, strokeOpacity: 0 });
+        series.columns.template.adapters.add("fill", function (fill, target) {
+            return chart.get("colors").getIndex(series.columns.indexOf(target));
+        });
+
+        series.columns.template.adapters.add("stroke", function (stroke, target) {
+            return chart.get("colors").getIndex(series.columns.indexOf(target));
+        });
+
+        var monthlyChartData = '<%-JSON.stringify(monthlyData) %>'
+
+        // Set data
+        var data = JSON.parse(monthlyChartData)
+
+        xAxis.data.setAll(data);
+        series.data.setAll(data);
+
+
+        // Make stuff animate on load
+        // https://www.amcharts.com/docs/v5/concepts/animations/
+        series.appear(1000);
+        chart.appear(1000, 100);
+
     }); // end am5.ready()
-    </script>
+</script>
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:57 GMT -->
+
 </html>

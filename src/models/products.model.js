@@ -3,6 +3,29 @@ const cloudinary = require('cloudinary').v2;
 const slugify = require('slugify')
 const { v4: uuidv4 } = require('uuid');
 
+
+const deletImageFromCloud = async (pId) => {
+    await getSingleProduct(pId)
+        .then(async data => {
+            const imgLink = data.image
+            for (let i = 0; i < imgLink.length; i++) {
+                let imgName = imgLink[i].split('/')
+                imgName = imgName[imgName.length - 1]
+                imgName = imgName.split('.')
+                await cloudinary.uploader.destroy(`products/${imgName[0]}`)
+            }
+        })
+}
+
+const getAllProductsAdmin = (skip = 0) => {
+    return new Promise(async (resolve, reject) => {
+        await product.find().skip(skip).limit(10)
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(data => resolve(data))
+            .catch(err => reject(false))
+    })
+}
+
 const getSingleProduct = (pId) => {
     return new Promise(async (resolve, reject) => {
         await product.findOne({ pId: pId })
@@ -13,19 +36,35 @@ const getSingleProduct = (pId) => {
     })
 }
 
+const productsPagination = async (skip) => {
+    const products = await getAllProductsAdmin(skip).catch(err => err)
+    if (products.length != 0) return Promise.resolve(products)
+    else return Promise.reject(false)
+}
+
+const productSearch = async (data) => {
+    try {
+        return await product.find({ name: { $regex: data, $options: "i" } }).then(res => JSON.parse(JSON.stringify(res)))
+    } catch (err) {
+        console.log(err)
+        return Promise.reject(false)
+    }
+}
+
 module.exports = {
-    getAllProducts: () => {
-        return new Promise(async (resolve, reject) => {
-            await product.find({ active: true, 'quantity.quantity': { $gt: 0 } })
-                .then(res => JSON.parse(JSON.stringify(res)))
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        })
+
+    categoryFilterCount: async (category) => {
+        try {
+            return product.countDocuments({ category: category, active: true, 'quantity.quantity': { $gt: 0 } })
+        } catch (err) {
+            console.log(err)
+            return Promise.reject(false)
+        }
     },
 
-    getAllProductsAdmin: () => {
+    getAllProducts: (skip = 0) => {
         return new Promise(async (resolve, reject) => {
-            await product.find()
+            await product.find({ active: true, 'quantity.quantity': { $gt: 0 } }).skip(skip).limit(10)
                 .then(res => JSON.parse(JSON.stringify(res)))
                 .then(data => resolve(data))
                 .catch(err => reject(err))
@@ -216,20 +255,27 @@ module.exports = {
         }
     },
 
+    productWithCategory: async (category, skip = 0) => {
+        try {
+            return await product.find({ category: category, active: true }).skip(skip).limit(10).then(res => JSON.parse(JSON.stringify(res)))
+        } catch (err) {
+            console.log(err);
+            return Promise.reject([])
+        }
+    },
+
+    shopCategoryFilter: async (data) => {
+        try {
+            return await product.find({ category: data.category, categoryType: data.categoryType }).then(res => JSON.parse(JSON.stringify(res)))
+        } catch (err) {
+            console.log(err)
+            return Promise.reject(false)
+        }
+    },
+
+    productSearch,
+    getAllProductsAdmin,
+    productsPagination,
     getSingleProduct,
-
     uuidv4
-}
-
-const deletImageFromCloud = async (pId) => {
-    await getSingleProduct(pId)
-        .then(async data => {
-            const imgLink = data.image
-            for (let i = 0; i < imgLink.length; i++) {
-                let imgName = imgLink[i].split('/')
-                imgName = imgName[imgName.length - 1]
-                imgName = imgName.split('.')
-                await cloudinary.uploader.destroy(`products/${imgName[0]}`)
-            }
-        })
 }

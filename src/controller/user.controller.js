@@ -1,4 +1,4 @@
-const { getAllProducts } = require("../models/products.model")
+const { getAllProducts, productCount } = require("../models/products.model")
 const { cartCount } = require('../models/cart.model')
 const {
     loginUserWithPhone,
@@ -54,23 +54,39 @@ module.exports = {
 
     httpOtpVerify: async (req, res) => {
         let token
-        let data
+        let cartC
+        let wishlistC
+
         if (req.body.otpCode && req.body.phn_no) {
             await verifyOtp(req.body.otpCode, req.body.phn_no)
                 .then(async response => {
                     return await getUser(req.body.phn_no, null)
                         .then(async (data) => {
-                            data = {
-                                email: data.email,
-                                name: data.fname
-                            }
-                            token = await createAuthToken(data.userId)
-                            await saveToken(token, data)
+                            if (data.access) {
+                                cartC = await cartCount(data.userId)
+                                wishlistC = await wishlistCount(data.userId)
+                                data = {
+                                    email: data.email,
+                                    name: data.fname,
+                                    userId: data.userId,
+                                    cartC: cartC,
+                                    wishlistC: wishlistC,
+                                    loggedIn: true
+                                }
+                                token = await createAuthToken(data.userId)
+                                await saveToken(token, data)
+                                const expiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                                const cookieOptions = {
+                                    httpOnly: true,
+                                    expires: expiryDate,
+                                };
 
-                            req.session.user = true
-                            req.session.userId = data.userId
-                            req.session.userName = data.fname
-                            return res.json({ 'ok': 'Logged In!' })
+                                return res.cookie('token', token, cookieOptions).json({ 'ok': 'Logged In!' })
+
+                            }
+                            else {
+                                return res.status(400).json({ 'err': 'User is blocked' })
+                            }
                         })
                 })
                 .catch(err => {
@@ -167,10 +183,6 @@ module.exports = {
                             token = await createAuthToken(response.userId)
                             await saveToken(token, data)
 
-                            req.session.user = true
-                            req.session.userId = response.userId
-                            req.session.userName = response.fname
-
                             return res.status(201).json({ 'ok': 'user created' })
                         })
                         .catch(() => {
@@ -186,10 +198,12 @@ module.exports = {
             return res.status(400).json({ '400': 'invalide otp' })
         }
 
-    }
-    ,
+    },
+
     httpUserHomepage: async (req, res) => {
         const user = req.user
+        const pCount = await productCount()
+        const count = Math.ceil(pCount / 10)
         let product = await getAllProducts()
         return await getUser(null, user.userId)
             .then((data) => {
@@ -198,6 +212,8 @@ module.exports = {
                     userName: data.fname,
                     userId: data.userId,
                     product: product,
+                    productCount: pCount,
+                    count: count,
                     cartCount: user.cartC,
                     wishlistCount: user.wishlistC
                 })

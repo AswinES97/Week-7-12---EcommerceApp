@@ -15,6 +15,10 @@ const adminOfferRouter = require('./admin.offer.router')
 const { totalRevenue, getMonthlyDataForAdmin } = require('../models/order.model')
 const { getOrderCount } = require('../models/order.model')
 const { productCount } = require('../models/products.model')
+const adminSearchRouter = require('./admin.search.router')
+const { httpPagination } = require('../models/admin.model')
+const adminPagination = require('./admin.pagination.router')
+const adminReportController = require('../controller/admin.report.controller')
 
 const currencyFormatter = new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -39,7 +43,8 @@ adminRouter.route('/')
             totalamount: totalamount,
             orderCount: orderCount,
             productTotalCount: productTotalCount,
-            monthlyData: monthlyData
+            monthlyData: monthlyData,
+            active: "dashboard"
         })
     })
 
@@ -67,6 +72,10 @@ adminRouter.use('/category', adminNotLoggedIn, adminCategoryRouter)
 adminRouter.use('/users', adminNotLoggedIn, adminUsersRouter)
 adminRouter.use('/orders', adminNotLoggedIn, adminOrdersRouter)
 adminRouter.use('/offer', adminNotLoggedIn, adminOfferRouter)
+adminRouter.use('/search', adminNotLoggedIn, adminSearchRouter)
+adminRouter.use('/pagination', adminNotLoggedIn, adminPagination)
+
+adminRouter.get('/report', adminNotLoggedIn, adminReportController)
 
 
 module.exports = {

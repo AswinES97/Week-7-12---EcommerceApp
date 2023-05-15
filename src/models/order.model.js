@@ -1,5 +1,6 @@
 const OrdersSchema = require('./orders.mong')
 
+
 const totalRevenue = async () => {
     try {
         return await OrdersSchema.aggregate([
@@ -19,7 +20,6 @@ const totalRevenue = async () => {
     }
 }
 
-
 const getAllOrderDetails = async (userId, skip = 0) => {
     try {
         let orders = await OrdersSchema.find({ userId }, { _id: 0 }).sort({ createdAt: -1 }).skip(skip).limit(10)
@@ -36,6 +36,7 @@ const getOrderDetailsAdmin = async (skip = 0) => {
         orders = JSON.parse(JSON.stringify(orders))
         return Promise.resolve(orders)
     } catch (err) {
+        console.log(err);
         return Promise.reject()
     }
 }
@@ -203,10 +204,9 @@ const changeOrderStatus = async (data) => {
     }
 }
 
-const pagination = async (skip) => {
+const orderPagination = async (skip) => {
     let orders = await getOrderDetailsAdmin(skip)
-
-    if (!orders) return Promise.reject()
+    if (!orders) return Promise.reject(false)
 
     orders = orders.map(ele => {
         return {
@@ -237,16 +237,62 @@ const cancelOrder = async (data) => {
     }
 }
 
+const orderReturn = async (data) => {
+    try {
+        return await OrdersSchema.findOneAndUpdate({ orderId: data.oId }, {
+            $set: {
+                orderStatus: 'Returned'
+            }
+        }, { new: true }).then(res => JSON.parse(JSON.stringify(res)))
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+
+const orderSearch = async (orderId) => {
+    try {
+        return await OrdersSchema.find({ orderId: orderId }, { _id: 0 })
+            .then(res => JSON.parse(JSON.stringify(res)))
+    } catch (err) {
+        console.log(err)
+        return Promise.reject(false)
+    }
+}
+
+const getOrderDetailsForReport = async (startDate, endDate) => {
+    startDate = new Date(startDate)
+    endDate = new Date(endDate)
+
+    try {
+        return await OrdersSchema.find({
+            createdAt: {
+                $gte: startDate,
+                $lte: endDate
+            }
+        })
+        .then(res=>JSON.parse(JSON.stringify(res)))
+        
+    } catch (err) {
+        console.log(err)
+        return Promise.reject(false)
+    }
+
+}
+
 module.exports = {
     totalRevenue: totalRevenue,
     getAllOrderDetails: getAllOrderDetails,
     getOrderDetailsAdmin: getOrderDetailsAdmin,
     getOrderCount: getOrderCount,
-    pagination: pagination,
+    orderPagination: orderPagination,
     singleOrderAggreated: singleOrderAggreated,
     changeOrderStatus: changeOrderStatus,
     getSingleOrder: getSingleOrder,
     cancelOrder: cancelOrder,
-    getMonthlyDataForAdmin: getMonthlyDataForAdmin
+    orderReturn: orderReturn,
+    getMonthlyDataForAdmin: getMonthlyDataForAdmin,
+    orderSearch: orderSearch,
+    getOrderDetailsForReport: getOrderDetailsForReport
 }
 

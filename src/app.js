@@ -13,7 +13,7 @@ const compression = require('compression')
 
 const api = require('./router/api')
 const { userNotLoggedIn } = require('./middleware/session')
-const { getAllProducts } = require('./models/products.model')
+const { getAllProducts, productCount } = require('./models/products.model')
 const cookieParser = require('cookie-parser')
 const app = express()
 
@@ -52,12 +52,16 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "..", "public")))
 
 
-app.get('/', userNotLoggedIn, (req, res) => {
-    getAllProducts()
+app.get('/', userNotLoggedIn,async (req, res) => {
+    const pCount = await productCount()
+    const count = Math.ceil(productCount/10)
+    await getAllProducts()
         .then(response => {
             return res.render('homepage', {
                 userStatus: req.session.user,
-                product: response
+                product: response,
+                productCount: pCount,
+                count: count
             })
         })
         .catch(err => res.render('homepage', { userStatus: req.session.user }))

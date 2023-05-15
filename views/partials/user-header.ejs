@@ -1,51 +1,31 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" >
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"
-      ><img style="height: 100px" src="/img/logo/punch_logo.png" alt=""
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <div class="ms-5 mt-2 ">
+      <a class="navbar-brand" href="/"><img style="height: 50px" src="/img/logo/punch_logo.png" alt="" /></a>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse m-4" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse m-2" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+        <li class="nav-item mx-5">
+          <a class="nav-link" href="/v1/users/shop?page=Men" style="font-family: 'Times New Roman', Times, serif;" >Men</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
+        <li class="nav-item ">
+          <a class="nav-link" href="/v1/users/shop?page=Women" style="font-family: 'Times New Roman', Times, serif;" >Women</a>
         </li>
       </ul>
       <ul class="navbar-nav">
         <div class="dropdown">
-          <button
-            class="btn rounded-circle p-4 btn-sm"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <%=userName.substring(0,1).toUpperCase()%>
+          <button class="btn rounded-circle p-2 my-2"  type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <%=userName.substring(0,3)%>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li class="ps-4 py-2">
-              <a
-                href="/v1/users/dashboard?userName=<%=userName%>"
-                style="color: black"
-                >Profile</a
-              >
+              <a href="/v1/users/dashboard?userName=<%=userName%>" style="color: black">Profile</a>
             </li>
             <li class="ps-4 py-2" data-bs-toggle="modal">
               <a href="/v1/users/logout" style="color: black">Logout</a>
@@ -56,18 +36,18 @@
       <div class="header-action-2">
         <div class="header-action-icon-2">
           <a href="/v1/users/wishlist">
-            <img
-              class="svgInject"
-              alt="Evara"
-              src="/user-assets/imgs/theme/icons/icon-heart.svg"
-            />
-            <span id="wishlist-count" class="pro-count white" style="color: white;background-color: #088178;"><%=wishlistCount%></span>
+            <img class="svgInject" alt="Evara" src="/user-assets/imgs/theme/icons/icon-heart.svg" style="height: 22px;"/>
+            <span id="wishlist-count" class="pro-count white" style="color: white;background-color: #088178;">
+              <%=wishlistCount%>
+            </span>
           </a>
         </div>
         <div class="header-action-icon-2">
           <a href="/v1/users/cart?id=<%=userId%>&name=<%=userName%>">
-            <img alt="Evara" src="/user-assets/imgs/theme/icons/icon-cart.svg">
-            <span  id="cart-count"  class="pro-count white" style="color: white;background-color: #088178;"><%=cartCount%></span>
+            <img alt="Evara" src="/user-assets/imgs/theme/icons/icon-cart.svg" style="height: 22px;">
+            <span id="cart-count" class="pro-count white" style="color: white;background-color: #088178;">
+              <%=cartCount%>
+            </span>
           </a>
         </div>
       </div>

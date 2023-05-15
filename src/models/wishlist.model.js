@@ -4,7 +4,6 @@ const wishlistCount = async (userId) => {
     try {
         const wishlishDoc = await wishlishtSchema.findOne({ userId: userId }).then(res => JSON.parse(JSON.stringify(res)))
         const count = wishlishDoc?.products?.length
-        console.log(wishlishDoc,count);
         return count != null ? Promise.resolve(count) : Promise.resolve(0)
     } catch (err) {
         console.log(err);
@@ -51,7 +50,7 @@ const getWishlistData = async (userId) => {
         return await wishlishtSchema.aggregate([
             {
                 $match: {
-                    userId: "1234"
+                    userId: userId
                 }
             },
             {
