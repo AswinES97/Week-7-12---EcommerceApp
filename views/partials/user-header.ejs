@@ -1,4 +1,29 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary" >
+<div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="walletModalLabel">My Wallet</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="walletBalance" class="form-label">Balance</label>
+          <input type="text" class="form-control" id="walletBalance" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="walletAddress" class="form-label"><a href="#">View Transactions</a></label>
+          <!-- <input type="text" class="form-control" id="walletAddress" readonly> -->
+        </div>
+        <!-- Additional fields can be added here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Send</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <div class="ms-5 mt-2 ">
       <a class="navbar-brand" href="/"><img style="height: 50px" src="/img/logo/punch_logo.png" alt="" /></a>
@@ -10,24 +35,56 @@
     <div class="collapse navbar-collapse m-2" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item mx-5">
-          <a class="nav-link" href="/v1/users/shop?page=Men" style="font-family: 'Times New Roman', Times, serif;" >Men</a>
+          <a class="nav-link" href="/v1/users/shop?page=Men"
+            style="font-family: 'Times New Roman', Times, serif;">Men</a>
         </li>
 
-        <li class="nav-item ">
-          <a class="nav-link" href="/v1/users/shop?page=Women" style="font-family: 'Times New Roman', Times, serif;" >Women</a>
+        <li class="nav-item mx-5">
+          <a class="nav-link" href="/v1/users/shop?page=Women"
+            style="font-family: 'Times New Roman', Times, serif;">Women</a>
+        </li>
+        <li class="nav-item mx-5">
+          <%if(keyWord){%>
+          <form action="/v1/search" id="search-form" >
+            <div class="col-search">
+              <div class="input-group">
+                <input list="search_terms" name="keyWord" type="text" class="form-control" value="<%=keyWord%>"
+                  id="search-bar">
+                <div class="mx-3 d-flex justify-content-center align-items-center">
+                  <span style="color: red;" id="search-error" hidden>Enter Somenting to search</span>
+                </div>
+              </div>
+            </div>
+          </form>
+          <%}else{%>
+            <form action="/v1/search" id="search-form" >
+              <div class="col-search">
+                <div class="input-group">
+                  <input list="search_terms" name="keyWord" type="text" class="form-control" placeholder="Search products..."
+                    id="search-bar">
+                  <div class="mx-3 d-flex justify-content-center align-items-center">
+                    <span style="color: red;" id="search-error" hidden>Enter Somenting to search</span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          <%}%>
         </li>
       </ul>
       <ul class="navbar-nav">
         <div class="dropdown">
-          <button class="btn rounded-circle p-2 my-2"  type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+          <button class="btn rounded-circle p-2 my-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <%=userName.substring(0,3)%>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li class="ps-4 py-2">
+            <li class="dropdown-item">
               <a href="/v1/users/dashboard?userName=<%=userName%>" style="color: black">Profile</a>
             </li>
-            <li class="ps-4 py-2" data-bs-toggle="modal">
+            <li class="dropdown-item">
+              <a href="#" style="color: black" id="user-wallet">Wallet</a>
+            </li>
+            <li class="dropdown-item">
               <a href="/v1/users/logout" style="color: black">Logout</a>
             </li>
           </ul>
@@ -36,7 +93,8 @@
       <div class="header-action-2">
         <div class="header-action-icon-2">
           <a href="/v1/users/wishlist">
-            <img class="svgInject" alt="Evara" src="/user-assets/imgs/theme/icons/icon-heart.svg" style="height: 22px;"/>
+            <img class="svgInject" alt="Evara" src="/user-assets/imgs/theme/icons/icon-heart.svg"
+              style="height: 22px;" />
             <span id="wishlist-count" class="pro-count white" style="color: white;background-color: #088178;">
               <%=wishlistCount%>
             </span>

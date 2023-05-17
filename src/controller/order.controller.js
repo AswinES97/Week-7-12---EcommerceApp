@@ -21,7 +21,8 @@ const httpGetOrderPage = async (req, res) => {
         wishlistCount: user.wishlistC,
         boughtPrice: order.products,
         productDetails: order.productDetails,
-        totalPrice: order.totalPrice
+        totalPrice: order.totalPrice,
+        keyWord: false
     })
 }
 

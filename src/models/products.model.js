@@ -51,6 +51,15 @@ const productSearch = async (data) => {
     }
 }
 
+const userProductSearch = async (keyword) => {
+    try {
+        return await product.find({ name: { $regex: keyword, $options: 'i'} }).then(res=>JSON.parse(JSON.stringify(res)))
+    } catch (err) {
+        console.log(err)
+        return Promise.reject(false)
+    }
+}
+
 module.exports = {
 
     categoryFilterCount: async (category) => {
@@ -272,7 +281,7 @@ module.exports = {
             return Promise.reject(false)
         }
     },
-
+    userProductSearch,
     productSearch,
     getAllProductsAdmin,
     productsPagination,

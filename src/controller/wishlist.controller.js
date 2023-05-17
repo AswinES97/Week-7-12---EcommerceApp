@@ -16,7 +16,8 @@ const httpGetWishlistPage = async (req, res) => {
                 wishlistCount: user.wishlistC,
                 productStatus: productStatus,
                 products: products,
-                formatCurrency: formatCurrency
+                formatCurrency: formatCurrency,
+                keyWord: false
             })
         })
         .catch(err => {
@@ -26,7 +27,8 @@ const httpGetWishlistPage = async (req, res) => {
                 userStatus: user.loggedIn,
                 wishlistCount: user.wishlistC,
                 cartCount: user.cartC,
-                productStatus: productStatus
+                productStatus: productStatus,
+                keyWord: false
             })
         })
 }

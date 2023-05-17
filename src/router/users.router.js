@@ -20,6 +20,8 @@ const orderRouter = require('./order.router.js')
 const wishlishtRouter = require('./wishlistRouter')
 const shopRouter = require('./user.shop.router')
 const paginationRouter = require('./user.pagination')
+const userWalletRouter = require('./user.wallet.router')
+const resetPasswordRouter = require('./reset-password.router')
 
 userRouter.route('/login')
     .all(userNotLoggedIn)
@@ -29,26 +31,29 @@ userRouter.route('/login-otp')
     .all(userNotLoggedIn)
     .post(httpOtpVerify)
 
-userRouter.route('/login-email')
+    
+    userRouter.route('/login-email')
     .all(userNotLoggedIn)
     .post(httpEmailVerify)
-
-userRouter.route('/add-user')
+    
+    userRouter.route('/add-user')
     .all(userNotLoggedIn)
     .post(httpAddNewUserEmailOtp)
-
-userRouter.route('/add-user-otp')
+    
+    userRouter.route('/add-user-otp')
     .all(userNotLoggedIn)
     .post(httpAddNewUserVerifyOtp)
-
-userRouter.route('/')
+    
+    userRouter.route('/')
     .all(userLoggedIn)
     .get(httpUserHomepage)
-
-userRouter.route('/logout')
+    
+    userRouter.route('/logout')
     .all(userLoggedIn)
     .get(httpUserLogout)
-
+    
+userRouter.use('/reset-password',userNotLoggedIn,resetPasswordRouter)
+userRouter.use('/wallet',userLoggedIn,userWalletRouter)
 userRouter.use('/cart', userLoggedIn, userCartRouter)
 userRouter.use('/wishlist', userLoggedIn, wishlishtRouter)
 userRouter.use('/dashboard', userLoggedIn, dashboardRouter)

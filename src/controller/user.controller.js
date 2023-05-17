@@ -5,7 +5,8 @@ const {
     loginUserWithEmailAndPassword,
     addNewUser,
     getUserForVeri,
-    getUser
+    getUser,
+    updateUserPassword
 } = require("../models/user.model")
 const { createAuthToken } = require("../services/jwt")
 const {
@@ -22,6 +23,23 @@ const {
     err_email
 } = require('../services/responses')
 const { wishlistCount } = require("../models/wishlist.model")
+const { hashPassword } = require("../services/bcrypt")
+
+function resetPasswordModalBody(phn_no) {
+    return `<form class="p-5" action="#" method="post">
+    <h1 id="model-heading">Reset Password</h1><br><br>
+    <label class="textin p-2">Enter Password:</label><br>
+    <input type="password" name="password" id="signupPass" class="input" onkeyup="pass()" placeholder="**********"><br>
+    <span style="color: red;font-size:14px;" id="pass-error" hidden >Minimum eight characters, at least one letter, one number and one special character!</span><br>
+    <label class="textin p-2">Confirm Password:</label><br>
+    <input type="password" id="confirm-pass" onkeyup="confirmPass()" class="input"  placeholder="**********"><br>
+    <span style="color: red;font-size:14px;" id="confirm-error" hidden >Password don't match!</span><br>
+
+    <button id="submitButton" class="submitButton mt-4 mx-auto" onclick="changePassword(event,'${phn_no}')" type="submit">Save</button></br>
+    <span style="color: red;" id="error"></span></br>
+    </form>
+    `
+}
 
 module.exports = {
 
@@ -215,7 +233,8 @@ module.exports = {
                     productCount: pCount,
                     count: count,
                     cartCount: user.cartC,
-                    wishlistCount: user.wishlistC
+                    wishlistCount: user.wishlistC,
+                    keyWord: false
                 })
 
             })
@@ -226,5 +245,37 @@ module.exports = {
         await deleteToken(token)
         res.clearCookie('token')
         return res.redirect('/')
+    },
+
+    httpSentOtpToResetPassword: async (req, res) => {
+        let data
+        const body = req.body
+        const hasUser = await getUser(body.phn_no, null).catch(err => err)
+        if (!hasUser) data = "No user found!"
+        if (hasUser) {
+            const hasSentOtp = await sentOtp(hasUser).catch(err => err)
+            if (!hasSentOtp) data = 'Unable to sent Otp'
+            if (hasSentOtp) return res.json({ ok: true, data: 'Otp Sent' })
+        }
+        return res.status(400).json({ ok: false, data: data })
+    },
+
+    httpPasswordResetOtpVerify: async (req, res) => {
+        let data
+        const body = req.body
+        const isVerified = await verifyOtp(body.otpCode, body.phn_no).catch(err => err)
+
+        if (!isVerified) data = "Wrong Otp!"
+        if (isVerified) return res.json({ ok: true, data: resetPasswordModalBody(body.phn_no) })
+        return res.status(400).json({ ok: false, data: data })
+    },
+
+    httpResetPassword: async (req, res) => {
+        const body = req.body
+        const pass = await hashPassword(body.pass)
+        const isUpdated = await updateUserPassword(pass, body.phn_no).catch(err => err)
+
+        if (!isUpdated) return res.status(400).json({ ok: false, data: 'Error updating password' })
+        return res.json({ ok: true, data: "Password Updated!" })
     }
 }

@@ -1,5 +1,14 @@
 const WalletSchema = require('./wallet.mongo')
 
+const getWallet = async (userId) => {
+    try {
+        return await WalletSchema.findOne({ userId: userId }, { balance:1,_id:0 }).then(res => JSON.parse(JSON.stringify(res)))
+    } catch (err) {
+        console.log(err)
+        return Promise.reject(false)
+    }
+}
+
 const createNewWallet = async (userId, amount, transactions) => {
     try {
         const newWallet = await new WalletSchema({
@@ -10,11 +19,12 @@ const createNewWallet = async (userId, amount, transactions) => {
         return newWallet.save().then(res => JSON.parse(JSON.stringify(res)))
 
     } catch (err) {
+        console.log(err);
         return Promise.reject(false)
     }
 }
 
-const updateExistingWallet = async (userId, amount,transactions) => {
+const updateExistingWallet = async (userId, amount, transactions) => {
     try {
 
         return await WalletSchema.findOneAndUpdate({ userId: userId }, {
@@ -35,7 +45,6 @@ const updateExistingWallet = async (userId, amount,transactions) => {
 // update for cancelation and return
 const updateWallet = async (userId, amount, description) => {
     const doesExist = await WalletSchema.findOne({ userId: userId })
-    console.log('doesExist', doesExist);
     const transactions = {
         type: 'credit',
         amount: amount,
@@ -48,5 +57,6 @@ const updateWallet = async (userId, amount, description) => {
 }
 
 module.exports = {
-    updateWallet: updateWallet
+    updateWallet: updateWallet,
+    getWallet: getWallet
 }

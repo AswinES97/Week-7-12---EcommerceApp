@@ -9,12 +9,10 @@ function login() {
     <div id="otp"></div>
     <button id="submitButton" class="submitButton mt-4 mx-auto" onclick="sentOtp(event,'login')" type="submit">Sent
       Otp</button>
-    <span style="color: red;" id="error"></span>
+    <span style="color: red;" id="error"></span></br>
     <div class='pt-3 text-secondary'>
       <span>Don't have an account?</span><span style="cursor: pointer;" class="text-primary"><a onclick=signUp()>
-          Sign Up!</a><span>
-    </div>
-    <div class='pt-3 text-secondary'>
+          Sign Up!</a></span></br>
       <span>Login with email?</span><span style="cursor: pointer;" class="text-primary"><a onclick=loginWithEmail()>
           Click Here!</a><span>
     </div>
@@ -33,11 +31,10 @@ function loginWithEmail() {
     
     <button id="submitButton" class="submitButton mt-4 mx-auto" onclick="loginMail(event)" type="submit">Login!</button>
     <br><span style="color: red;" id="error" hidden>Wrong Credentials!</span>
+    <span><a onclick="forgotPassword()" style="cursor: pointer;" class="text-primary">Forgot Password?</a><span>
     <div class='pt-3 text-secondary'>
       <span>Don't have an account?</span><span style="cursor: pointer;" class="text-primary"><a onclick=signUp()>
-          Sign Up!</a><span>
-    </div>
-    <div class='pt-3 text-secondary'>
+          Sign Up!</a></span></br>
       <span>Login with Mobile?</span><span style="cursor: pointer;" class="text-primary"><a onclick=login()>
           Click Here!</a><span>
     </div>
@@ -67,7 +64,6 @@ function loginMail(event) {
                 error.removeAttribute('hidden')
             },
             success: (res) => {
-                console.log(document.cookie);
                 window.location.reload()
             }
         })
@@ -106,7 +102,28 @@ function signUp() {
 
 }
 
-function sentOtp($event, state) {
+function forgotPassword() {
+    let modalBody = document.getElementById('modal-body')
+    modalBody.innerHTML = `<form class="p-5" action="#" method="post">
+    <h1 id="model-heading">Reset Password</h1><br><br>
+    <label class="textin">Enter Mobile:</label><br>
+    <input class="input" type="tel" maxlength="10" name="phn_no" id="input-phone" placeholder="9XXXXXXXXX" required><br>
+
+    <div id="otp"></div>
+    <button id="submitButton" class="submitButton mt-4 mx-auto" onclick="sentOtp(event,'reset')" type="submit">Sent
+      Otp</button></br>
+    <span style="color: red;" id="error"></span></br>
+    <div class='pt-3 text-secondary'>
+      <span>Don't have an account?</span><span style="cursor: pointer;" class="text-primary"><a onclick=signUp()>
+          Sign Up!</a></span></br>
+      <span>Login with email?</span><span style="cursor: pointer;" class="text-primary"><a onclick=loginWithEmail()>
+          Click Here!</a><span>
+    </div>
+    </form>
+    `
+}
+
+async function sentOtp($event, state) {
 
     $event.preventDefault()
 
@@ -124,7 +141,7 @@ function sentOtp($event, state) {
             if (phn_no1) {
                 if (phn_regExp.test(phn_no)) {
 
-                    $.ajax({
+                    await $.ajax({
                         type: 'POST',
                         url: 'http://localhost:3000/v1/users/login',
                         data: { phn_no: phn_no1 },
@@ -181,7 +198,7 @@ function sentOtp($event, state) {
             phn_no_field.setAttribute('disabled', '')
             email.setAttribute('disabled', '')
             name.setAttribute('disabled', '')
-            $.ajax({
+            await $.ajax({
                 url: 'http://localhost:3000/v1/users/add-user',
                 type: 'POST',
                 data: {
@@ -196,6 +213,7 @@ function sentOtp($event, state) {
                         <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
                         submit_button.removeAttribute('disabled')
                     } else {
+                        submit_button.removeAttribute('disabled')
                         error.innerHTML = "<p>Otp not sent!<p>"
                     }
                 }
@@ -204,18 +222,41 @@ function sentOtp($event, state) {
         } else {
             error.innerHTML = "<p>Incorrect Details<p>"
         }
+    } else if (state == 'reset') {
+        if (phn_no.length == 10 && phn_regExp.test(phn_no1)) {
+            submit_button.setAttribute('disabled', '')
+            const headers = {
+                'Content-Type': 'application/json'
+            }
+            await commonAjax('/v1/users/reset-password', 'POST', headers, { phn_no: phn_no1 })
+                .then(res => {
+                    submit_button.innerHTML = 'Verify'
+                    submit_button.removeAttribute('disabled')
+                    submit_button.setAttribute('onclick', 'verifyOtp(event,"reset")')
+                    otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
+                        <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
+                })
+                .catch(err => {
+                    submit_button.removeAttribute('disabled')
+                    $('#error').html(err.data)
+                })
+        } else {
+            error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
+        }
     }
 }
 
-function verifyOtp($event, state) {
+async function verifyOtp($event, state) {
     $event.preventDefault()
+    const submit_button = document.getElementById('submitButton')
     let error = document.getElementById('error')
     let phn_no = document.getElementById('input-phone').value
     let otpCode = document.getElementById('input-otp').value
+    submit_button.setAttribute('disabled', '')
 
     if (otpCode.length == 6) {
         if (state == 'login') {
-            $.ajax({
+            await $.ajax({
                 type: 'POST',
                 url: 'http://localhost:3000/v1/users/login-otp',
                 data: {
@@ -224,10 +265,11 @@ function verifyOtp($event, state) {
                 },
 
                 complete: (data, status, err) => {
+                    submit_button.removeAttribute('disabled')
                     if (status == 'error') {
                         error.innerHTML = "<p>Invalid Otp!<p>"
                     } else {
-                       location.href = 'http://localhost:3000/v1/users'
+                        location.href = 'http://localhost:3000/v1/users'
                     }
                 }
             })
@@ -236,7 +278,7 @@ function verifyOtp($event, state) {
             let email_value = document.getElementById('email').value
             const password = document.getElementById('signupPass').value
 
-            $.ajax({
+            await $.ajax({
                 url: 'http://localhost:3000/v1/users/add-user-otp',
                 type: 'POST',
                 data: {
@@ -248,9 +290,23 @@ function verifyOtp($event, state) {
 
                 },
                 success: (xhr, status, err) => {
+                    submit_button.removeAttribute('disabled')
                     window.location.reload()
                 }
             })
+        } else if (state == 'reset') {
+            const headers = {
+                'Content-type': 'application/json'
+            }
+            await commonAjax('/v1/users/reset-password/verify', 'POST', headers, { otpCode, phn_no })
+                .then(res => {
+                    let modalBody = document.getElementById('modal-body')
+                    modalBody.innerHTML = res.data
+                })
+                .catch(err => {
+                    submit_button.removeAttribute('disabled')
+                    $('#error').html(err.data)
+                })
         }
 
 
@@ -289,6 +345,30 @@ function confirmPass() {
 
 }
 
-function cartHome(){
+async function changePassword(event, phn_no) {
+    event.preventDefault()
+
+    if (pass() && confirmPass()) {
+        const submit_button = document.getElementById('submitButton')
+        const pass = document.getElementById('signupPass').value
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+        submit_button.setAttribute('disabled', '')
+        await commonAjax('/v1/users/reset-password/verify', 'PUT', headers, { pass, phn_no })
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+            })
+    }
+}
+
+
+function cartHome() {
     login()
 }

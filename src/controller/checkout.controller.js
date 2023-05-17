@@ -26,7 +26,8 @@ module.exports = {
                     address: response,
                     addressLength: addressLength,
                     products: cartItems.product,
-                    grandTotal: cartItems.grandTotal
+                    grandTotal: cartItems.grandTotal,
+                    keyWord: false
                 })
             })
             .catch(err => {

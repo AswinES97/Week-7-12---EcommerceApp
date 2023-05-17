@@ -31,7 +31,8 @@ module.exports = {
             cartCount: user.cartC,
             wishlistCount: user.wishlistC,
             orderDetails: orderDetails,
-            formatDate: formatDate
+            formatDate: formatDate,
+            keyWord: false
         })
     }
     ,
@@ -64,18 +65,18 @@ module.exports = {
             address: orderDetails.shippingAddress,
             returnDate: returnDate,
             formatDate: formatDate,
-            formatCurrency: formatCurrency
+            formatCurrency: formatCurrency,
+            keyWord: false
         })
     },
 
     httpCancelOrder: async (req, res) => {
         let isUpdated
         const user = req.user
+        console.log(user);
         const response = await cancelOrder(req.body).catch(err => err)
-        console.log(response);
         if (response.orderStatus === 'Cancled' && response.isPaid) {
             isUpdated = await updateWallet(user.userId, response.totalPrice, "Order Cancled").catch(err => err)
-
             if (isUpdated) {
 
                 return res.json({

@@ -1,8 +1,17 @@
 const redis = require('redis');
-const client = redis.createClient();
+const redisHost = 'redis'
+const redisPort = "6379"; // Redis port
+
+// Create a Redis client with the specified host and port
+const client = redis.createClient({
+    socket:{
+        port:redisPort,
+        host:redisHost
+    }
+});
+client.connect()
 
 client.on('error', (err) => console.error(err))
-client.connect()
 
 const saveToken = async (token, data) => {
     await client.setEx(token, 86400, JSON.stringify(data))

@@ -29,7 +29,8 @@ const httpGeneralShopPageController = async (req, res) => {
         paginationCount: categoryCount,
         count: count,
         subAndTypeCategory: subAndTypeCategory,
-        formatCurrency: formatCurrency
+        formatCurrency: formatCurrency,
+        keyWord: false
     })
 
 }

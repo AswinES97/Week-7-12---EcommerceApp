@@ -10,6 +10,17 @@
         <div class="collapse navbar-collapse m-2" id="navbarSupportedContent">
             
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <form action="/v1/search" id="search-form" >
+                        <div class="col-search">
+                          <div class="input-group">
+                            <input list="search_terms" name="keyWord" type="text" class="form-control" placeholder="Search products..."
+                              id="search-bar">
+                            <div class="mx-3 d-flex justify-content-center align-items-center">
+                              <span style="color: red;" id="search-error" hidden>Enter Somenting to search</span>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
                     <!-- <li class="nav-item mx-5">
                       <a class="nav-link" href="/v1/users/shop?page=Men" style="font-family: 'Times New Roman', Times, serif;" >Men</a>
                     </li>

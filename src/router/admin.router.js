@@ -34,9 +34,10 @@ adminRouter.route('/')
         const orderCount = await getOrderCount()
         const productTotalCount = await productCount()
         const monthlyData = await getMonthlyDataForAdmin().catch(err => err)
-
-        totalamount = currencyFormatter.format(totalamount.totalRevenue)
-
+        
+        if(totalamount) totalamount = currencyFormatter.format(totalamount.totalRevenue)
+        else totalamount = 0
+        
         return res.render('admin/admin-dashboard', {
             layout: 'admin/admin-layout',
             adminTrue: req.admin,

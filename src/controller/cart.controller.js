@@ -24,7 +24,8 @@ module.exports = {
                     wishlistCount: user.wishlistC,
                     dataPresent: dataPresent,
                     grandTotal: data.grandTotal,
-                    products: data.product
+                    products: data.product,
+                    keyWord: false
                 })
             })
             .catch(err => console.log(err))

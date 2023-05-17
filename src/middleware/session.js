@@ -20,14 +20,13 @@ module.exports = {
         return res.redirect('/v1/users')
     },
 
-    productUserCheck: async (req, res, next) => {
+    userCheck: async (req, res, next) => {
         const token = req.cookies.token
         if (token) {
             data = await verifyToken(token)
             req.user = data
         } else req.user = {
             loggedIn: false
-
         }
         next()
     },

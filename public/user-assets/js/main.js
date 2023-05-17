@@ -1243,3 +1243,38 @@ async function categoryFilter(e, category, categoryType) {
             swal(err.data)
         })
 }
+
+// wallet
+
+$('#user-wallet').on('click',async(event)=>{
+    event.preventDefault()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    await commonAjax('/v1/users/wallet','GET',headers)
+            .then(res=>{
+                $('#walletBalance').val(res.data.balance)
+                $('#walletModal').modal('show')
+            })
+            .catch(err=>{
+                swal(err.data)
+            })
+})
+
+// product search
+
+$('#search-bar').on('keydown',async(event)=>{
+    $('#search-error').attr('hidden', true)
+    const code = event.which || event.keyCode || event.charCode;
+
+    if(code === 13){
+        event.preventDefault()
+        const val = $('#search-bar').val().trim()
+        if(val.length != 0){
+            $('#search-form').submit()
+        }else{
+            $('#search-error').attr('hidden', false)
+        }
+
+    }
+})
