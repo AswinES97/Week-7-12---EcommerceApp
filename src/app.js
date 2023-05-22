@@ -15,6 +15,7 @@ const api = require('./router/api')
 const { userNotLoggedIn } = require('./middleware/session')
 const { getAllProducts, productCount } = require('./models/products.model')
 const cookieParser = require('cookie-parser')
+const { getAllActiveBanner } = require('./models/banner.model')
 const app = express()
 
 
@@ -52,16 +53,22 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "..", "public")))
 
 
-app.get('/', userNotLoggedIn,async (req, res) => {
+app.get('/', userNotLoggedIn, async (req, res) => {
+    let hasBanner = true
     const pCount = await productCount()
-    const count = Math.ceil(productCount/10)
+    const banner = await getAllActiveBanner()
+    const count = Math.ceil(productCount / 10)
+    if(banner.length === 0) hasBanner = false
+    
     await getAllProducts()
         .then(response => {
             return res.render('homepage', {
                 userStatus: req.session.user,
                 product: response,
                 productCount: pCount,
-                count: count
+                count: count,
+                hasBanner: hasBanner,
+                banner: banner
             })
         })
         .catch(err => res.render('homepage', { userStatus: req.session.user }))

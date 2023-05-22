@@ -40,7 +40,7 @@
                         <div class="text">
                             <h6 class="mb-1">Customer</h6>
                             <p class="mb-1">
-                                <%=userDetails.fname%> <br> <p><%=userDetails.email%></p><br> +91<%=userDetails.phn_no%>
+                                <%=userDetails.fname%> <br><p><%=userDetails.email%></p><p>+91<%=userDetails.phn_no%></p>
                             </p>
                             <!-- <a href="#">View profile</a> -->
                         </div>
@@ -54,9 +54,10 @@
                         <div class="text">
                             <h6 class="mb-1">Order info</h6>
                             <p class="mb-1">
+                                Order Status :<%=order.orderStatus%></br>
                                 Pay method: <%=order.paymentMethod%> <br>
-                                Status: <%=order.payment_status%> <br>
-                                <%if(order.paymentResult){%>
+                                Payment Status: <%=order.payment_status%> <br>
+                                <%if(order.paymentResult){%> 
                                 Payment-ID: <%=order.paymentResult.id%>
                                 <%}%>
                             </p>

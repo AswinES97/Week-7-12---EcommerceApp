@@ -1,0 +1,126 @@
+<!-- modal -->
+<div class="modal fade " data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="couponModalLabel" aria-hidden="true" id="couponModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Coupon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="col-md-11 mx-2">
+                <form action="#">
+                    <div class="mb-4">
+                        <label for="discount" class="form-label">Discount</label>
+                        <input type="number"  class="form-control" name="discount" id="discount">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" name="description" id="description">
+                    </div>
+                    <div class="mb-4">
+                        <label for="minPurchase" class="form-label">Minimum Purchase</label>
+                        <input type="number" class="form-control" name="minPurchase" id="minPurchase">
+                    </div>
+                    <div class="mb-4">
+                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control" name="expiryDate" id="expiryDate">
+                    </div>
+                    <div class="mb-4">
+                        <label for="active" class="form-label">Active</label>
+                        <select name="active" class="form-select" id="active">
+                            <option value="true" selected>Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary" onclick="createCoupon(event)" id="coupon-submit">Create Coupon</button>
+                        <span hidden id="submitError">Not Submitted!</span>
+                    </div>
+                </form>
+            </div> 
+          </div>
+    </div>
+      </div>
+</div>
+
+<div class="screen-overlay"></div>
+<main class="main-wrap">
+    <header class="main-header navbar">
+        <div class="col-search">
+        </div>
+        <div class="col-nav">        
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-icon darkmode" href="#">
+                        <i class="material-icons md-nights_stay"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    
+    <section class="content-main" >
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Coupons </h2>
+                <p>Add or delete Coupons</p>
+            </div>
+            <div class="col-lg-4 col-md-6 me-auto ms-4">
+                <input type="text" placeholder="Search coupon code..."  id="search" class="form-control">
+                <span id="search-err" style="color: red;" hidden>Invalid</span>
+            </div>
+            <div>
+               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#couponModal">Add Coupon</button>
+            </div>
+        </div>
+        <div >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Coupon code</th>
+                                        <th>Discount</th>
+                                        <th>Description</th>
+                                        <th>Expiry</th>
+                                        <th>Active</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <%if(hasCoupons){%>
+                                <tbody id="coupon-table">
+                                    <%allCoupons.forEach(ele=>{%>
+                                    <tr>
+                                        <td><b><%=ele.code%></b></td>
+                                        <td><b><%=ele.discount%>%</b></td>
+                                        <td><%=ele.description%></td>
+                                        <td><%=formatDate(new Date(ele.expirationDate), 'MMMM do, yyy')%></td>
+                                        <td><%=ele.isActive%></td>
+                                        <td class="text-end">
+                                            <%if(ele.isActive){%>
+                                            <a href="#" onclick="editCoupon(event,'<%=ele.code%>','deactivate')"><button class="btn" style="background-color: rgb(94, 66, 85);color: white;">Deactivate</button></a>
+                                            <%}else{%>
+                                            <a href="#" onclick="editCoupon(event,'<%=ele.code%>')"><button class="btn" style="background-color: rgb(94, 66, 85);color: white;">Activate</button></a>
+                                            <%}%> 
+                                            <a href="#" onclick="editCoupon(event,'<%=ele.code%>','delete')"><button class="btn" style="background-color: rgba(199, 1, 1, 0.884);color: white;">Delete</button></a>
+                                        </td>
+                                    </tr>           
+                                    <%})%>                     
+                                </tbody>
+                                <%}%>
+                            </table>
+                        </div>
+                    </div>
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div>
+        
+    </section> <!-- content-main end// -->
+  
+</main>

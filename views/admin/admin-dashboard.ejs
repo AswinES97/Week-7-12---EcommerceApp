@@ -1,5 +1,8 @@
-  <!-- Report modal -->
-  <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.6/xlsx.full.min.js"></script>
+
+<!-- Report modal -->
+<!-- <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -31,8 +34,8 @@
         </div>
       </div>
     </div>
-  </div>
-  
+  </div> -->
+
 <div class="screen-overlay"></div>
 
 <main class="main-wrap">
@@ -58,13 +61,13 @@
                 <h2 class="content-title card-title">Dashboard </h2>
                 <p>Whole data about your business here</p>
             </div>
-            <div>
+            <!-- <div>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reportModal"><i
                         class="text-muted material-icons md-post_add"></i>Create report</button>
-            </div>
+            </div> -->
         </div>
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="card card-body mb-4">
                     <article class="icontext">
                         <span class="icon icon-sm rounded-circle bg-primary-light"><i
@@ -79,7 +82,7 @@
                     </article>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="card card-body mb-4">
                     <article class="icontext">
                         <span class="icon icon-sm rounded-circle bg-success-light"><i
@@ -92,7 +95,7 @@
                     </article>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="card card-body mb-4">
                     <article class="icontext">
                         <span class="icon icon-sm rounded-circle bg-warning-light"><i
@@ -106,8 +109,8 @@
                     </article>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <!-- <div class="card card-body mb-4">
+            <!-- <div class="col-lg-3">
+                <div class="card card-body mb-4">
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
                             <div class="text">
@@ -117,14 +120,14 @@
                                 </span>
                             </div>
                         </article>
-                    </div> -->
-            </div>
+                    </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-xl-8 col-lg-12">
                 <div class="card mb-4">
                     <article class="card-body">
-                        <h5 class="card-title">Sale statistics</h5>
+                        <h5 class="card-title">Order statistics</h5>
                         <div id="chartdiv"></div>
                     </article>
                 </div>
@@ -164,240 +167,335 @@
                     </div> -->
             </div>
         </div>
-        <!-- <div class="card mb-4">
-                <header class="card-header">
-                    <h4 class="card-title">Latest orders</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option selected>All Categories</option>
-                                    <option>Women's Clothing</option>
-                                    <option>Men's Clothing</option>
-                                    <option>Cellphones</option>
-                                    <option>Computer & Office</option>
-                                    <option>Consumer Electronics</option>
-                                    <option>Jewelry & Accessories</option>
-                                    <option>Home & Garden</option>
-                                    <option>Luggage & Bags</option>
-                                    <option>Shoes</option>
-                                    <option>Mother & Kids</option>
-                                </select>
-                            </div>
+        <!-- daily -->
+        <div>
+            <div class="card mb-4" >
+                <div id="sales-report-daily">
+                    <header class="card-header">
+                        <h4 class="card-title">Daily Sales</h4>
+                        <div class="row align-items-center">
+                            <!-- <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <div class="custom_select">
+                                        <select class="form-select select-nice">
+                                            <option selected>All Categories</option>
+                                            <option>Women's Clothing</option>
+                                            <option>Men's Clothing</option>
+                                            <option>Cellphones</option>
+                                            <option>Computer & Office</option>
+                                            <option>Consumer Electronics</option>
+                                            <option>Jewelry & Accessories</option>
+                                            <option>Home & Garden</option>
+                                            <option>Luggage & Bags</option>
+                                            <option>Shoes</option>
+                                            <option>Mother & Kids</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                            <!-- <div class="col-md-2 col-6">
+                                    <input type="date" value="02.05.2021" class="form-control">
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="custom_select">
+                                        <select class="form-select select-nice">
+                                            <option selected>Status</option>
+                                            <option>All</option>
+                                            <option>Paid</option>
+                                            <option>Chargeback</option>
+                                            <option>Refund</option>
+                                        </select>
+                                    </div>
+                                </div> -->
                         </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option selected>Status</option>
-                                    <option>All</option>
-                                    <option>Paid</option>
-                                    <option>Chargeback</option>
-                                    <option>Refund</option>
-                                </select>
+                    </header>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <!-- <th scope="col" class="text-center">
+                                                    <div class="form-check align-middle">
+                                                        <input class="form-check-input" type="checkbox" id="transactionCheck01">
+                                                        <label class="form-check-label" for="transactionCheck01"></label>
+                                                    </div>
+                                                </th> -->
+                                            <th class="align-middle" scope="col">Date</th>
+                                            <th class="align-middle" scope="col">Total order</th>
+                                            <th class="align-middle" scope="col">Daily Total Sale</th>
+                                            <!-- <th class="align-middle" scope="col"></th> -->
+                                            <!-- <th class="align-middle" scope="col">Payment Status</th>
+                                                <th class="align-middle" scope="col">Payment Method</th>
+                                                <th class="align-middle" scope="col">View Details</th> -->
+                                        </tr>
+                                    </thead>
+                                    <%if(dailyData){%>
+                                        <%dailyData.forEach(ele=>{%>
+                                            <tbody>
+                                                <tr>
+                                                    <!-- <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="transactionCheck02">
+                                                        <label class="form-check-label" for="transactionCheck02"></label>
+                                                    </div>
+                                                </td> -->
+                                                    <td><a href="#" class="fw-bold">
+                                                            <%=formatDate(new Date(ele.date),'MMMM do, yyyy')%>
+                                                        </a> </td>
+                                                    <td>
+                                                        <%=ele.totalOrders%>
+                                                    </td>
+                                                    <td>
+                                                        <%=currencyFormatter.format(ele.dailyTotalSales)%>
+                                                    </td>
+                                                    <!-- <td>
+                                                    $400
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-pill badge-soft-success">Paid</span>
+                                                </td>
+                                                <td>
+                                                    <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
+                                                </td>
+                                                <td>
+                                                    <a href="#" class="btn btn-xs"> View details</a>
+                                                </td> -->
+                                                </tr>
+                                            </tbody>
+                                            <%})%>
+                                                <%}%>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </header>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col" class="text-center">
-                                            <div class="form-check align-middle">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                                <label class="form-check-label" for="transactionCheck01"></label>
-                                            </div>
-                                        </th>
-                                        <th class="align-middle" scope="col">Order ID</th>
-                                        <th class="align-middle" scope="col">Billing Name</th>
-                                        <th class="align-middle" scope="col">Date</th>
-                                        <th class="align-middle" scope="col">Total</th>
-                                        <th class="align-middle" scope="col">Payment Status</th>
-                                        <th class="align-middle" scope="col">Payment Method</th>
-                                        <th class="align-middle" scope="col">View Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                                <label class="form-check-label" for="transactionCheck02"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2540</a> </td>
-                                        <td>Neal Matthews</td>
-                                        <td>
-                                            07 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $400
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck03">
-                                                <label class="form-check-label" for="transactionCheck03"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2541</a> </td>
-                                        <td>Jamal Burnett</td>
-                                        <td>
-                                            07 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $380
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-danger">Chargeback</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck04">
-                                                <label class="form-check-label" for="transactionCheck04"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2542</a> </td>
-                                        <td>Juan Mitchell</td>
-                                        <td>
-                                            06 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $384
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck05">
-                                                <label class="form-check-label" for="transactionCheck05"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2543</a> </td>
-                                        <td>Barry Dick</td>
-                                        <td>
-                                            05 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $412
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck06">
-                                                <label class="form-check-label" for="transactionCheck06"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2544</a> </td>
-                                        <td>Ronald Taylor</td>
-                                        <td>
-                                            04 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $404
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-warning">Refund</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck07">
-                                                <label class="form-check-label" for="transactionCheck07"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2545</a> </td>
-                                        <td>Jacob Hunter</td>
-                                        <td>
-                                            04 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $392
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> <!-- table-responsive end// -->
+                </div>
+                <div class="mt-5 ms-2 mb-2">
+                    <button class="btn btn-primary" id="pdf1">Download Daily data</button>
+                </div>
+            </div>
         </div>
-        </div> -->
-        <!-- <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
-            </div> -->
+
+        <!-- weekly -->
+        <div>
+            <div class="card mb-4" >
+                <div id="sales-report-weekly">
+                    <header class="card-header">
+                        <h4 class="card-title">Weekly Sales</h4>
+                        <div class="row align-items-center">
+                            <!-- <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                    <div class="custom_select">
+                                        <select class="form-select select-nice">
+                                            <option selected>All Categories</option>
+                                            <option>Women's Clothing</option>
+                                            <option>Men's Clothing</option>
+                                            <option>Cellphones</option>
+                                            <option>Computer & Office</option>
+                                            <option>Consumer Electronics</option>
+                                            <option>Jewelry & Accessories</option>
+                                            <option>Home & Garden</option>
+                                            <option>Luggage & Bags</option>
+                                            <option>Shoes</option>
+                                            <option>Mother & Kids</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                            <!-- <div class="col-md-2 col-6">
+                                    <input type="date" value="02.05.2021" class="form-control">
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="custom_select">
+                                        <select class="form-select select-nice">
+                                            <option selected>Status</option>
+                                            <option>All</option>
+                                            <option>Paid</option>
+                                            <option>Chargeback</option>
+                                            <option>Refund</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                        </div>
+                    </header>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <!-- <th scope="col" class="text-center">
+                                                    <div class="form-check align-middle">
+                                                        <input class="form-check-input" type="checkbox" id="transactionCheck01">
+                                                        <label class="form-check-label" for="transactionCheck01"></label>
+                                                    </div>
+                                                </th> -->
+                                            <th class="align-middle" scope="col">Date</th>
+                                            <th class="align-middle" scope="col">Total order</th>
+                                            <th class="align-middle" scope="col">Weekly Total Sale</th>
+                                            <!-- <th class="align-middle" scope="col"></th> -->
+                                            <!-- <th class="align-middle" scope="col">Payment Status</th>
+                                                <th class="align-middle" scope="col">Payment Method</th>
+                                                <th class="align-middle" scope="col">View Details</th> -->
+                                        </tr>
+                                    </thead>
+                                    <%if(weeklyData){%>
+                                        <%weeklyData.forEach(ele=>{%>
+                                            <tbody>
+                                                <tr>
+                                                    <!-- <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="transactionCheck02">
+                                                        <label class="form-check-label" for="transactionCheck02"></label>
+                                                    </div>
+                                                </td> -->
+                                                    <td><a href="#" class="fw-bold">
+                                                            <%=formatDate(new Date(ele.weekStartDate),'MMMM do')%> -
+                                                                <%=formatDate(new Date(ele.weekEndDate),'MMMM do')%>
+                                                        </a> </td>
+                                                    <td>
+                                                        <%=ele.totalOrders%>
+                                                    </td>
+                                                    <td>
+                                                        <%=currencyFormatter.format(ele.weeklyTotalSales)%>
+                                                    </td>
+                                                    <!-- <td>
+                                                    $400
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-pill badge-soft-success">Paid</span>
+                                                </td>
+                                                <td>
+                                                    <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
+                                                </td>
+                                                <td>
+                                                    <a href="#" class="btn btn-xs"> View details</a>
+                                                </td> -->
+                                                </tr>
+                                            </tbody>
+                                            <%})%>
+                                                <%}%>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 ms-2 mb-2">
+                    <button class="btn btn-primary" id="pdf2">Download Weekly data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- yearly -->
+        <div>
+            <div class="card mb-4">
+                <div id="sales-report-yearly">
+                    <header class="card-header">
+                        <h4 class="card-title">Yearly Sales</h4>
+                        <div class="row align-items-center">
+                            <!-- <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                <div class="custom_select">
+                                    <select class="form-select select-nice">
+                                        <option selected>All Categories</option>
+                                        <option>Women's Clothing</option>
+                                        <option>Men's Clothing</option>
+                                        <option>Cellphones</option>
+                                        <option>Computer & Office</option>
+                                        <option>Consumer Electronics</option>
+                                        <option>Jewelry & Accessories</option>
+                                        <option>Home & Garden</option>
+                                        <option>Luggage & Bags</option>
+                                        <option>Shoes</option>
+                                        <option>Mother & Kids</option>
+                                    </select>
+                                </div>
+                            </div> -->
+                            <!-- <div class="col-md-2 col-6">
+                                <input type="date" value="02.05.2021" class="form-control">
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <div class="custom_select">
+                                    <select class="form-select select-nice">
+                                        <option selected>Status</option>
+                                        <option>All</option>
+                                        <option>Paid</option>
+                                        <option>Chargeback</option>
+                                        <option>Refund</option>
+                                    </select>
+                                </div>
+                            </div> -->
+                        </div>
+                    </header>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-nowrap mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <!-- <th scope="col" class="text-center">
+                                                <div class="form-check align-middle">
+                                                    <input class="form-check-input" type="checkbox" id="transactionCheck01">
+                                                    <label class="form-check-label" for="transactionCheck01"></label>
+                                                </div>
+                                            </th> -->
+                                            <th class="align-middle" scope="col">Date</th>
+                                            <!-- <th class="align-middle" scope="col">Total order</th> -->
+                                            <th class="align-middle" scope="col">Yearly Total Sale</th>
+                                            <!-- <th class="align-middle" scope="col"></th> -->
+                                            <!-- <th class="align-middle" scope="col">Payment Status</th>
+                                            <th class="align-middle" scope="col">Payment Method</th>
+                                            <th class="align-middle" scope="col">View Details</th> -->
+                                        </tr>
+                                    </thead>
+                                    <%if(yearlyData){%>
+                                        <%yearlyData.forEach(ele=>{%>
+                                            <tbody>
+                                                <tr>
+                                                    <!-- <td class="text-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="transactionCheck02">
+                                                    <label class="form-check-label" for="transactionCheck02"></label>
+                                                </div>
+                                            </td> -->
+                                                    <td><a href="#" class="fw-bold">
+                                                            <%=ele.year%>
+                                                        </a> </td>
+                                                    <!-- <td>
+                                                    <%=ele.totalOrders%>
+                                                </td> -->
+                                                    <td>
+                                                        <%=currencyFormatter.format(ele.yearlyTotalSales)%>
+                                                    </td>
+                                                    <!-- <td>
+                                                $400
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-pill badge-soft-success">Paid</span>
+                                            </td>
+                                            <td>
+                                                <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-xs"> View details</a>
+                                            </td> -->
+                                                </tr>
+                                            </tbody>
+                                            <%})%>
+                                                <%}%>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 ms-2 mb-2">
+                    <button class="btn btn-primary" id="pdf3">Download Yearly data</button>
+                </div>
+            </div>
+        </div>
+
     </section> <!-- content-main end// -->
     <footer class="main-footer font-xs">
         <div class="row pb-30 pt-15">
             <div class="col-sm-6">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> ©, Evara - HTML Ecommerce Template .
+                </script> ©, Punch
             </div>
             <div class="col-sm-6">
                 <div class="text-sm-end">
@@ -520,6 +618,116 @@
         chart.appear(1000, 100);
 
     }); // end am5.ready()
+</script>
+<script>
+
+
+    // {{!-- PDF & Excel Sales Report download --}}
+
+    $(document).ready(function () {
+
+        $('#pdf1').click(function (e) {
+
+            swal("Are you sure want to download this ?", {
+                buttons: ["No", "Yes"],
+            }).then((res) => {
+                if (res) {
+                    event.preventDefault();
+                    var element = document.getElementById('sales-report-daily');
+                    let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+                    var opt = {
+                        margin: 0,
+                        filename: 'SalesReport' + randomNumber + '.pdf',
+                        html2canvas: { scale: 10 },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+
+                    html2pdf().set(opt).from(element).save();
+                }
+            })
+
+        })
+        $('#pdf2').click(function (e) {
+
+            swal("Are you sure want to download this ?", {
+                buttons: ["No", "Yes"],
+            }).then((res) => {
+                if (res) {
+                    event.preventDefault();
+                    var element = document.getElementById('sales-report-weekly');
+                    let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+                    var opt = {
+                        margin: 0,
+                        filename: 'SalesReport' + randomNumber + '.pdf',
+                        html2canvas: { scale: 10 },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+
+                    html2pdf().set(opt).from(element).save();
+                }
+            })
+
+        })
+
+        $('#pdf3').click(function (e) {
+
+            swal("Are you sure want to download this ?", {
+                buttons: ["No", "Yes"],
+            }).then((res) => {
+                if (res) {
+                    event.preventDefault();
+                    var element = document.getElementById('sales-report-yearly');
+                    let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+                    var opt = {
+                        margin: 0,
+                        filename: 'SalesReport' + randomNumber + '.pdf',
+                        html2canvas: { scale: 10 },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+
+                    html2pdf().set(opt).from(element).save();
+                }
+            })
+
+        })
+
+    })
+
+
+
+
+    $(document).ready(function () {
+        $('#xlsheet').on('click', function () {
+            swal("Are you sure want to download this ?", {
+                buttons: ["No", "Yes"],
+            }).then((res) => {
+                if (res) {
+                    const rows = $('#sales-table tr');
+                    const data = [];
+
+
+                    // Loop through rows and cells to build the data array
+                    rows.each(function (index, row) {
+                        const rowData = [];
+                        $(row).find('th, td').each(function (index, cell) {
+                            rowData.push($(cell).text());
+                        });
+                        data.push(rowData);
+                    });
+
+                    // Convert the data array to a SheetJS workbook and sheet
+                    const ws = XLSX.utils.aoa_to_sheet(data);
+                    const wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+                    // Save the workbook as an Excel file
+                    XLSX.writeFile(wb, 'sales-table.xlsx');
+                }
+            })
+
+        });
+    });
+
 </script>
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:57 GMT -->

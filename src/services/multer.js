@@ -15,7 +15,20 @@ const storage = new CloudinaryStorage({
     }
 });
 
+const bannerStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params:{
+        folder: 'banner',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'svg', 'webp', 'gif', 'jfif', 'webp'],
+        public_id: (req, file)=>{
+            const originalname = file.originalname.split('.')
+            return `banner-${Date.now()}-${originalname[0]}`
+        }
+    }
+})
+
 
 module.exports = {
-    uploadImageMulti: multer({ storage: storage }).array('image', 5)
+    uploadImageMulti: multer({ storage: storage }).array('image', 5),
+    bannerImageUpload: multer({ storage: bannerStorage}).single('image1')
 }

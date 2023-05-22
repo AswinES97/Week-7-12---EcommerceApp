@@ -12,13 +12,16 @@ const adminProductsRouter = require('./admin.products.router')
 const adminOrdersRouter = require('./adminOrder.router')
 const { deleteToken } = require('../services/redis')
 const adminOfferRouter = require('./admin.offer.router')
-const { totalRevenue, getMonthlyDataForAdmin } = require('../models/order.model')
+const { totalRevenue, getMonthlyDataForAdmin, dailyDataForAdminTable, weeklyDataForAdminTable, yearlyDataForAdminTable } = require('../models/order.model')
 const { getOrderCount } = require('../models/order.model')
 const { productCount } = require('../models/products.model')
 const adminSearchRouter = require('./admin.search.router')
 const { httpPagination } = require('../models/admin.model')
 const adminPagination = require('./admin.pagination.router')
 const adminReportController = require('../controller/admin.report.controller')
+const adminCouponRouter = require('./admin.coupon.router')
+const adminBannerRouter = require('./admin.banner.router')
+const { formatDate } = require('../controller/order.controller')
 
 const currencyFormatter = new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -34,10 +37,14 @@ adminRouter.route('/')
         const orderCount = await getOrderCount()
         const productTotalCount = await productCount()
         const monthlyData = await getMonthlyDataForAdmin().catch(err => err)
-        
-        if(totalamount) totalamount = currencyFormatter.format(totalamount.totalRevenue)
+        const dailyData = await dailyDataForAdminTable()
+        const weeklyData = await weeklyDataForAdminTable()
+        const yearlyData = await yearlyDataForAdminTable()
+       
+
+        if (totalamount) totalamount = currencyFormatter.format(totalamount.totalRevenue)
         else totalamount = 0
-        
+
         return res.render('admin/admin-dashboard', {
             layout: 'admin/admin-layout',
             adminTrue: req.admin,
@@ -45,7 +52,13 @@ adminRouter.route('/')
             orderCount: orderCount,
             productTotalCount: productTotalCount,
             monthlyData: monthlyData,
-            active: "dashboard"
+            active: "dashboard",
+            dailyData: dailyData,
+            weeklyData: weeklyData,
+            yearlyData: yearlyData,
+            formatDate: formatDate,
+            currencyFormatter:currencyFormatter
+
         })
     })
 
@@ -75,7 +88,8 @@ adminRouter.use('/orders', adminNotLoggedIn, adminOrdersRouter)
 adminRouter.use('/offer', adminNotLoggedIn, adminOfferRouter)
 adminRouter.use('/search', adminNotLoggedIn, adminSearchRouter)
 adminRouter.use('/pagination', adminNotLoggedIn, adminPagination)
-
+adminRouter.use('/coupon', adminNotLoggedIn, adminCouponRouter)
+adminRouter.use('/banner', adminNotLoggedIn, adminBannerRouter)
 adminRouter.get('/report', adminNotLoggedIn, adminReportController)
 
 

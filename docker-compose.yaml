@@ -7,9 +7,9 @@ services:
     container_name: redis
     
   web-app:
-    image: aswin/webapp
+    image: aswines/ecommerc
     ports:
-      - 3000:3000
+      - 80:3000
     volumes:
       - ./:/app  
     container_name: web-app

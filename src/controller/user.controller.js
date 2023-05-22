@@ -24,6 +24,7 @@ const {
 } = require('../services/responses')
 const { wishlistCount } = require("../models/wishlist.model")
 const { hashPassword } = require("../services/bcrypt")
+const { getAllActiveBanner } = require("../models/banner.model")
 
 function resetPasswordModalBody(phn_no) {
     return `<form class="p-5" action="#" method="post">
@@ -219,10 +220,14 @@ module.exports = {
     },
 
     httpUserHomepage: async (req, res) => {
+        let hasBanner = true
+        const banner = await getAllActiveBanner()
         const user = req.user
         const pCount = await productCount()
         const count = Math.ceil(pCount / 10)
         let product = await getAllProducts()
+        if (banner.length === 0) hasBanner = false
+
         return await getUser(null, user.userId)
             .then((data) => {
                 return res.render('homepage', {
@@ -234,7 +239,9 @@ module.exports = {
                     count: count,
                     cartCount: user.cartC,
                     wishlistCount: user.wishlistC,
-                    keyWord: false
+                    keyWord: false,
+                    hasBanner: hasBanner,
+                    banner: banner
                 })
 
             })

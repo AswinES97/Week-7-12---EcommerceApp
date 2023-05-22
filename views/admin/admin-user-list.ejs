@@ -19,21 +19,11 @@
             </div>
         </header>
         <section class="content-main">
-            <!-- <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Products List</h2>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a>
-                    <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
-                </div>
-            </div> -->
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row align-items-center">
                             <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search User Id..."  id="search" class="form-control">
+                                <input type="text" placeholder="Search User mail..."  id="search" class="form-control">
                                 <span id="search-err" style="color: red;" hidden>Invalid</span>
                             </div>
                        
@@ -58,9 +48,7 @@
                             <div class="col-md-3 col-3 me-auto mb-md-0 mb-3">
                                 <span>Name</span>
                             </div>
-                            <div class="col-md-3 col-3 me-auto mb-md-0 mb-3">
-                                <span>User Id</span>
-                            </div>
+                           
                         </div>
                     </header>
                     <% for(i=0;i<data.length;i++){%>

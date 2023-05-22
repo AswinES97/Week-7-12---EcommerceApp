@@ -143,6 +143,9 @@ const getMonthlyDataForAdmin = async () => {
     try {
         return await OrdersSchema.aggregate([
             {
+                $match: { orderStatus: "Delivered" }
+            },
+            {
                 $group: {
                     _id: {
                         year: { $year: '$createdAt' },
@@ -271,10 +274,199 @@ const getOrderDetailsForReport = async (startDate, endDate) => {
                 $lte: endDate
             }
         })
-        .then(res=>JSON.parse(JSON.stringify(res)))
-        
+            .then(res => JSON.parse(JSON.stringify(res)))
+
     } catch (err) {
         console.log(err)
+        return Promise.reject(false)
+    }
+
+}
+
+const dailyDataForAdminTable = async () => {
+    try {
+        return await OrdersSchema.aggregate([
+            {
+                $match: { orderStatus: "Delivered" }
+            },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: "$createdAt" },
+                        month: { $month: "$createdAt" },
+                        day: { $dayOfMonth: "$createdAt" },
+                        product: "$products"
+                    },
+                    totalSales: { $sum: "$totalPrice" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $group:
+                {
+                    _id: {
+                        year: "$_id.year",
+                        month: "$_id.month",
+                        day: "$_id.day"
+                    },
+                    sales: {
+                        $push: {
+                            product: "$_id.product",
+                            totalSales: "$totalSales",
+                            count: "$count"
+                        }
+                    },
+                    dailyTotalSales: { $sum: "$totalSales" },
+                    totalOrders: { $sum: "$count" }
+                }
+            },
+            {
+                $project:
+                {
+                    _id: 0,
+                    date: {
+                        $dateFromParts: {
+                            year: "$_id.year",
+                            month: "$_id.month",
+                            day: "$_id.day"
+                        }
+                    },
+                    sales: 1,
+                    dailyTotalSales: 1,
+                    totalOrders: 1
+                }
+            }
+        ])
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+}
+const weeklyDataForAdminTable = async () => {
+    try {
+        return await OrdersSchema.aggregate([
+            {
+                $match: { orderStatus: "Delivered" }
+            },
+            {
+                $group: {
+                    _id: {
+                        year: { $isoWeekYear: "$createdAt" },
+                        week: { $isoWeek: "$createdAt" },
+                        product: "$products"
+                    },
+                    totalSales: { $sum: "$totalPrice" },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $group:
+                {
+                    _id: {
+                        year: "$_id.year",
+                        week: "$_id.week"
+                    },
+                    sales: {
+                        $push: {
+                            product: "$_id.product",
+                            totalSales: "$totalSales",
+                            count: "$count"
+                        }
+                    },
+                    weeklyTotalSales: { $sum: "$totalSales" },
+                    totalOrders: { $sum: "$count" }
+                }
+            },
+            {
+                $project:
+                {
+                    _id: 0,
+                    weekStartDate: {
+                        $dateFromParts: {
+                            isoWeekYear: "$_id.year",
+                            isoWeek: "$_id.week"
+                        }
+                    },
+                    weekEndDate: {
+                        $dateAdd: {
+                            startDate: {
+                                $dateFromParts: {
+                                    isoWeekYear: "$_id.year",
+                                    isoWeek: "$_id.week",
+                                    isoDayOfWeek: 7
+                                }
+                            },
+                            unit: "day",
+                            amount: 1
+                        }
+                    },
+                    sales: 1,
+                    weeklyTotalSales: 1,
+                    totalOrders: 1
+                }
+            }
+        ])
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+
+    } catch (err) {
+        console.log(err);
+        return Promise.reject(false)
+    }
+
+}
+
+const yearlyDataForAdminTable = async () => {
+    try {
+        return await OrdersSchema.aggregate([
+            {
+                $match: { orderStatus: "Delivered" }
+            },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: "$createdAt" },
+                        product: "$products"
+                    },
+                    totalSales: { $sum: "$totalPrice" },
+                    count: { $sum: 1 }
+
+                }
+            },
+            {
+                $group:
+                {
+                    _id: "$_id.year",
+                    sales: {
+                        $push: {
+                            product: "$_id.product",
+                            totalSales: "$totalSales",
+                            count: "$count"
+                        },
+
+                    },
+                    yearlyTotalSales: { $sum: "$totalSales" },
+                    totalOrders: { $sum: "$count" }
+                }
+            },
+            {
+                $project:
+                {
+                    _id: 0,
+                    year: "$_id",
+                    sales: 1,
+                    yearlyTotalSales: 1
+                }
+            }
+        ])
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .then(res => Promise.resolve(res))
+
+    } catch (err) {
+        console.log(err);
         return Promise.reject(false)
     }
 
@@ -293,6 +485,9 @@ module.exports = {
     orderReturn: orderReturn,
     getMonthlyDataForAdmin: getMonthlyDataForAdmin,
     orderSearch: orderSearch,
-    getOrderDetailsForReport: getOrderDetailsForReport
+    getOrderDetailsForReport: getOrderDetailsForReport,
+    dailyDataForAdminTable: dailyDataForAdminTable,
+    weeklyDataForAdminTable: weeklyDataForAdminTable,
+    yearlyDataForAdminTable: yearlyDataForAdminTable
 }
 

@@ -510,10 +510,10 @@ async function pagination(event, skip) {
 
     skip = Number(skip)
     data = await fetch(`/v1/admin/pagination?skip=${skip}&type=${paginationApiEnd}`).then(res => res.json())
-    if(!data.ok) swal(data.data)
+    if (!data.ok) swal(data.data)
 
-    if(paginationApiEnd === 'orders') $('#order-table').html(data.data)
-    if(paginationApiEnd === 'products') $('#product-card-admin').html(data.data)
+    if (paginationApiEnd === 'orders') $('#order-table').html(data.data)
+    if (paginationApiEnd === 'products') $('#product-card-admin').html(data.data)
 }
 
 // order-status submit change/update
@@ -638,13 +638,16 @@ $('#search').on("keydown", async (event) => {
             }
             await commonAjax(`/v1/admin/search?type=${searchApiEnd}&value=${val}`, 'GET', headers)
                 .then(res => {
-                    if(searchApiEnd === 'orders'){
+                    if (searchApiEnd === 'orders') {
                         $('#pagination').attr('hidden', true)
                         $('#order-table').html(res.data)
                     }
-                    if(searchApiEnd === 'products'){
+                    if (searchApiEnd === 'products') {
                         $('#pagination').attr('hidden', true)
                         $('#product-card-admin').html(res.data)
+                    }
+                    if(searchApiEnd === 'coupon'){
+                        $('#coupon-table').html(res.data)
                     }
                 })
                 .catch(err => {
@@ -656,3 +659,147 @@ $('#search').on("keydown", async (event) => {
         }
     }
 })
+
+// coupon
+
+async function createCoupon(e) {
+    e.preventDefault()
+    $('#coupon-submit').attr('disabled', '')
+    const discount = $('#discount').val()
+    const description = $('#description').val()
+    const minPurchase = $('#minPurchase').val()
+    const expiryDate = $('#expiryDate').val()
+    const active = $('#active').val()
+    const body = {
+        discount,
+        description,
+        minPurchase,
+        expiryDate,
+        active
+    }
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+
+    await commonAjax('/v1/admin/coupon', "POST", headers, body)
+        .then(res => {
+            swal(res.data)
+            setTimeout(() => {
+                location.reload()
+            }, 500);
+        })
+        .catch(err => {
+            $('#coupon-submit').removeAttr('disabled')
+            swal(err.data)
+        })
+}
+
+async function editCoupon(e, code, type = null) {
+    e.preventDefault()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    if (!type) {
+        await commonAjax('/v1/admin/coupon/edit', 'PUT', headers, { code, toggle: null })
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+            })
+    } else if (type === 'deactivate') {
+        await commonAjax('/v1/admin/coupon/edit', 'PUT', headers, { code, toggle: type })
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+            })
+    } else if (type === 'delete') {
+        
+        swal('Delete', 'Delete this Coupon?', 'warning', {
+            buttons: {
+                cancel: "Cancel",
+                catch: {
+                    text: "Remove",
+                    value: true,
+                }
+            }
+        }).then(async(result) => {
+            if (result) {
+                await commonAjax('/v1/admin/coupon/edit', 'DELETE', headers, { code })
+                    .then(res => {
+                        swal(res.data)
+                        setTimeout(() => {
+                            location.reload()
+                        }, 500);
+                    })
+                    .catch(err => {
+                        swal(err.data)
+                    })
+            }})
+    }
+
+}
+
+// banner
+
+async function editBanner(e, text1, type = null) {
+    e.preventDefault()
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    if (!type) {
+        await commonAjax('/v1/admin/banner', 'PUT', headers, { text1, toggle: null })
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+            })
+    } else if (type === 'deactivate') {
+        await commonAjax('/v1/admin/banner', 'PUT', headers, { text1, toggle: type })
+            .then(res => {
+                swal(res.data)
+                setTimeout(() => {
+                    location.reload()
+                }, 500);
+            })
+            .catch(err => {
+                swal(err.data)
+            })
+    } else if (type === 'delete') {
+        
+        swal('Delete', 'Delete this Banner?', 'warning', {
+            buttons: {
+                cancel: "Cancel",
+                catch: {
+                    text: "Remove",
+                    value: true,
+                }
+            }
+        }).then(async(result) => {
+            if (result) {
+                await commonAjax('/v1/admin/banner', 'DELETE', headers, { text1 })
+                    .then(res => {
+                        swal(res.data)
+                        setTimeout(() => {
+                            location.reload()
+                        }, 500);
+                    })
+                    .catch(err => {
+                        swal(err.data)
+                    })
+            }})
+    }
+
+}
