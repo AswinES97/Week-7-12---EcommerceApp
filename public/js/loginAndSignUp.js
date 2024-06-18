@@ -1,7 +1,6 @@
-
 function login() {
-    let modalBody = document.getElementById('modal-body')
-    modalBody.innerHTML = `<form class="p-5" action="#" method="post">
+  let modalBody = document.getElementById("modal-body");
+  modalBody.innerHTML = `<form class="p-5" action="#" method="post">
     <h1 id="model-heading">Log In</h1><br><br>
     <label class="textin">Enter Mobile:</label><br>
     <input class="input" type="tel" maxlength="10" name="phn_no" id="input-phone" placeholder="9XXXXXXXXX" required><br>
@@ -16,12 +15,12 @@ function login() {
       <span>Login with email?</span><span style="cursor: pointer;" class="text-primary"><a onclick=loginWithEmail()>
           Click Here!</a><span>
     </div>
-  </form>`
+  </form>`;
 }
 
 function loginWithEmail() {
-    let modalBody = document.getElementById('modal-body')
-    modalBody.innerHTML = `<form class="p-5" action="#" method="post">
+  let modalBody = document.getElementById("modal-body");
+  modalBody.innerHTML = `<form class="p-5" action="#" method="post">
     <h1 id="model-heading">Log In</h1><br><br>
     <label class="textin">Enter Email:</label><br>
     <input class="input" type="email" name="email" id="input-email" placeholder="123@gmail.com" required><br>
@@ -38,43 +37,46 @@ function loginWithEmail() {
       <span>Login with Mobile?</span><span style="cursor: pointer;" class="text-primary"><a onclick=login()>
           Click Here!</a><span>
     </div>
-  </form>`
+  </form>`;
 }
 
 function loginMail(event) {
-    event.preventDefault()
-    const error = document.getElementById('error')
-    const email = document.getElementById('input-email').value
-    const pass = document.getElementById('input-password').value
-    const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+  event.preventDefault();
+  const error = document.getElementById("error");
+  const email = document.getElementById("input-email").value;
+  const pass = document.getElementById("input-password").value;
+  const emailRegex =
+    /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+  const passRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
-    if (email && emailRegex.test(email) && passRegex.test(pass)) {
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost:3000/v1/users/login-email',
-            data: {
-                email,
-                pass
-            },
-            error: (xhr) => {
-
-                let text = JSON.parse(JSON.stringify(xhr.responseJSON))
-                error.innerHTML = `<p style='color:red'>${text.err_email || text.err_blocked}<p>`
-                error.removeAttribute('hidden')
-            },
-            success: (res) => {
-                window.location.reload()
-            }
-        })
-    } else {
-        document.getElementById('error').removeAttribute('hidden')
-    }
+  if (email && emailRegex.test(email) && passRegex.test(pass)) {
+    $.ajax({
+      type: "POST",
+      url: "/v1/users/login-email",
+      data: {
+        email,
+        pass,
+      },
+      error: (xhr) => {
+        let text = JSON.parse(JSON.stringify(xhr.responseJSON));
+        error.innerHTML = `<p style='color:red'>${
+          text.err_email || text.err_blocked
+        }<p>`;
+        error.removeAttribute("hidden");
+      },
+      success: (res) => {
+        window.location.reload();
+      },
+    });
+  } else {
+    document.getElementById("error").removeAttribute("hidden");
+  }
 }
 
 function signUp() {
-    let modalBody = document.getElementById('modal-body')
-    modalBody.innerHTML = `<form class="p-5" action="" method="post">
+  let modalBody = document.getElementById("modal-body");
+  modalBody.innerHTML = `<form class="p-5" action="" method="post">
     <h1 id="model-heading">Sign Up</h1><br><br>
     <label class="textin p-2">Enter Name:</label><br>
     <input type="name" maxlength="30" id="name" name="fname" class="input" placeholder="first name"><br>
@@ -98,13 +100,12 @@ function signUp() {
       <span>already has account?</span><span style="cursor: pointer;" class="text-primary"><a onclick=login()> Log
           In</a><span>
     </div>
-  </form>`
-
+  </form>`;
 }
 
 function forgotPassword() {
-    let modalBody = document.getElementById('modal-body')
-    modalBody.innerHTML = `<form class="p-5" action="#" method="post">
+  let modalBody = document.getElementById("modal-body");
+  modalBody.innerHTML = `<form class="p-5" action="#" method="post">
     <h1 id="model-heading">Reset Password</h1><br><br>
     <label class="textin">Enter Mobile:</label><br>
     <input class="input" type="tel" maxlength="10" name="phn_no" id="input-phone" placeholder="9XXXXXXXXX" required><br>
@@ -120,255 +121,256 @@ function forgotPassword() {
           Click Here!</a><span>
     </div>
     </form>
-    `
+    `;
 }
 
 async function sentOtp($event, state) {
+  $event.preventDefault();
 
-    $event.preventDefault()
+  const error = document.getElementById("error");
+  const phn_no = document.getElementById("input-phone").value;
+  const phn_no_field = document.getElementById("input-phone");
+  const submit_button = document.getElementById("submitButton");
+  const otp_field = document.getElementById("otp");
+  const phn_regExp = /^[6-9]\d{9}$/gi;
+  const phn_no1 = Number(phn_no);
 
-    const error = document.getElementById('error')
-    const phn_no = document.getElementById('input-phone').value
-    const phn_no_field = document.getElementById('input-phone')
-    const submit_button = document.getElementById('submitButton')
-    const otp_field = document.getElementById('otp')
-    const phn_regExp = /^[6-9]\d{9}$/gi
-    const phn_no1 = Number(phn_no)
-
-    error.innerHTML = ''
-    if (state === 'login') {
-        if (phn_no.length == 10) {
-            if (phn_no1) {
-                if (phn_regExp.test(phn_no)) {
-
-                    await $.ajax({
-                        type: 'POST',
-                        url: 'http://localhost:3000/v1/users/login',
-                        data: { phn_no: phn_no1 },
-                        error: (xhr) => {
-                            let text = JSON.parse(JSON.stringify(xhr.responseJSON))
-                            error.innerHTML = `<p style='color:red'>${text.err_user || text.err_blocked || err_otpNotSent || otp_sent}<p>`
-                        },
-                        complete: (data, status, err) => {
-                            if (status == 'success') {
-                                submit_button.innerHTML = 'Login'
-                                submit_button.setAttribute('onClick', 'verifyOtp(event,"login")')
-                                phn_no_field.setAttribute("disabled", "")
-                                otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
-                            <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
-                            } else {
-
-                            }
-                        }
-                    })
-                } else {
-                    error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
-                }
-            }
-            else {
-                error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
-            }
+  error.innerHTML = "";
+  if (state === "login") {
+    if (phn_no.length == 10) {
+      if (phn_no1) {
+        if (phn_regExp.test(phn_no)) {
+          await $.ajax({
+            type: "POST",
+            url: "/v1/users/login",
+            data: { phn_no: phn_no1 },
+            error: (xhr) => {
+              let text = JSON.parse(JSON.stringify(xhr.responseJSON));
+              error.innerHTML = `<p style='color:red'>${
+                text.err_user || text.err_blocked || err_otpNotSent || otp_sent
+              }<p>`;
+            },
+            complete: (data, status, err) => {
+              if (status == "success") {
+                submit_button.innerHTML = "Login";
+                submit_button.setAttribute(
+                  "onClick",
+                  'verifyOtp(event,"login")'
+                );
+                phn_no_field.setAttribute("disabled", "");
+                otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
+                            <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`;
+              } else {
+              }
+            },
+          });
         } else {
-            error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
+          error.innerHTML =
+            "<p style='color:red'>Enter correct phone Number<p>";
         }
-    } else if (state == 'signup') {
-
-        const name_value = document.getElementById('name').value
-        const name = document.getElementById('name')
-        const name_regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/
-        const email = document.getElementById('email')
-        const email_value = document.getElementById('email').value
-        const email_regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
-        let test1, test2, test3;
-
-        if (name_value.length <= 20 && name_regex.test(name_value.trim())) {
-            test1 = true;
-        }
-
-        if (email_value.length > 0 && email_regex.test(email_value)) {
-            test2 = true
-        }
-
-        if (phn_no.length == 10 && phn_regExp.test(phn_no1)) {
-            test3 = true
-        }
-
-        if (test1 && test2 && test3 && pass() && confirmPass()) {
-            submit_button.setAttribute('disabled', '')
-            phn_no_field.setAttribute('disabled', '')
-            email.setAttribute('disabled', '')
-            name.setAttribute('disabled', '')
-            await $.ajax({
-                url: 'http://localhost:3000/v1/users/add-user',
-                type: 'POST',
-                data: {
-                    email: email_value,
-                    phn_no: phn_no1,
-                },
-                complete: (xhr, status, err) => {
-
-                    if (status == 'success') {
-                        submit_button.setAttribute('onclick', 'verifyOtp(event,"signup")')
-                        otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
-                        <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
-                        submit_button.removeAttribute('disabled')
-                    } else {
-                        submit_button.removeAttribute('disabled')
-                        error.innerHTML = "<p>Otp not sent!<p>"
-                    }
-                }
-
-            })
-        } else {
-            error.innerHTML = "<p>Incorrect Details<p>"
-        }
-    } else if (state == 'reset') {
-        if (phn_no.length == 10 && phn_regExp.test(phn_no1)) {
-            submit_button.setAttribute('disabled', '')
-            const headers = {
-                'Content-Type': 'application/json'
-            }
-            await commonAjax('/v1/users/reset-password', 'POST', headers, { phn_no: phn_no1 })
-                .then(res => {
-                    submit_button.innerHTML = 'Verify'
-                    submit_button.removeAttribute('disabled')
-                    submit_button.setAttribute('onclick', 'verifyOtp(event,"reset")')
-                    otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
-                        <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`
-                })
-                .catch(err => {
-                    submit_button.removeAttribute('disabled')
-                    $('#error').html(err.data)
-                })
-        } else {
-            error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>"
-        }
+      } else {
+        error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>";
+      }
+    } else {
+      error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>";
     }
+  } else if (state == "signup") {
+    const name_value = document.getElementById("name").value;
+    const name = document.getElementById("name");
+    const name_regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    const email = document.getElementById("email");
+    const email_value = document.getElementById("email").value;
+    const email_regex =
+      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+    let test1, test2, test3;
+
+    if (name_value.length <= 20 && name_regex.test(name_value.trim())) {
+      test1 = true;
+    }
+
+    if (email_value.length > 0 && email_regex.test(email_value)) {
+      test2 = true;
+    }
+
+    if (phn_no.length == 10 && phn_regExp.test(phn_no1)) {
+      test3 = true;
+    }
+
+    if (test1 && test2 && test3 && pass() && confirmPass()) {
+      submit_button.setAttribute("disabled", "");
+      phn_no_field.setAttribute("disabled", "");
+      email.setAttribute("disabled", "");
+      name.setAttribute("disabled", "");
+      await $.ajax({
+        url: "/v1/users/add-user",
+        type: "POST",
+        data: {
+          email: email_value,
+          phn_no: phn_no1,
+        },
+        complete: (xhr, status, err) => {
+          if (status == "success") {
+            submit_button.setAttribute("onclick", 'verifyOtp(event,"signup")');
+            otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
+                        <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`;
+            submit_button.removeAttribute("disabled");
+          } else {
+            submit_button.removeAttribute("disabled");
+            error.innerHTML = "<p>Otp not sent!<p>";
+          }
+        },
+      });
+    } else {
+      error.innerHTML = "<p>Incorrect Details<p>";
+    }
+  } else if (state == "reset") {
+    if (phn_no.length == 10 && phn_regExp.test(phn_no1)) {
+      submit_button.setAttribute("disabled", "");
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      await commonAjax("/v1/users/reset-password", "POST", headers, {
+        phn_no: phn_no1,
+      })
+        .then((res) => {
+          submit_button.innerHTML = "Verify";
+          submit_button.removeAttribute("disabled");
+          submit_button.setAttribute("onclick", 'verifyOtp(event,"reset")');
+          otp_field.innerHTML = `<label class="textin">Enter Otp:</label><br>
+                        <input type="text" class="input" maxlength="6" name="otpCode" id="input-otp"><br>`;
+        })
+        .catch((err) => {
+          submit_button.removeAttribute("disabled");
+          $("#error").html(err.data);
+        });
+    } else {
+      error.innerHTML = "<p style='color:red'>Enter correct phone Number<p>";
+    }
+  }
 }
 
 async function verifyOtp($event, state) {
-    $event.preventDefault()
-    const submit_button = document.getElementById('submitButton')
-    let error = document.getElementById('error')
-    let phn_no = document.getElementById('input-phone').value
-    let otpCode = document.getElementById('input-otp').value
-    submit_button.setAttribute('disabled', '')
+  $event.preventDefault();
+  const submit_button = document.getElementById("submitButton");
+  let error = document.getElementById("error");
+  let phn_no = document.getElementById("input-phone").value;
+  let otpCode = document.getElementById("input-otp").value;
+  submit_button.setAttribute("disabled", "");
 
-    if (otpCode.length == 6) {
-        if (state == 'login') {
-            await $.ajax({
-                type: 'POST',
-                url: 'http://localhost:3000/v1/users/login-otp',
-                data: {
-                    phn_no: phn_no,
-                    otpCode: otpCode,
-                },
+  if (otpCode.length == 6) {
+    if (state == "login") {
+      await $.ajax({
+        type: "POST",
+        url: "/v1/users/login-otp",
+        data: {
+          phn_no: phn_no,
+          otpCode: otpCode,
+        },
 
-                complete: (data, status, err) => {
-                    submit_button.removeAttribute('disabled')
-                    if (status == 'error') {
-                        error.innerHTML = "<p>Invalid Otp!<p>"
-                    } else {
-                        location.href = 'http://localhost:3000/v1/users'
-                    }
-                }
-            })
-        } else if (state == 'signup') {
-            let name_value = document.getElementById('name').value
-            let email_value = document.getElementById('email').value
-            const password = document.getElementById('signupPass').value
+        complete: (data, status, err) => {
+          submit_button.removeAttribute("disabled");
+          if (status == "error") {
+            error.innerHTML = "<p>Invalid Otp!<p>";
+          } else {
+            location.href = "/v1/users";
+          }
+        },
+      });
+    } else if (state == "signup") {
+      let name_value = document.getElementById("name").value;
+      let email_value = document.getElementById("email").value;
+      const password = document.getElementById("signupPass").value;
 
-            await $.ajax({
-                url: 'http://localhost:3000/v1/users/add-user-otp',
-                type: 'POST',
-                data: {
-                    phn_no: phn_no,
-                    otpCode: otpCode,
-                    name: name_value,
-                    email: email_value,
-                    password,
-
-                },
-                success: (xhr, status, err) => {
-                    submit_button.removeAttribute('disabled')
-                    window.location.reload()
-                }
-            })
-        } else if (state == 'reset') {
-            const headers = {
-                'Content-type': 'application/json'
-            }
-            await commonAjax('/v1/users/reset-password/verify', 'POST', headers, { otpCode, phn_no })
-                .then(res => {
-                    let modalBody = document.getElementById('modal-body')
-                    modalBody.innerHTML = res.data
-                })
-                .catch(err => {
-                    submit_button.removeAttribute('disabled')
-                    $('#error').html(err.data)
-                })
-        }
-
-
-    } else {
-        error.innerHTML = `<p>Invalid Otp<p>`
+      await $.ajax({
+        url: "/v1/users/add-user-otp",
+        type: "POST",
+        data: {
+          phn_no: phn_no,
+          otpCode: otpCode,
+          name: name_value,
+          email: email_value,
+          password,
+        },
+        success: (xhr, status, err) => {
+          submit_button.removeAttribute("disabled");
+          window.location.reload();
+        },
+      });
+    } else if (state == "reset") {
+      const headers = {
+        "Content-type": "application/json",
+      };
+      await commonAjax("/v1/users/reset-password/verify", "POST", headers, {
+        otpCode,
+        phn_no,
+      })
+        .then((res) => {
+          let modalBody = document.getElementById("modal-body");
+          modalBody.innerHTML = res.data;
+        })
+        .catch((err) => {
+          submit_button.removeAttribute("disabled");
+          $("#error").html(err.data);
+        });
     }
-
-
-
+  } else {
+    error.innerHTML = `<p>Invalid Otp<p>`;
+  }
 }
 
 function pass() {
-    const pass = document.getElementById('signupPass').value
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+  const pass = document.getElementById("signupPass").value;
+  const passRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
-    if (passRegex.test(pass)) {
-        document.getElementById('pass-error').setAttribute('hidden', 'true')
-        return true
-    } else {
-        document.getElementById('pass-error').removeAttribute('hidden')
-        return false
-    }
+  if (passRegex.test(pass)) {
+    document.getElementById("pass-error").setAttribute("hidden", "true");
+    return true;
+  } else {
+    document.getElementById("pass-error").removeAttribute("hidden");
+    return false;
+  }
 }
 
 function confirmPass() {
-    const confirmPassword = document.getElementById('confirm-pass').value
-    const pass = document.getElementById('signupPass').value
+  const confirmPassword = document.getElementById("confirm-pass").value;
+  const pass = document.getElementById("signupPass").value;
 
-    if (confirmPassword === pass) {
-        document.getElementById('confirm-error').setAttribute('hidden', 'true')
-        return true
-    } else {
-        document.getElementById('confirm-error').removeAttribute('hidden')
-        return false
-    }
-
+  if (confirmPassword === pass) {
+    document.getElementById("confirm-error").setAttribute("hidden", "true");
+    return true;
+  } else {
+    document.getElementById("confirm-error").removeAttribute("hidden");
+    return false;
+  }
 }
 
 async function changePassword(event, phn_no) {
-    event.preventDefault()
+  event.preventDefault();
 
-    if (pass() && confirmPass()) {
-        const submit_button = document.getElementById('submitButton')
-        const pass = document.getElementById('signupPass').value
-        const headers = {
-            'Content-Type': 'application/json'
-        }
-        submit_button.setAttribute('disabled', '')
-        await commonAjax('/v1/users/reset-password/verify', 'PUT', headers, { pass, phn_no })
-            .then(res => {
-                swal(res.data)
-                setTimeout(() => {
-                    location.reload()
-                }, 500);
-            })
-            .catch(err => {
-                swal(err.data)
-            })
-    }
+  if (pass() && confirmPass()) {
+    const submit_button = document.getElementById("submitButton");
+    const pass = document.getElementById("signupPass").value;
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    submit_button.setAttribute("disabled", "");
+    await commonAjax("/v1/users/reset-password/verify", "PUT", headers, {
+      pass,
+      phn_no,
+    })
+      .then((res) => {
+        swal(res.data);
+        setTimeout(() => {
+          location.reload();
+        }, 500);
+      })
+      .catch((err) => {
+        swal(err.data);
+      });
+  }
 }
 
-
 function cartHome() {
-    login()
+  login();
 }
