@@ -1,18 +1,17 @@
-version: '3.8'
+version: "3.8"
 services:
   redis:
     image: redis
     volumes:
       - ./data:/data
     container_name: redis
-    
+
   web-app:
-    image: aswines/ecommerc
+    image: aswines/ecommerce
     ports:
       - 80:3000
-    volumes:
-      - ./:/app  
+    # volumes:
+    #   - ./:/app
     container_name: web-app
     depends_on:
       - redis
-   
